@@ -104,6 +104,22 @@ try {
       return photo.top >= frame.top && photo.bottom <= frame.bottom + 1 && photo.left >= frame.left && photo.right <= frame.right + 1;
     })()`), true, 'portrait image exceeds gallery at ' + width);
   }
+  for (const width of [320, 430, 1024, 1440]) {
+    await command('Emulation.setDeviceMetricsOverride', { width, height: 900, deviceScaleFactor: 1, mobile: width < 600 });
+    await evaluate("navigate('verify')");
+    await waitFor("!!document.querySelector('[data-form=batch-verification]')");
+    assert.equal(await evaluate('document.documentElement.scrollWidth <= innerWidth'), true, `verification overflow at ${width}`);
+  }
+  await evaluate("document.querySelector('[name=batch]').value = 'gn250508'; document.querySelector('[data-form=batch-verification]').requestSubmit()");
+  await waitFor("document.querySelector('.batch-result-found')?.textContent.includes('SMP-050826008')");
+  assert.equal(await evaluate("document.querySelector('.batch-result-found a').pathname.endsWith('/assets/SMP-050826010%20(Aura%20Whey).pdf')"), true);
+  await evaluate("document.querySelector('[name=batch]').value = 'UNKNOWN'; document.querySelector('[data-form=batch-verification]').requestSubmit()");
+  await waitFor("!!document.querySelector('.batch-result-unavailable')");
+  assert.equal(await evaluate("document.querySelector('.batch-result-unavailable').textContent.includes('does not mean the product is fake')"), true);
+  await command('Page.reload');
+  await waitFor("location.pathname === '/verify' && !!document.querySelector('[data-form=batch-verification]')");
+  await evaluate("navigate('shop')");
+  await waitFor("!!document.querySelector('.purchase-panel')");
   await evaluate("document.querySelector('[data-action=add-cart]').click()");
   await waitFor("location.pathname === '/cart' && !!document.querySelector('.cart-item')");
   await evaluate("document.querySelector('[data-action=line-up]').click()");

@@ -160,3 +160,36 @@ test('quality page includes the newly supplied test report and FDA facility regi
   assert.ok(markup.includes('View certificate'));
   assert.equal(run('documents.length'), 9);
 });
+
+test('batch verification uses the supplied report and does not claim per-tub authentication', () => {
+  const { run } = storefront();
+  const page = run('verifyBatch()');
+  assert.ok(page.includes('data-form="batch-verification"'));
+  assert.ok(page.includes('not an individual product tub'));
+
+  const result = run("batchReportResult(' gn250508 ')");
+  for (const value of ['GN250508', 'Whey Protein Powder', 'July 2026', 'December 2027', 'Assure Analytical Laboratories LLP', 'SMP-050826008', '16-07-2026', '67.9%']) {
+    assert.ok(result.includes(value), value);
+  }
+  assert.ok(result.includes('View Original Lab Report'));
+  assert.ok(result.includes('assets/SMP-050826010%20(Aura%20Whey).pdf'));
+  assert.ok(result.includes('does not authenticate an individual tub'));
+});
+
+test('unknown batches report missing documentation without calling the product fake', () => {
+  const { run } = storefront();
+  const result = run("batchReportResult('<unknown>')");
+  assert.ok(result.includes('No laboratory report currently available'));
+  assert.ok(result.includes('This does not mean the product is fake'));
+  assert.ok(result.includes('&lt;UNKNOWN&gt;'));
+  assert.ok(!result.includes('View Original Lab Report'));
+});
+
+test('legacy demo authentication codes and route are removed from the live storefront', () => {
+  const appSource = fs.readFileSync(path.join(root, 'app.js'), 'utf8');
+  const routes = fs.readFileSync(path.join(root, 'vercel.json'), 'utf8');
+  assert.ok(!appSource.includes('AURA-2026-001'));
+  assert.ok(!appSource.includes("routeLink('authenticate'"));
+  assert.ok(!routes.includes('/authenticate'));
+  assert.ok(routes.includes('/verify'));
+});

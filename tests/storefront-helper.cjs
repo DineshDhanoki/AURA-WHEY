@@ -18,6 +18,7 @@ function storefront() {
   });
   context.history = { pushState: (_, unused, path) => { context.location.pathname = path; } };
   vm.runInContext(fs.readFileSync(path.join(root, 'shopify.js'), 'utf8'), context);
+  vm.runInContext(fs.readFileSync(path.join(root, 'batch-reports.js'), 'utf8'), context);
   vm.runInContext(fs.readFileSync(path.join(root, 'app.js'), 'utf8'), context);
   const run = code => vm.runInContext(code, context);
   run(`render = () => {}; showToast = message => console.warn(message);
