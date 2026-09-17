@@ -68,7 +68,7 @@ test('initialization preserves square artwork, hydrates product data and restore
   }])); commerce.cart = null; state.cart = 0;`);
   await run('initCommerce()');
   assert.equal(run('state.cart'), 2);
-  assert.equal(run("productFlavours['Mawa Kulfi'].images[0]"), './assets/MK%20Card/Malai%20Kulfi%201.1.png');
+  assert.equal(run("productFlavours['Mawa Kulfi'].images[0]"), './assets/optimized/site/MK%20Card/Malai%20Kulfi%201.1.webp');
   assert.equal(run('liveTitle()'), '&lt;Live &amp; title&gt;');
   assert.equal(run('commerce.loading'), false);
   run('commerce.client.cart = async () => null');

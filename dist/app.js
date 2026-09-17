@@ -14,21 +14,21 @@ const assets = {
     './assets/Hero%20section/ChatGPT%20Image%20Sep%209%2C%202026%2C%2002_10_27%20AM.png',
     './assets/Hero%20section/ChatGPT%20Image%20Sep%209%2C%202026%2C%2002_10_32%20AM.png'
   ],
-  chocolate: './assets/RC%20Card/Rich%20Chocolate%201.1.png',
-  mawa: './assets/MK%20Card/Malai%20Kulfi%201.1.png',
+  chocolate: './assets/optimized/site/RC%20Card/Rich%20Chocolate%201.1.webp',
+  mawa: './assets/optimized/site/MK%20Card/Malai%20Kulfi%201.1.webp',
   duo: `${assetBase}chatgpt_image_aug_15_2026_02_33_29_pm.png/screen.png`,
   labelMawa: `${assetBase}whatsapp_image_2026_07_22_at_21.31.00.jpeg/screen.png`,
-  why: './assets/image.png'
+  why: './assets/optimized/site/image.webp'
 };
 
 const productFlavours = {
   'Mawa Kulfi': {
     theme: 'flavour-kulfi',
-    images: [assets.mawa, ...['Malai Kulfi 1.2.png', 'Malai Kulfi 1.3.png', 'Malai Kulfi 2.png', 'Malai Kulfi 3.png'].map(file => `./assets/MK%20Card/${encodeURIComponent(file)}`)]
+    images: [assets.mawa, ...['Malai Kulfi 1.2.webp', 'Malai Kulfi 1.3.webp', 'Malai Kulfi 2.webp', 'Malai Kulfi 3.webp'].map(file => `./assets/optimized/site/MK%20Card/${encodeURIComponent(file)}`)]
   },
   'Rich Chocolate': {
     theme: 'flavour-chocolate',
-    images: [assets.chocolate, ...['Rich Chocolate 1.2.png', 'Rich chocolate 1.3.png', 'Rich Chololate2.png', 'Rich Chocolate 3.png'].map(file => `./assets/RC%20Card/${encodeURIComponent(file)}`)]
+    images: [assets.chocolate, ...['Rich Chocolate 1.2.webp', 'Rich chocolate 1.3.webp', 'Rich Chololate2.webp', 'Rich Chocolate 3.webp'].map(file => `./assets/optimized/site/RC%20Card/${encodeURIComponent(file)}`)]
   }
 };
 
@@ -82,6 +82,7 @@ heroSlides.forEach((slide, index) => {
   slide.mobileImage = './assets/Hero%20section/mobile%20hero%20page%20images/' + encodeURIComponent(`ChatGPT Image Sep 12, 2026, ${mobileTimes[index]} AM.png`);
   slide.desktopImage = slide.desktopImage.replace(/\.png$/, '.jpg');
   slide.mobileImage = slide.mobileImage.replace(/\.png$/, '.jpg');
+  slide.ambientImage = `./assets/optimized/ambient-${index}.webp`;
   assets.hero[index] = slide.desktopImage;
 });
 
@@ -259,7 +260,7 @@ async function openShopifyCheckout() {
 }
 
 function brand() {
-  return routeLink('home', '<img class="brand-logo" src="assets/aura-whey-logo.jpeg" alt="Aura Whey — Fuel your aura" width="1254" height="1254" decoding="async">', 'brand');
+  return routeLink('home', '<img class="brand-logo" src="assets/optimized/site/aura-whey-logo.webp" alt="Aura Whey — Fuel your aura" width="1254" height="1254" decoding="async">', 'brand');
 }
 
 function shell(content) {
@@ -333,7 +334,7 @@ function heroBannerCarousel() {
   const currentSlide = heroSlides[state.heroSlide] || heroSlides[0];
   return `
     <div class="hero-section-wrap">
-      <div class="hero-ambient-bg" id="hero-ambient-bg" style="background-image: url('${currentSlide.desktopImage}');"></div>
+      <div class="hero-ambient-bg" id="hero-ambient-bg" style="background-image: url('${currentSlide.ambientImage}');"></div>
       <div class="hero-ambient-vignette"></div>
       <section class="hero-carousel" id="hero-carousel" aria-label="Featured Promotions" role="region">
         <div class="hero-slides-track">
@@ -344,7 +345,7 @@ function heroBannerCarousel() {
                 <a href="${slide.link || '/shop'}" class="hero-slide-link" tabindex="${isActive ? '0' : '-1'}">
                   <picture class="hero-picture">
                     ${slide.mobileImage ? `<source media="(max-width: 768px)" srcset="${slide.mobileImage}">` : ''}
-                    <img class="hero-banner-img" src="${slide.desktopImage}" alt="${slide.alt || slide.title}" width="1920" height="730" decoding="async" loading="${index === 0 ? 'eager' : 'lazy'}" />
+                    <img class="hero-banner-img" src="${slide.desktopImage}" alt="${slide.alt || slide.title}" width="1920" height="730" decoding="async" fetchpriority="${isActive ? 'high' : 'low'}" loading="${isActive ? 'eager' : 'lazy'}" />
                   </picture>
                 </a>
               </div>`;
@@ -381,7 +382,7 @@ const posts = [
     slug: 'choose-your-flavour',
     title: 'How to choose a whey protein flavour',
     excerpt: 'Creamy and familiar or deep and chocolatey? Find a flavour that fits your everyday shake.',
-    image: './assets/BLOG/BLOG-1.png',
+    image: './assets/optimized/site/BLOG/BLOG-1.webp',
     alt: 'Kulfi-inspired and chocolate shakes on a warm stone counter',
     sections: [
       ['Start with what you enjoy', 'Think about the flavours you already reach for. If traditional Indian desserts are your thing, Mawa Kulfi brings a creamy, dessert-inspired character. If you usually choose chocolate, Rich Chocolate offers a familiar cocoa profile. Your everyday shake should be something you look forward to.'],
@@ -393,7 +394,7 @@ const posts = [
     slug: 'plan-your-protein-routine',
     title: 'A simple way to plan your protein routine',
     excerpt: 'A ready shaker, a familiar time and less daily guesswork. Make your routine easier to repeat.',
-    image: './assets/BLOG/BLOG-2.png',
+    image: './assets/optimized/site/BLOG/BLOG-2.webp',
     alt: 'Black and gold shaker beside a towel, scoop and training notebook',
     sections: [
       ['Choose a moment that fits', 'Start with your real schedule. Decide when preparing a shake is convenient, whether that is at home before heading out or after returning from training. Choose a moment you can repeat without rushing. The aim is to make preparation easy to remember.'],
@@ -405,7 +406,7 @@ const posts = [
     slug: 'mawa-kulfi-or-rich-chocolate',
     title: 'Mawa Kulfi or Rich Chocolate?',
     excerpt: 'Discover the creamy kulfi-inspired character and classic cocoa flavour behind our two favourites.',
-    image: './assets/BLOG/BLOG-3.png',
+    image: './assets/optimized/site/BLOG/BLOG-3.webp',
     alt: 'Aura Whey Mawa Kulfi and Rich Chocolate tubs side by side',
     sections: [
       ['Mawa Kulfi: a familiar twist', 'Mawa Kulfi takes its flavour inspiration from a much-loved Indian dessert. Its creamy character makes it a choice to consider if you want something different from the usual chocolate shake. Think of it as a little familiarity in your everyday routine, with the convenience of whey protein.'],
@@ -496,12 +497,9 @@ function floatingPurchaseBar() {
   return `<aside class="floating-purchase" id="floating-purchase" aria-label="Quick purchase" aria-hidden="true"><div class="floating-purchase-inner"><div class="floating-product-summary">${image(productImage, `Aura Whey ${state.flavour}`)}<div><strong>${liveTitle()}</strong><span>1 kg · 28 servings</span></div><b>${livePrice()}</b></div><div class="floating-purchase-actions">${purchaseButton('add-cart', 'Add to cart', 'floating-add')}${purchaseButton('buy-now', 'Buy now', 'primary floating-buy')}</div></div></aside>`;
 }
 
-function productZoomControls() {
-  return `<div class="product-zoom-controls" aria-label="Product image zoom controls">${button('zoom-out', '−', '', '').replace('<button ', '<button aria-label="Zoom out" ')}${button('zoom-reset', '100%', '', '').replace('<button ', '<button aria-label="Reset image zoom" ')}${button('zoom-in', '+', '', '').replace('<button ', '<button aria-label="Zoom in" ')}</div>`;
-}
 
 function shop() {
-  return `<div class="product-page ${productFlavours[state.flavour].theme}">${commerceStatus()}<h1 class="page-title">Aura Whey Protein</h1><div class="product-layout"><section class="product-gallery"><div class="product-main-image">${image(productFlavours[state.flavour].images[state.productImage], `${state.flavour} Aura Whey product`, 'product-main-photo')}</div>${productZoomControls()}<div class="thumbnail-row" aria-label="Product images">${productFlavours[state.flavour].images.map((src, index) => `<button type="button" class="thumbnail" data-action="product-image-${index}" aria-label="View ${state.flavour} image ${index + 1}" aria-pressed="${state.productImage === index}">${image(src, `${state.flavour}, image ${index + 1}`)}</button>`).join('')}</div></section><section class="purchase-panel"><p class="breadcrumb">Shop / Whey protein</p><h2>${liveTitle()}</h2><div class="price">${livePrice()}<span>Inclusive of taxes</span></div><p>1 kg · 28 servings · 35 g serving size</p><div class="flavour-picker"><span>Choose flavour</span><div class="button-row"><button type="button" class="flavour ${state.flavour === 'Mawa Kulfi' ? 'active' : ''}" data-action="select-Mawa Kulfi">Mawa Kulfi</button><button type="button" class="flavour ${state.flavour === 'Rich Chocolate' ? 'active' : ''}" data-action="select-Rich Chocolate">Rich Chocolate</button></div></div>${variantPicker()}<p role="status">${selectedVariant()?.availableForSale ? 'In stock' : commerce.loading ? 'Checking availability…' : 'Unavailable'}</p><p>${escapeHtml(commerce.products[state.flavour]?.description || '')}</p><div class="coupon-entry">${couponEntry()}</div><div class="product-actions">${auraQuantity()}<div class="button-row">${purchaseButton('add-cart', 'Add to cart', 'floating-add', 'bag')}${purchaseButton('buy-now', 'Buy now', 'primary')}${routeLink('quality', 'View quality documents', 'button-link secondary')}</div></div>${productInside()}</section></div>${productReviews()}${nutritionTrust()}${floatingPurchaseBar()}</div>`;
+  return `<div class="product-page ${productFlavours[state.flavour].theme}">${commerceStatus()}<h1 class="page-title">Aura Whey Protein</h1><div class="product-layout"><section class="product-gallery"><button type="button" class="product-main-image" data-image-viewer aria-label="Open ${state.flavour} image viewer">${image(productFlavours[state.flavour].images[state.productImage], `${state.flavour} Aura Whey product`, 'product-main-photo')}<span class="product-image-hint" aria-hidden="true">${icon('search')}</span></button><div class="thumbnail-row" aria-label="Product images">${productFlavours[state.flavour].images.map((src, index) => `<button type="button" class="thumbnail" data-action="product-image-${index}" aria-label="View ${state.flavour} image ${index + 1}" aria-pressed="${state.productImage === index}">${image(src, `${state.flavour}, image ${index + 1}`)}</button>`).join('')}</div></section><section class="purchase-panel"><p class="breadcrumb">Shop / Whey protein</p><h2>${liveTitle()}</h2><div class="price">${livePrice()}<span>Inclusive of taxes</span></div><p>1 kg · 28 servings · 35 g serving size</p><div class="flavour-picker"><span>Choose flavour</span><div class="button-row"><button type="button" class="flavour ${state.flavour === 'Mawa Kulfi' ? 'active' : ''}" data-action="select-Mawa Kulfi">Mawa Kulfi</button><button type="button" class="flavour ${state.flavour === 'Rich Chocolate' ? 'active' : ''}" data-action="select-Rich Chocolate">Rich Chocolate</button></div></div>${variantPicker()}<p role="status">${selectedVariant()?.availableForSale ? 'In stock' : commerce.loading ? 'Checking availability…' : 'Unavailable'}</p><p>${escapeHtml(commerce.products[state.flavour]?.description || '')}</p><div class="coupon-entry">${couponEntry()}</div><div class="product-actions">${auraQuantity()}<div class="button-row">${purchaseButton('add-cart', 'Add to cart', 'floating-add', 'bag')}${purchaseButton('buy-now', 'Buy now', 'primary')}${routeLink('quality', 'View quality documents', 'button-link secondary')}</div></div>${productInside()}</section></div>${productReviews()}${nutritionTrust()}${floatingPurchaseBar()}</div>`;
 }
 
 function auraQuantity() {
@@ -577,7 +575,7 @@ function documentCard([title, type, detail, file]) {
 }
 
 function quality() {
-  return `<section class="quality-hero" aria-labelledby="quality-title"><img class="quality-hero-image" src="./assets/lab%20image.png" alt="Illustrative scene of laboratory technicians handling food samples" fetchpriority="high" /><div class="quality-hero-inner"><div class="quality-hero-copy"><p class="hero-overline">Quality & documentation</p><h1 id="quality-title">Quality you can inspect.</h1><p>Explore food-safety and manufacturing information, and learn what to check on your pack.</p></div></div></section><section class="section"><div class="section-inner"><div class="section-head"><div><h2>Certificates</h2><div class="gold-rule"></div></div><p>Food safety, manufacturing, and dietary certification documents.</p></div><div class="grid grid-3">${documents.map(documentCard).join('')}</div></div></section><section class="section"><div class="section-inner quality-process"><div class="quality-process-image">${image(assets.labelMawa, 'Aura Whey product nutrition information')}</div><div><h2>Read the pack first.</h2><p>Nutrition, ingredients, allergen advice, and storage guidance are printed on the product label. We keep the supplied certificates alongside it for straightforward review.</p><div class="button-row">${routeLink('authenticate', 'Authenticate your pack', 'button-link primary')}${routeLink('contact', 'Contact support', 'button-link')}</div></div></div></section>`;
+  return `<section class="quality-hero" aria-labelledby="quality-title"><img class="quality-hero-image" src="./assets/optimized/site/lab%20image.webp" alt="Illustrative scene of laboratory technicians handling food samples" fetchpriority="high" /><div class="quality-hero-inner"><div class="quality-hero-copy"><p class="hero-overline">Quality & documentation</p><h1 id="quality-title">Quality you can inspect.</h1><p>Explore food-safety and manufacturing information, and learn what to check on your pack.</p></div></div></section><section class="section"><div class="section-inner"><div class="section-head"><div><h2>Certificates</h2><div class="gold-rule"></div></div><p>Food safety, manufacturing, and dietary certification documents.</p></div><div class="grid grid-3">${documents.map(documentCard).join('')}</div></div></section><section class="section"><div class="section-inner quality-process"><div class="quality-process-image">${image(assets.labelMawa, 'Aura Whey product nutrition information')}</div><div><h2>Read the pack first.</h2><p>Nutrition, ingredients, allergen advice, and storage guidance are printed on the product label. We keep the supplied certificates alongside it for straightforward review.</p><div class="button-row">${routeLink('authenticate', 'Authenticate your pack', 'button-link primary')}${routeLink('contact', 'Contact support', 'button-link')}</div></div></div></section>`;
 }
 
 function searchDialog() {
@@ -791,7 +789,7 @@ function setHeroSlide(index) {
 
   const ambientBg = document.querySelector('#hero-ambient-bg');
   if (ambientBg && heroSlides[state.heroSlide]) {
-    ambientBg.style.backgroundImage = `url('${heroSlides[state.heroSlide].desktopImage}')`;
+    ambientBg.style.backgroundImage = `url('${heroSlides[state.heroSlide].ambientImage}')`;
   }
 
   resetHeroTimer();
@@ -978,17 +976,6 @@ function handleAction(action, element) {
   if (action === 'open-menu') return setMobileMenu(true);
   if (action === 'close-menu') return setMobileMenu(false);
   if (action === 'go-shop') return navigate('shop');
-  if (action === 'zoom-in' || action === 'zoom-out' || action === 'zoom-reset') {
-    state.imageZoom = action === 'zoom-reset' ? 1 : Math.min(2.5, Math.max(1, state.imageZoom + (action === 'zoom-in' ? .25 : -.25)));
-    const galleryImage = document.querySelector('.product-main-image img');
-    if (galleryImage) {
-      galleryImage.style = galleryImage.style || {};
-      galleryImage.style.transform = `scale(${state.imageZoom})`;
-    }
-    const reset = document.querySelector('[data-action="zoom-reset"]');
-    reset?.querySelector?.('span') && (reset.querySelector('span').textContent = `${Math.round(state.imageZoom * 100)}%`);
-    return;
-  }
   if (action.startsWith('select-')) { state.flavour = action.replace('select-', ''); state.productImage = 0; state.imageZoom = 1; return currentRoute() === 'shop' ? render() : navigate('shop'); }
   if (action.startsWith('product-image-')) {
     state.productImage = Number(action.replace('product-image-', ''));

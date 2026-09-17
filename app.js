@@ -1,11 +1,10 @@
 const links = [
   ['home', 'Home'], ['shop', 'Shop'], ['quality', 'Quality & lab reports'],
-  ['blog', 'Journal'], ['verify', 'Verify batch'], ['track-order', 'Track order'],
+  ['blog', 'Journal'], ['authenticate', 'Authenticate'], ['track-order', 'Track order'],
   ['faq', 'FAQs'], ['contact', 'Contact']
 ];
 
 const app = document.querySelector('#app');
-const batchReports = globalThis.AURA_BATCH_REPORTS || Object.freeze({});
 const assetBase = './stitch_aura_whey_storefront_design/';
 const assets = {
   hero: [
@@ -15,21 +14,21 @@ const assets = {
     './assets/Hero%20section/ChatGPT%20Image%20Sep%209%2C%202026%2C%2002_10_27%20AM.png',
     './assets/Hero%20section/ChatGPT%20Image%20Sep%209%2C%202026%2C%2002_10_32%20AM.png'
   ],
-  chocolate: './assets/RC%20Card/Rich%20Chocolate%201.1.png',
-  mawa: './assets/MK%20Card/Malai%20Kulfi%201.1.png',
+  chocolate: './assets/optimized/site/RC%20Card/Rich%20Chocolate%201.1.webp',
+  mawa: './assets/optimized/site/MK%20Card/Malai%20Kulfi%201.1.webp',
   duo: `${assetBase}chatgpt_image_aug_15_2026_02_33_29_pm.png/screen.png`,
   labelMawa: `${assetBase}whatsapp_image_2026_07_22_at_21.31.00.jpeg/screen.png`,
-  why: './assets/image.png'
+  why: './assets/optimized/site/image.webp'
 };
 
 const productFlavours = {
   'Mawa Kulfi': {
     theme: 'flavour-kulfi',
-    images: [assets.mawa, ...['Malai Kulfi 1.2.png', 'Malai Kulfi 1.3.png', 'Malai Kulfi 2.png', 'Malai Kulfi 3.png'].map(file => `./assets/MK%20Card/${encodeURIComponent(file)}`)]
+    images: [assets.mawa, ...['Malai Kulfi 1.2.webp', 'Malai Kulfi 1.3.webp', 'Malai Kulfi 2.webp', 'Malai Kulfi 3.webp'].map(file => `./assets/optimized/site/MK%20Card/${encodeURIComponent(file)}`)]
   },
   'Rich Chocolate': {
     theme: 'flavour-chocolate',
-    images: [assets.chocolate, ...['Rich Chocolate 1.2.png', 'Rich chocolate 1.3.png', 'Rich Chololate2.png', 'Rich Chocolate 3.png'].map(file => `./assets/RC%20Card/${encodeURIComponent(file)}`)]
+    images: [assets.chocolate, ...['Rich Chocolate 1.2.webp', 'Rich chocolate 1.3.webp', 'Rich Chololate2.webp', 'Rich Chocolate 3.webp'].map(file => `./assets/optimized/site/RC%20Card/${encodeURIComponent(file)}`)]
   }
 };
 
@@ -83,6 +82,7 @@ heroSlides.forEach((slide, index) => {
   slide.mobileImage = './assets/Hero%20section/mobile%20hero%20page%20images/' + encodeURIComponent(`ChatGPT Image Sep 12, 2026, ${mobileTimes[index]} AM.png`);
   slide.desktopImage = slide.desktopImage.replace(/\.png$/, '.jpg');
   slide.mobileImage = slide.mobileImage.replace(/\.png$/, '.jpg');
+  slide.ambientImage = `./assets/optimized/ambient-${index}.webp`;
   assets.hero[index] = slide.desktopImage;
 });
 
@@ -260,7 +260,7 @@ async function openShopifyCheckout() {
 }
 
 function brand() {
-  return routeLink('home', '<img class="brand-logo" src="assets/aura-whey-logo.jpeg" alt="Aura Whey — Fuel your aura" width="1254" height="1254" decoding="async">', 'brand');
+  return routeLink('home', '<img class="brand-logo" src="assets/optimized/site/aura-whey-logo.webp" alt="Aura Whey — Fuel your aura" width="1254" height="1254" decoding="async">', 'brand');
 }
 
 function shell(content) {
@@ -321,7 +321,7 @@ function shell(content) {
         <div class="footer-grid">
           <div class="footer-intro">${brand()}<p>Whey protein in Mawa Kulfi and Rich Chocolate flavours. Built around the routine, not the noise.</p></div>
           <div><strong>Shop</strong><ul><li>${routeLink('shop', 'Whey protein')}</li><li>${routeLink('cart', 'Your cart')}</li></ul></div>
-          <div><strong>Support</strong><ul><li>${routeLink('verify', 'View a batch lab report')}</li><li>${routeLink('track-order', 'Track your order')}</li><li>${routeLink('faq', 'FAQs')}</li><li>${routeLink('contact', 'Contact')}</li></ul></div>
+          <div><strong>Support</strong><ul><li>${routeLink('authenticate', 'Authenticate a pack')}</li><li>${routeLink('track-order', 'Track your order')}</li><li>${routeLink('faq', 'FAQs')}</li><li>${routeLink('contact', 'Contact')}</li></ul></div>
           <div><strong>Learn</strong><ul><li>${routeLink('quality', 'Quality & lab reports')}</li><li>${routeLink('blog', 'Journal')}</li><li>${routeLink('policy', 'Policies')}</li></ul></div>
         </div>
         <div class="footer-bottom"><div class="footer-socials" aria-label="Social links"><a href="#" aria-label="Facebook">${icon('facebook')}</a><a href="#" aria-label="Instagram">${icon('instagram')}</a><a href="#" aria-label="LinkedIn">${icon('linkedin')}</a><a href="#" aria-label="YouTube">${icon('youtube')}</a></div><span>© 2026 Aura Whey</span></div>
@@ -334,7 +334,7 @@ function heroBannerCarousel() {
   const currentSlide = heroSlides[state.heroSlide] || heroSlides[0];
   return `
     <div class="hero-section-wrap">
-      <div class="hero-ambient-bg" id="hero-ambient-bg" style="background-image: url('${currentSlide.desktopImage}');"></div>
+      <div class="hero-ambient-bg" id="hero-ambient-bg" style="background-image: url('${currentSlide.ambientImage}');"></div>
       <div class="hero-ambient-vignette"></div>
       <section class="hero-carousel" id="hero-carousel" aria-label="Featured Promotions" role="region">
         <div class="hero-slides-track">
@@ -345,7 +345,7 @@ function heroBannerCarousel() {
                 <a href="${slide.link || '/shop'}" class="hero-slide-link" tabindex="${isActive ? '0' : '-1'}">
                   <picture class="hero-picture">
                     ${slide.mobileImage ? `<source media="(max-width: 768px)" srcset="${slide.mobileImage}">` : ''}
-                    <img class="hero-banner-img" src="${slide.desktopImage}" alt="${slide.alt || slide.title}" width="1920" height="730" decoding="async" loading="${index === 0 ? 'eager' : 'lazy'}" />
+                    <img class="hero-banner-img" src="${slide.desktopImage}" alt="${slide.alt || slide.title}" width="1920" height="730" decoding="async" fetchpriority="${isActive ? 'high' : 'low'}" loading="${isActive ? 'eager' : 'lazy'}" />
                   </picture>
                 </a>
               </div>`;
@@ -372,7 +372,7 @@ function home() {
     ${heroBannerCarousel()}
     <section class="section"><div class="section-inner"><div class="section-head"><div><h2>Pick your flavour</h2><div class="gold-rule"></div></div><p>Choose the flavour that fits the ritual you want to repeat.</p></div><div class="grid product-grid">${productCard('Mawa Kulfi')}${productCard('Rich Chocolate')}</div></div></section>
     <section class="section"><div class="section-inner"><div class="section-head"><div><h2>Made for the routine</h2><div class="gold-rule"></div></div><p>Simple product details. Familiar flavours. A dependable post-training choice.</p></div><div class="image-section">${routeLink('shop', image(assets.why, 'Aura Whey athlete campaign with Mawa Kulfi and Rich Chocolate'), 'routine-banner-link')}</div><p class="button-row">${routeLink('shop', 'Shop now', 'button-link primary')}${routeLink('article/plan-your-protein-routine', 'Build your routine', 'button-link secondary')}</p></div></section>
-    <section class="section"><div class="section-inner"><div class="section-head"><div><h2>Know your pack</h2><div class="gold-rule"></div></div><p>Read the nutrition panel, check the documents, then look up the available laboratory report for your batch.</p></div><div class="grid grid-2"><div class="card label-card">${image(assets.labelMawa, 'Aura Whey Mawa Kulfi nutrition label', 'label-preview')}</div><div class="quality-cta"><h3>Quality documents and batch reports</h3><p>Our quality library keeps the supplied certification documents in one place. Enter the batch number printed on your pack to find a corresponding third-party laboratory report.</p><div class="button-row">${routeLink('quality', 'Open quality library', 'button-link primary')}${routeLink('verify', 'Verify a batch', 'button-link')}</div></div></div></div></section>
+    <section class="section"><div class="section-inner"><div class="section-head"><div><h2>Know your pack</h2><div class="gold-rule"></div></div><p>Read the nutrition panel, check the documents, then verify your product code.</p></div><div class="grid grid-2"><div class="card label-card">${image(assets.labelMawa, 'Aura Whey Mawa Kulfi nutrition label', 'label-preview')}</div><div class="quality-cta"><h3>Quality documents and product authentication</h3><p>Our quality library keeps the supplied certification documents in one place. Use the pack code to confirm your purchase.</p><div class="button-row">${routeLink('quality', 'Open quality library', 'button-link primary')}${routeLink('authenticate', 'Authenticate a pack', 'button-link')}</div></div></div></div></section>
     <section class="section"><div class="section-inner"><div class="section-head"><div><h2>Better-informed training</h2><div class="gold-rule"></div></div><p>Practical guides for choosing, using, and enjoying your whey protein.</p></div><div class="grid grid-3">${blogCard(0)}${blogCard(1)}${blogCard(2)}</div><p>${routeLink('blog', 'Browse the journal', 'button-link secondary')}</p></div></section>
     ${nutritionTrust()}`;
 }
@@ -382,7 +382,7 @@ const posts = [
     slug: 'choose-your-flavour',
     title: 'How to choose a whey protein flavour',
     excerpt: 'Creamy and familiar or deep and chocolatey? Find a flavour that fits your everyday shake.',
-    image: './assets/BLOG/BLOG-1.png',
+    image: './assets/optimized/site/BLOG/BLOG-1.webp',
     alt: 'Kulfi-inspired and chocolate shakes on a warm stone counter',
     sections: [
       ['Start with what you enjoy', 'Think about the flavours you already reach for. If traditional Indian desserts are your thing, Mawa Kulfi brings a creamy, dessert-inspired character. If you usually choose chocolate, Rich Chocolate offers a familiar cocoa profile. Your everyday shake should be something you look forward to.'],
@@ -394,7 +394,7 @@ const posts = [
     slug: 'plan-your-protein-routine',
     title: 'A simple way to plan your protein routine',
     excerpt: 'A ready shaker, a familiar time and less daily guesswork. Make your routine easier to repeat.',
-    image: './assets/BLOG/BLOG-2.png',
+    image: './assets/optimized/site/BLOG/BLOG-2.webp',
     alt: 'Black and gold shaker beside a towel, scoop and training notebook',
     sections: [
       ['Choose a moment that fits', 'Start with your real schedule. Decide when preparing a shake is convenient, whether that is at home before heading out or after returning from training. Choose a moment you can repeat without rushing. The aim is to make preparation easy to remember.'],
@@ -406,7 +406,7 @@ const posts = [
     slug: 'mawa-kulfi-or-rich-chocolate',
     title: 'Mawa Kulfi or Rich Chocolate?',
     excerpt: 'Discover the creamy kulfi-inspired character and classic cocoa flavour behind our two favourites.',
-    image: './assets/BLOG/BLOG-3.png',
+    image: './assets/optimized/site/BLOG/BLOG-3.webp',
     alt: 'Aura Whey Mawa Kulfi and Rich Chocolate tubs side by side',
     sections: [
       ['Mawa Kulfi: a familiar twist', 'Mawa Kulfi takes its flavour inspiration from a much-loved Indian dessert. Its creamy character makes it a choice to consider if you want something different from the usual chocolate shake. Think of it as a little familiarity in your everyday routine, with the convenience of whey protein.'],
@@ -497,12 +497,9 @@ function floatingPurchaseBar() {
   return `<aside class="floating-purchase" id="floating-purchase" aria-label="Quick purchase" aria-hidden="true"><div class="floating-purchase-inner"><div class="floating-product-summary">${image(productImage, `Aura Whey ${state.flavour}`)}<div><strong>${liveTitle()}</strong><span>1 kg · 28 servings</span></div><b>${livePrice()}</b></div><div class="floating-purchase-actions">${purchaseButton('add-cart', 'Add to cart', 'floating-add')}${purchaseButton('buy-now', 'Buy now', 'primary floating-buy')}</div></div></aside>`;
 }
 
-function productZoomControls() {
-  return `<div class="product-zoom-controls" aria-label="Product image zoom controls">${button('zoom-out', '−', '', '').replace('<button ', '<button aria-label="Zoom out" ')}${button('zoom-reset', '100%', '', '').replace('<button ', '<button aria-label="Reset image zoom" ')}${button('zoom-in', '+', '', '').replace('<button ', '<button aria-label="Zoom in" ')}</div>`;
-}
 
 function shop() {
-  return `<div class="product-page ${productFlavours[state.flavour].theme}">${commerceStatus()}<h1 class="page-title">Aura Whey Protein</h1><div class="product-layout"><section class="product-gallery"><div class="product-main-image">${image(productFlavours[state.flavour].images[state.productImage], `${state.flavour} Aura Whey product`, 'product-main-photo')}</div>${productZoomControls()}<div class="thumbnail-row" aria-label="Product images">${productFlavours[state.flavour].images.map((src, index) => `<button type="button" class="thumbnail" data-action="product-image-${index}" aria-label="View ${state.flavour} image ${index + 1}" aria-pressed="${state.productImage === index}">${image(src, `${state.flavour}, image ${index + 1}`)}</button>`).join('')}</div></section><section class="purchase-panel"><p class="breadcrumb">Shop / Whey protein</p><h2>${liveTitle()}</h2><div class="price">${livePrice()}<span>Inclusive of taxes</span></div><p>1 kg · 28 servings · 35 g serving size</p><div class="flavour-picker"><span>Choose flavour</span><div class="button-row"><button type="button" class="flavour ${state.flavour === 'Mawa Kulfi' ? 'active' : ''}" data-action="select-Mawa Kulfi">Mawa Kulfi</button><button type="button" class="flavour ${state.flavour === 'Rich Chocolate' ? 'active' : ''}" data-action="select-Rich Chocolate">Rich Chocolate</button></div></div>${variantPicker()}<p role="status">${selectedVariant()?.availableForSale ? 'In stock' : commerce.loading ? 'Checking availability…' : 'Unavailable'}</p><p>${escapeHtml(commerce.products[state.flavour]?.description || '')}</p><div class="coupon-entry">${couponEntry()}</div><div class="product-actions">${auraQuantity()}<div class="button-row">${purchaseButton('add-cart', 'Add to cart', 'floating-add', 'bag')}${purchaseButton('buy-now', 'Buy now', 'primary')}${routeLink('quality', 'View quality documents', 'button-link secondary')}</div></div>${productInside()}</section></div>${productReviews()}${nutritionTrust()}${floatingPurchaseBar()}</div>`;
+  return `<div class="product-page ${productFlavours[state.flavour].theme}">${commerceStatus()}<h1 class="page-title">Aura Whey Protein</h1><div class="product-layout"><section class="product-gallery"><button type="button" class="product-main-image" data-image-viewer aria-label="Open ${state.flavour} image viewer">${image(productFlavours[state.flavour].images[state.productImage], `${state.flavour} Aura Whey product`, 'product-main-photo')}<span class="product-image-hint" aria-hidden="true">${icon('search')}</span></button><div class="thumbnail-row" aria-label="Product images">${productFlavours[state.flavour].images.map((src, index) => `<button type="button" class="thumbnail" data-action="product-image-${index}" aria-label="View ${state.flavour} image ${index + 1}" aria-pressed="${state.productImage === index}">${image(src, `${state.flavour}, image ${index + 1}`)}</button>`).join('')}</div></section><section class="purchase-panel"><p class="breadcrumb">Shop / Whey protein</p><h2>${liveTitle()}</h2><div class="price">${livePrice()}<span>Inclusive of taxes</span></div><p>1 kg · 28 servings · 35 g serving size</p><div class="flavour-picker"><span>Choose flavour</span><div class="button-row"><button type="button" class="flavour ${state.flavour === 'Mawa Kulfi' ? 'active' : ''}" data-action="select-Mawa Kulfi">Mawa Kulfi</button><button type="button" class="flavour ${state.flavour === 'Rich Chocolate' ? 'active' : ''}" data-action="select-Rich Chocolate">Rich Chocolate</button></div></div>${variantPicker()}<p role="status">${selectedVariant()?.availableForSale ? 'In stock' : commerce.loading ? 'Checking availability…' : 'Unavailable'}</p><p>${escapeHtml(commerce.products[state.flavour]?.description || '')}</p><div class="coupon-entry">${couponEntry()}</div><div class="product-actions">${auraQuantity()}<div class="button-row">${purchaseButton('add-cart', 'Add to cart', 'floating-add', 'bag')}${purchaseButton('buy-now', 'Buy now', 'primary')}${routeLink('quality', 'View quality documents', 'button-link secondary')}</div></div>${productInside()}</section></div>${productReviews()}${nutritionTrust()}${floatingPurchaseBar()}</div>`;
 }
 
 function auraQuantity() {
@@ -578,7 +575,7 @@ function documentCard([title, type, detail, file]) {
 }
 
 function quality() {
-  return `<section class="quality-hero" aria-labelledby="quality-title"><img class="quality-hero-image" src="./assets/lab%20image.png" alt="Illustrative scene of laboratory technicians handling food samples" fetchpriority="high" /><div class="quality-hero-inner"><div class="quality-hero-copy"><p class="hero-overline">Quality & documentation</p><h1 id="quality-title">Quality you can inspect.</h1><p>Explore food-safety and manufacturing information, and learn what to check on your pack.</p></div></div></section><section class="section"><div class="section-inner"><div class="section-head"><div><h2>Certificates</h2><div class="gold-rule"></div></div><p>Food safety, manufacturing, and dietary certification documents.</p></div><div class="grid grid-3">${documents.map(documentCard).join('')}</div></div></section><section class="section"><div class="section-inner quality-process"><div class="quality-process-image">${image(assets.labelMawa, 'Aura Whey product nutrition information')}</div><div><h2>Read the pack first.</h2><p>Nutrition, ingredients, allergen advice, and storage guidance are printed on the product label. We keep the supplied certificates alongside it for straightforward review.</p><div class="button-row">${routeLink('verify', 'View batch lab report', 'button-link primary')}${routeLink('contact', 'Contact support', 'button-link')}</div></div></div></section>`;
+  return `<section class="quality-hero" aria-labelledby="quality-title"><img class="quality-hero-image" src="./assets/optimized/site/lab%20image.webp" alt="Illustrative scene of laboratory technicians handling food samples" fetchpriority="high" /><div class="quality-hero-inner"><div class="quality-hero-copy"><p class="hero-overline">Quality & documentation</p><h1 id="quality-title">Quality you can inspect.</h1><p>Explore food-safety and manufacturing information, and learn what to check on your pack.</p></div></div></section><section class="section"><div class="section-inner"><div class="section-head"><div><h2>Certificates</h2><div class="gold-rule"></div></div><p>Food safety, manufacturing, and dietary certification documents.</p></div><div class="grid grid-3">${documents.map(documentCard).join('')}</div></div></section><section class="section"><div class="section-inner quality-process"><div class="quality-process-image">${image(assets.labelMawa, 'Aura Whey product nutrition information')}</div><div><h2>Read the pack first.</h2><p>Nutrition, ingredients, allergen advice, and storage guidance are printed on the product label. We keep the supplied certificates alongside it for straightforward review.</p><div class="button-row">${routeLink('authenticate', 'Authenticate your pack', 'button-link primary')}${routeLink('contact', 'Contact support', 'button-link')}</div></div></div></section>`;
 }
 
 function searchDialog() {
@@ -628,28 +625,7 @@ function article() {
   return `<article class="article"><p>${routeLink('blog', 'Back to journal', 'text-link')}</p><p class="hero-overline">Aura journal</p><h1>${post.title}</h1><p class="article-meta">Aura Whey Journal · 1 minute read</p><div class="article-hero">${image(post.image, post.alt)}</div><div class="article-layout"><div>${post.sections.map(([heading, copy]) => `<section><h2>${heading}</h2><p>${copy}</p></section>`).join('')}</div><aside class="article-aside"><strong>Explore Aura Whey</strong>${routeLink('shop', 'Shop both flavours', 'text-link')}${routeLink('blog', 'More from the journal', 'text-link')}</aside></div></article>`;
 }
 
-function verifyBatch() {
-  return `<section class="page-intro compact batch-verification" aria-labelledby="batch-verification-title"><p class="hero-overline">Batch verification</p><h1 id="batch-verification-title">Find your batch lab report.</h1><p class="batch-verification-intro">Enter the batch number printed on your tub to check whether a third-party laboratory report is available. This lookup verifies a batch report, not an individual product tub.</p><div class="verify-layout"><div class="verify-image">${image(assets.labelMawa, 'Aura Whey pack label showing where product information is printed')}</div><div class="batch-lookup"><h2>Enter batch number</h2><p>Use the batch number exactly as it appears on the product label.</p><form class="form" data-form="batch-verification"><label class="field" for="batch-number">Batch number<input id="batch-number" name="batch" maxlength="40" placeholder="e.g. GN250508" autocomplete="off" autocapitalize="characters" spellcheck="false" required /></label><button type="submit" class="button primary">${icon('search')}<span>Find lab report</span></button></form><div id="batch-result" class="batch-result" role="status" aria-live="polite"></div></div></div></section>`;
-}
-
-function normalizeBatchNumber(value) {
-  return String(value || '').trim().toUpperCase().replace(/\s+/g, '');
-}
-
-function batchReportResult(value) {
-  const batchNumber = normalizeBatchNumber(value);
-  const report = batchReports[batchNumber];
-  if (!report) {
-    return `<div class="batch-result-card batch-result-unavailable"><h2>No laboratory report currently available</h2><p>We do not currently have a laboratory report for batch <strong>${escapeHtml(batchNumber)}</strong>. This does not mean the product is fake. Check the batch number printed on the pack or contact support for help.</p>${routeLink('contact', 'Contact support', 'button-link')}</div>`;
-  }
-  const details = [
-    ['Batch number', report.batchNumber], ['Sample', report.sample],
-    ['Manufacturing', report.manufacturing], ['Expiry', report.expiry],
-    ['Laboratory', report.laboratory], ['Report ID', report.reportId],
-    ['Report date', report.reportDate], ['Total Protein test result', report.totalProtein]
-  ];
-  return `<div class="batch-result-card batch-result-found"><div class="batch-result-heading"><div>${icon('file')}</div><div><p>Report available</p><h2>Batch ${escapeHtml(report.batchNumber)}</h2></div></div><p class="batch-report-note">A third-party laboratory report is available for this batch. This result does not authenticate an individual tub.</p><dl class="batch-details">${details.map(([label, detail]) => `<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(detail)}</dd></div>`).join('')}</dl><a class="button-link primary" href="${escapeHtml(report.reportUrl)}" target="_blank" rel="noopener">View Original Lab Report</a></div>`;
-}
+function authenticate() { return `<section class="page-intro compact"><p class="hero-overline">Product authentication</p><h1>Check your Aura Whey pack.</h1><div class="verify-layout"><div class="verify-image">${image(assets.labelMawa, 'Aura Whey pack label')}</div><div><p>Enter the authentication code printed on your pack. For this interactive preview, use <strong>AURA-2026-001</strong> or <strong>AURA-2026-USED</strong>.</p><form class="form" data-form="authenticate"><label class="field">Pack code<input name="code" placeholder="Enter pack code" /></label>${button('verify-code', 'Verify code', 'primary', 'check')}</form><div id="auth-result" aria-live="polite"></div></div></div></section>`; }
 
 function trackOrder() { return `<section class="page-intro compact"><p class="hero-overline">Order tracking</p><h1>Where is your order?</h1><div class="track-layout"><div><form class="form" data-form="tracking"><label class="field">Order number<input name="order" placeholder="e.g. AW-1001" /></label><label class="field">Email address<input name="email" type="email" placeholder="Email used at checkout" /></label>${button('find-order', 'Find order', 'primary')}</form><div id="tracking-result" aria-live="polite"></div></div><div class="track-help"><h3>Need help?</h3><p>Your order number is included in the email confirmation sent after checkout.</p>${routeLink('contact', 'Contact support', 'text-link')}</div></div></section>`; }
 
@@ -752,11 +728,11 @@ const faqs = [
   ],
   [
     "Where can I find quality certificates?",
-    "Visit <a href=\"/quality\">Quality & lab reports</a> to view the available source certificates and laboratory report."
+    "Visit <a href=\"/quality\">Quality & lab reports</a> for the document categories. Source certificate files are not yet available in this preview. Contact support if you need a certificate before ordering."
   ],
   [
-    "How do I find a batch laboratory report?",
-    "Open <a href=\"/verify\">Verify batch</a> and enter the batch number printed on the product label. The lookup shows available batch-level laboratory reports; it does not authenticate an individual tub."
+    "How do I authenticate a pack?",
+    "Open <a href=\"/authenticate\">Authenticate</a> and follow the pack-code instructions. The current preview uses demonstration codes; it does not verify a real purchase."
   ],
   [
     "How can I track an order or request a return?",
@@ -767,7 +743,7 @@ const faqs = [
 function faqItems(limit = false) { return `<div class="accordion">${faqs.slice(0, limit ? 2 : faqs.length).map(([question, answer], index) => `<div><button type="button" data-action="faq-${index}" aria-expanded="false"><span>${question}</span>${icon('chevron')}</button><div class="accordion-panel" hidden>${answer}</div></div>`).join('')}</div>`; }
 function faq() { return ''; }
 
-function contact() { return `<section class="page-intro compact"><p class="hero-overline">Contact Aura Whey</p><h1>How can we help?</h1><div class="contact-layout"><div><form class="form" data-form="contact"><label class="field">Name<input name="name" placeholder="Your name" /></label><label class="field">Email address<input name="email" type="email" placeholder="you@example.com" /></label><label class="field">Message<textarea name="message" rows="5" placeholder="Tell us how we can help"></textarea></label>${button('send-message', 'Send message', 'primary')}</form><div id="contact-result" aria-live="polite"></div></div><div class="contact-aside"><h3>Before you contact us</h3><p>For an existing order, keep your order number nearby. For a batch laboratory report, use the batch number printed on the pack.</p>${routeLink('track-order', 'Track an order', 'text-link')}${routeLink('verify', 'View a batch lab report', 'text-link')}</div></div></section>`; }
+function contact() { return `<section class="page-intro compact"><p class="hero-overline">Contact Aura Whey</p><h1>How can we help?</h1><div class="contact-layout"><div><form class="form" data-form="contact"><label class="field">Name<input name="name" placeholder="Your name" /></label><label class="field">Email address<input name="email" type="email" placeholder="you@example.com" /></label><label class="field">Message<textarea name="message" rows="5" placeholder="Tell us how we can help"></textarea></label>${button('send-message', 'Send message', 'primary')}</form><div id="contact-result" aria-live="polite"></div></div><div class="contact-aside"><h3>Before you contact us</h3><p>For an existing order, keep your order number nearby. For product verification, use the code printed on the pack.</p>${routeLink('track-order', 'Track an order', 'text-link')}${routeLink('authenticate', 'Authenticate a pack', 'text-link')}</div></div></section>`; }
 
 function policy() { return `<section class="page-intro compact"><p class="hero-overline">Policies</p><h1>Store policies.</h1><div class="policy-grid"><article><h2>Shipping</h2><p>Shipping availability, timelines, and charges are confirmed during Shopify checkout.</p></article><article><h2>Returns</h2><p>Return eligibility is reviewed by support based on the order and product condition.</p></article><article><h2>Privacy</h2><p>Customer information is used to process orders, provide support, and improve the store experience.</p></article></div><p class="small">These policy summaries will be replaced with the approved legal policy text before store launch.</p></section>`; }
 
@@ -776,7 +752,7 @@ function documentPage() {
   return `<section class="page-intro compact"><p class="hero-overline">Manufacturer document</p><h1>${doc[0]}</h1>${documentCard(doc)}<p>${routeLink('quality', 'Back to quality documents', 'button-link')}</p></section>`;
 }
 
-const views = { home, shop, cart, checkout, quality, blog, article, verify: verifyBatch, 'track-order': trackOrder, faq, contact, policy, document: documentPage, account };
+const views = { home, shop, cart, checkout, quality, blog, article, authenticate, 'track-order': trackOrder, faq, contact, policy, document: documentPage, account };
 
 function currentRoute() { return location.pathname.replace(/^\//, '').split('/')[0] || 'home'; }
 function applyTheme() {
@@ -813,7 +789,7 @@ function setHeroSlide(index) {
 
   const ambientBg = document.querySelector('#hero-ambient-bg');
   if (ambientBg && heroSlides[state.heroSlide]) {
-    ambientBg.style.backgroundImage = `url('${heroSlides[state.heroSlide].desktopImage}')`;
+    ambientBg.style.backgroundImage = `url('${heroSlides[state.heroSlide].ambientImage}')`;
   }
 
   resetHeroTimer();
@@ -1000,17 +976,6 @@ function handleAction(action, element) {
   if (action === 'open-menu') return setMobileMenu(true);
   if (action === 'close-menu') return setMobileMenu(false);
   if (action === 'go-shop') return navigate('shop');
-  if (action === 'zoom-in' || action === 'zoom-out' || action === 'zoom-reset') {
-    state.imageZoom = action === 'zoom-reset' ? 1 : Math.min(2.5, Math.max(1, state.imageZoom + (action === 'zoom-in' ? .25 : -.25)));
-    const galleryImage = document.querySelector('.product-main-image img');
-    if (galleryImage) {
-      galleryImage.style = galleryImage.style || {};
-      galleryImage.style.transform = `scale(${state.imageZoom})`;
-    }
-    const reset = document.querySelector('[data-action="zoom-reset"]');
-    reset?.querySelector?.('span') && (reset.querySelector('span').textContent = `${Math.round(state.imageZoom * 100)}%`);
-    return;
-  }
   if (action.startsWith('select-')) { state.flavour = action.replace('select-', ''); state.productImage = 0; state.imageZoom = 1; return currentRoute() === 'shop' ? render() : navigate('shop'); }
   if (action.startsWith('product-image-')) {
     state.productImage = Number(action.replace('product-image-', ''));
@@ -1054,9 +1019,11 @@ function handleForm(event) {
     return;
   }
   if (form.dataset.form === 'coupon') return applyShopifyCoupon(form.elements.coupon.value.trim().toUpperCase());
-  if (form.dataset.form === 'batch-verification') {
-    if (!form.reportValidity()) return;
-    document.querySelector('#batch-result').innerHTML = batchReportResult(form.elements.batch.value);
+  if (form.dataset.form === 'authenticate') {
+    const value = form.elements.code.value.trim().toUpperCase();
+    const results = { 'AURA-2026-001': ['state-valid', 'Pack verified', 'This demonstration code is accepted. In production, this will return your product’s verification record.'], 'AURA-2026-USED': ['state-invalid', 'This code has already been checked', 'Please contact support if you believe your pack needs another review.'] };
+    const [kind, title, text] = results[value] || ['state-invalid', 'Code not found', 'Check the code printed on your pack and try again.'];
+    document.querySelector('#auth-result').innerHTML = `<div class="result ${kind}"><strong>${title}</strong><p>${text}</p></div>`;
     return;
   }
   if (form.dataset.form === 'tracking') {
