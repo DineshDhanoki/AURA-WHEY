@@ -1,10 +1,11 @@
 const links = [
   ['home', 'Home'], ['shop', 'Shop'], ['quality', 'Quality & lab reports'],
-  ['blog', 'Journal'], ['authenticate', 'Authenticate'], ['track-order', 'Track order'],
+  ['blog', 'Journal'], ['verify', 'Verify batch'], ['track-order', 'Track order'],
   ['faq', 'FAQs'], ['contact', 'Contact']
 ];
 
 const app = document.querySelector('#app');
+const batchReports = globalThis.AURA_BATCH_REPORTS || Object.freeze({});
 const assetBase = './stitch_aura_whey_storefront_design/';
 const assets = {
   hero: [
@@ -325,7 +326,7 @@ function shell(content) {
         <div class="footer-grid">
           <div class="footer-intro">${brand()}<p>Whey protein in Mawa Kulfi and Rich Chocolate flavours. Built around the routine, not the noise.</p></div>
           <div><strong>Shop</strong><ul><li>${routeLink('shop', 'Whey protein')}</li><li>${routeLink('cart', 'Your cart')}</li></ul></div>
-          <div><strong>Support</strong><ul><li>${routeLink('authenticate', 'Authenticate a pack')}</li><li>${routeLink('track-order', 'Track your order')}</li><li>${routeLink('faq', 'FAQs')}</li><li>${routeLink('contact', 'Contact')}</li></ul></div>
+          <div><strong>Support</strong><ul><li>${routeLink('verify', 'Verify a batch')}</li><li>${routeLink('track-order', 'Track your order')}</li><li>${routeLink('faq', 'FAQs')}</li><li>${routeLink('contact', 'Contact')}</li></ul></div>
           <div><strong>Learn</strong><ul><li>${routeLink('quality', 'Quality & lab reports')}</li><li>${routeLink('blog', 'Journal')}</li><li>${routeLink('policy', 'Policies')}</li></ul></div>
         </div>
         <div class="footer-bottom"><div class="footer-socials" aria-label="Social links"><a href="#" aria-label="Facebook">${icon('facebook')}</a><a href="#" aria-label="Instagram">${icon('instagram')}</a><a href="#" aria-label="LinkedIn">${icon('linkedin')}</a><a href="#" aria-label="YouTube">${icon('youtube')}</a></div><span>© 2026 Aura Whey</span></div>
@@ -376,7 +377,7 @@ function home() {
     ${heroBannerCarousel()}
     <section class="section"><div class="section-inner"><div class="section-head"><div><h2>Pick your flavour</h2><div class="gold-rule"></div></div><p>Choose the flavour that fits the ritual you want to repeat.</p></div><div class="grid product-grid">${productCard('Mawa Kulfi')}${productCard('Rich Chocolate')}</div></div></section>
     <section class="section"><div class="section-inner"><div class="section-head"><div><h2>Made for the routine</h2><div class="gold-rule"></div></div><p>Simple product details. Familiar flavours. A dependable post-training choice.</p></div><div class="image-section">${routeLink('shop', image(assets.why, 'Aura Whey athlete campaign with Mawa Kulfi and Rich Chocolate'), 'routine-banner-link')}</div><p class="button-row">${routeLink('shop', 'Shop now', 'button-link primary')}${routeLink('article/plan-your-protein-routine', 'Build your routine', 'button-link secondary')}</p></div></section>
-    <section class="section"><div class="section-inner"><div class="section-head"><div><h2>Know your pack</h2><div class="gold-rule"></div></div><p>Read the nutrition panel, check the documents, then verify your product code.</p></div><div class="grid grid-2"><div class="card label-card">${image(assets.labelMawa, 'Aura Whey Mawa Kulfi nutrition label', 'label-preview')}</div><div class="quality-cta"><h3>Quality documents and product authentication</h3><p>Our quality library keeps the supplied certification documents in one place. Use the pack code to confirm your purchase.</p><div class="button-row">${routeLink('quality', 'Open quality library', 'button-link primary')}${routeLink('authenticate', 'Authenticate a pack', 'button-link')}</div></div></div></div></section>
+    <section class="section"><div class="section-inner"><div class="section-head"><div><h2>Know your pack</h2><div class="gold-rule"></div></div><p>Read the nutrition panel, check the documents, then find your batch report.</p></div><div class="grid grid-2"><div class="card label-card">${image(assets.labelMawa, 'Aura Whey Mawa Kulfi nutrition label', 'label-preview')}</div><div class="quality-cta"><h3>Quality documents and batch reports</h3><p>Our quality library keeps the supplied certification documents in one place. Check whether a third-party laboratory report is available for your batch.</p><div class="button-row">${routeLink('quality', 'Open quality library', 'button-link primary')}${routeLink('verify', 'Verify a batch', 'button-link')}</div></div></div></div></section>
     <section class="section"><div class="section-inner"><div class="section-head"><div><h2>Better-informed training</h2><div class="gold-rule"></div></div><p>Practical guides for choosing, using, and enjoying your whey protein.</p></div><div class="grid grid-3">${blogCard(0)}${blogCard(1)}${blogCard(2)}</div><p>${routeLink('blog', 'Browse the journal', 'button-link secondary')}</p></div></section>
     ${nutritionTrust()}`;
 }
@@ -588,7 +589,7 @@ function documentCard([title, type, detail, file]) {
 }
 
 function quality() {
-  return `<section class="quality-hero" aria-labelledby="quality-title"><img class="quality-hero-image" src="./assets/optimized/site/lab%20image.webp" alt="Illustrative scene of laboratory technicians handling food samples" fetchpriority="high" /><div class="quality-hero-inner"><div class="quality-hero-copy"><p class="hero-overline">Quality & documentation</p><h1 id="quality-title">Quality you can inspect.</h1><p>Explore food-safety and manufacturing information, and learn what to check on your pack.</p></div></div></section><section class="section"><div class="section-inner"><div class="section-head"><div><h2>Certificates</h2><div class="gold-rule"></div></div><p>Food safety, manufacturing, and dietary certification documents.</p></div><div class="grid grid-3">${documents.map(documentCard).join('')}</div></div></section><section class="section"><div class="section-inner quality-process"><div class="quality-process-image">${image(assets.labelMawa, 'Aura Whey product nutrition information')}</div><div><h2>Read the pack first.</h2><p>Nutrition, ingredients, allergen advice, and storage guidance are printed on the product label. We keep the supplied certificates alongside it for straightforward review.</p><div class="button-row">${routeLink('authenticate', 'Authenticate your pack', 'button-link primary')}${routeLink('contact', 'Contact support', 'button-link')}</div></div></div></section>`;
+  return `<section class="quality-hero" aria-labelledby="quality-title"><img class="quality-hero-image" src="./assets/optimized/site/lab%20image.webp" alt="Illustrative scene of laboratory technicians handling food samples" fetchpriority="high" /><div class="quality-hero-inner"><div class="quality-hero-copy"><p class="hero-overline">Quality & documentation</p><h1 id="quality-title">Quality you can inspect.</h1><p>Explore food-safety and manufacturing information, and learn what to check on your pack.</p></div></div></section><section class="section"><div class="section-inner"><div class="section-head"><div><h2>Certificates</h2><div class="gold-rule"></div></div><p>Food safety, manufacturing, and dietary certification documents.</p></div><div class="grid grid-3">${documents.map(documentCard).join('')}</div></div></section><section class="section"><div class="section-inner quality-process"><div class="quality-process-image">${image(assets.labelMawa, 'Aura Whey product nutrition information')}</div><div><h2>Read the pack first.</h2><p>Nutrition, ingredients, allergen advice, and storage guidance are printed on the product label. We keep the supplied certificates alongside it for straightforward review.</p><div class="button-row">${routeLink('verify', 'Verify a batch', 'button-link primary')}${routeLink('contact', 'Contact support', 'button-link')}</div></div></div></section>`;
 }
 
 function searchDialog() {
@@ -638,7 +639,17 @@ function article() {
   return `<article class="article"><p>${routeLink('blog', 'Back to journal', 'text-link')}</p><p class="hero-overline">Aura journal</p><h1>${post.title}</h1><p class="article-meta">Aura Whey Journal · 1 minute read</p><div class="article-hero">${image(post.image, post.alt)}</div><div class="article-layout"><div>${post.sections.map(([heading, copy]) => `<section><h2>${heading}</h2><p>${copy}</p></section>`).join('')}</div><aside class="article-aside"><strong>Explore Aura Whey</strong>${routeLink('shop', 'Shop both flavours', 'text-link')}${routeLink('blog', 'More from the journal', 'text-link')}</aside></div></article>`;
 }
 
-function authenticate() { return `<section class="page-intro compact"><p class="hero-overline">Product authentication</p><h1>Check your Aura Whey pack.</h1><div class="verify-layout"><div class="verify-image">${image(assets.labelMawa, 'Aura Whey pack label')}</div><div><p>Enter the authentication code printed on your pack. For this interactive preview, use <strong>AURA-2026-001</strong> or <strong>AURA-2026-USED</strong>.</p><form class="form" data-form="authenticate"><label class="field">Pack code<input name="code" placeholder="Enter pack code" /></label>${button('verify-code', 'Verify code', 'primary', 'check')}</form><div id="auth-result" aria-live="polite"></div></div></div></section>`; }
+function verifyBatch() { return `<section class="page-intro compact batch-verification" aria-labelledby="batch-verification-title"><p class="hero-overline">Batch verification</p><h1 id="batch-verification-title">Find your batch lab report.</h1><p class="batch-verification-intro">Enter the batch number printed on your tub to check whether a third-party laboratory report is available. This lookup verifies a batch report, not an individual product tub.</p><div class="verify-layout"><div class="verify-image">${image(assets.labelMawa, 'Aura Whey pack label showing where product information is printed')}</div><div class="batch-lookup"><h2>Enter batch number</h2><p>Use the batch number exactly as it appears on the product label.</p><form class="form" data-form="batch-verification"><label class="field" for="batch-number">Batch number<input id="batch-number" name="batch" maxlength="40" placeholder="e.g. GN250508" autocomplete="off" autocapitalize="characters" spellcheck="false" required /></label><button type="submit" class="button primary">${icon('search')}<span>Find lab report</span></button></form><div id="batch-result" class="batch-result" role="status" aria-live="polite"></div></div></div></section>`; }
+
+function normalizeBatchNumber(value) { return String(value || '').trim().toUpperCase().replace(/\s+/g, ''); }
+
+function batchReportResult(value) {
+  const batchNumber = normalizeBatchNumber(value);
+  const report = batchReports[batchNumber];
+  if (!report) return `<div class="batch-result-card batch-result-unavailable"><h2>No laboratory report currently available</h2><p>We do not currently have a laboratory report for batch <strong>${escapeHtml(batchNumber)}</strong>. This does not mean the product is fake. Check the batch number printed on the pack or contact support for help.</p>${routeLink('contact', 'Contact support', 'button-link')}</div>`;
+  const details = [['Sample', report.sample], ['Manufacturing', report.manufacturing], ['Expiry', report.expiry], ['Laboratory', report.laboratory], ['Report ID', report.reportId], ['Report date', report.reportDate], ['Total Protein test result', report.totalProtein]];
+  return `<div class="batch-result-card batch-result-found"><div class="batch-result-heading"><div>${icon('file')}</div><div><p>Report available</p><h2>Batch ${escapeHtml(report.batchNumber)}</h2></div></div><p class="batch-report-note">A third-party laboratory report is available for this batch. This result does not authenticate an individual tub.</p><dl class="batch-details">${details.map(([label, detail]) => `<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(detail)}</dd></div>`).join('')}</dl><a class="button-link primary" href="${escapeHtml(report.reportUrl)}" target="_blank" rel="noopener">View Original Lab Report</a></div>`;
+}
 
 function trackOrder() { return `<section class="page-intro compact"><p class="hero-overline">Order tracking</p><h1>Where is your order?</h1><div class="track-layout"><div><form class="form" data-form="tracking"><label class="field">Order number<input name="order" placeholder="e.g. AW-1001" /></label><label class="field">Email address<input name="email" type="email" placeholder="Email used at checkout" /></label>${button('find-order', 'Find order', 'primary')}</form><div id="tracking-result" aria-live="polite"></div></div><div class="track-help"><h3>Need help?</h3><p>Your order number is included in the email confirmation sent after checkout.</p>${routeLink('contact', 'Contact support', 'text-link')}</div></div></section>`; }
 
@@ -744,8 +755,8 @@ const faqs = [
     "Visit <a href=\"/quality\">Quality & lab reports</a> for the document categories. Source certificate files are not yet available in this preview. Contact support if you need a certificate before ordering."
   ],
   [
-    "How do I authenticate a pack?",
-    "Open <a href=\"/authenticate\">Authenticate</a> and follow the pack-code instructions. The current preview uses demonstration codes; it does not verify a real purchase."
+    "How do I find a batch laboratory report?",
+    "Open <a href=\"/verify\">Verify batch</a> and enter the batch number printed on the product label. The lookup shows available batch-level laboratory reports; it does not authenticate an individual tub."
   ],
   [
     "How can I track an order or request a return?",
@@ -756,7 +767,7 @@ const faqs = [
 function faqItems(limit = false) { return `<div class="accordion">${faqs.slice(0, limit ? 2 : faqs.length).map(([question, answer], index) => `<div><button type="button" data-action="faq-${index}" aria-expanded="false"><span>${question}</span>${icon('chevron')}</button><div class="accordion-panel" hidden>${answer}</div></div>`).join('')}</div>`; }
 function faq() { return ''; }
 
-function contact() { return `<section class="page-intro compact"><p class="hero-overline">Contact Aura Whey</p><h1>How can we help?</h1><div class="contact-layout"><div><form class="form" data-form="contact"><label class="field">Name<input name="name" placeholder="Your name" /></label><label class="field">Email address<input name="email" type="email" placeholder="you@example.com" /></label><label class="field">Message<textarea name="message" rows="5" placeholder="Tell us how we can help"></textarea></label>${button('send-message', 'Send message', 'primary')}</form><div id="contact-result" aria-live="polite"></div></div><div class="contact-aside"><h3>Before you contact us</h3><p>For an existing order, keep your order number nearby. For product verification, use the code printed on the pack.</p>${routeLink('track-order', 'Track an order', 'text-link')}${routeLink('authenticate', 'Authenticate a pack', 'text-link')}</div></div></section>`; }
+function contact() { return `<section class="page-intro compact"><p class="hero-overline">Contact Aura Whey</p><h1>How can we help?</h1><div class="contact-layout"><div><form class="form" data-form="contact"><label class="field">Name<input name="name" placeholder="Your name" /></label><label class="field">Email address<input name="email" type="email" placeholder="you@example.com" /></label><label class="field">Message<textarea name="message" rows="5" placeholder="Tell us how we can help"></textarea></label>${button('send-message', 'Send message', 'primary')}</form><div id="contact-result" aria-live="polite"></div></div><div class="contact-aside"><h3>Before you contact us</h3><p>For an existing order, keep your order number nearby. For batch verification, keep the batch number printed on your pack.</p>${routeLink('track-order', 'Track an order', 'text-link')}${routeLink('verify', 'Verify a batch', 'text-link')}</div></div></section>`; }
 
 function policy() { return `<section class="page-intro compact"><p class="hero-overline">Policies</p><h1>Store policies.</h1><div class="policy-grid"><article><h2>Shipping</h2><p>Shipping availability, timelines, and charges are confirmed during Shopify checkout.</p></article><article><h2>Returns</h2><p>Return eligibility is reviewed by support based on the order and product condition.</p></article><article><h2>Privacy</h2><p>Customer information is used to process orders, provide support, and improve the store experience.</p></article></div><p class="small">These policy summaries will be replaced with the approved legal policy text before store launch.</p></section>`; }
 
@@ -765,7 +776,7 @@ function documentPage() {
   return `<section class="page-intro compact"><p class="hero-overline">Manufacturer document</p><h1>${doc[0]}</h1>${documentCard(doc)}<p>${routeLink('quality', 'Back to quality documents', 'button-link')}</p></section>`;
 }
 
-const views = { home, shop, cart, checkout, quality, blog, article, authenticate, 'track-order': trackOrder, faq, contact, policy, document: documentPage, account };
+const views = { home, shop, cart, checkout, quality, blog, article, verify: verifyBatch, 'track-order': trackOrder, faq, contact, policy, document: documentPage, account };
 
 function currentRoute() { return location.pathname.replace(/^\//, '').split('/')[0] || 'home'; }
 function applyTheme() {
@@ -1061,11 +1072,9 @@ async function handleForm(event) {
     return;
   }
   if (form.dataset.form === 'coupon') return applyShopifyCoupon(form.elements.coupon.value.trim().toUpperCase());
-  if (form.dataset.form === 'authenticate') {
-    const value = form.elements.code.value.trim().toUpperCase();
-    const results = { 'AURA-2026-001': ['state-valid', 'Pack verified', 'This demonstration code is accepted. In production, this will return your product’s verification record.'], 'AURA-2026-USED': ['state-invalid', 'This code has already been checked', 'Please contact support if you believe your pack needs another review.'] };
-    const [kind, title, text] = results[value] || ['state-invalid', 'Code not found', 'Check the code printed on your pack and try again.'];
-    document.querySelector('#auth-result').innerHTML = `<div class="result ${kind}"><strong>${title}</strong><p>${text}</p></div>`;
+  if (form.dataset.form === 'batch-verification') {
+    if (!form.reportValidity()) return;
+    document.querySelector('#batch-result').innerHTML = batchReportResult(form.elements.batch.value);
     return;
   }
   if (form.dataset.form === 'tracking') {
