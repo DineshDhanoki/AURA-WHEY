@@ -134,6 +134,14 @@ test('store FAQ renders a centered heading and the complete accordion', () => {
   assert.equal((markup.match(/data-action="faq-/g) || []).length, run('faqs.length'));
 });
 
+test('product page keeps its trailing sections inside the flavour theme', () => {
+  const { run } = storefront();
+  const markup = run('shop()');
+  const closingProductPage = markup.lastIndexOf('</div>');
+  assert.ok(markup.indexOf('Find your everyday flavour.') < closingProductPage);
+  assert.ok(markup.indexOf('<h2>Got questions?</h2>') < closingProductPage);
+});
+
 test('Aura feedback scales up by quantity and tracks consecutive removals', () => {
   const { run } = storefront();
   run('state.quantity = 2');
