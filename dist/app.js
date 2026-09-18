@@ -91,7 +91,7 @@ const state = {
   flavour: 'Mawa Kulfi', productImage: 0, imageZoom: 1, quantity: 1, tab: 'Details', cart: 0, coupon: '',
   couponOpen: true, searchQuery: '', heroSlide: 0, theme: localStorage.getItem('aura-theme') || 'dark',
   delivery: { pincode: '', status: 'idle', message: '' },
-  document: 'FSSAI licence', auraDownStreak: 0, removeConfirm: null
+  document: 'FSSAI licence', auraDownStreak: 0
 };
 
 const svg = (paths) => `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths}</svg>`;
@@ -112,9 +112,9 @@ const icon = (name) => ({
   facebook: svg('<path d="M14 21v-8h2.8l.4-3H14V8.1c0-.9.3-1.6 1.7-1.6H17V3.8c-.6-.1-1.3-.2-2.2-.2-2.3 0-3.8 1.4-3.8 4V10H8.5v3H11v8"></path>'),
   linkedin: svg('<path d="M6.5 9.5V18M6.5 6.5v.1M10.5 18v-5.1c0-2.3 4.5-2.5 4.5 0V18M10.5 12.1V9.5M15 12.1V9.5"></path><rect x="3" y="3" width="18" height="18" rx="2"></rect>'),
   youtube: svg('<path d="M20.4 7.1c-.2-1-1-1.8-2-2C16.6 4.7 7.4 4.7 5.6 5.1c-1 .2-1.8 1-2 2-.4 1.8-.4 8 0 9.8.2 1 1 1.8 2 2 1.8.4 11 .4 12.8 0 1-.2 1.8-1 2-2 .4-1.8.4-8 0-9.8Z"></path><path d="m10 9 5 3-5 3Z"></path>')
-  ,trash: svg('<path d="M4 7h16M10 11v6M14 11v6M6.5 7l.7 13h9.6l.7-13M9 7V4h6v3"></path>')
   ,mapPin: svg('<path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 1 1 14 0Z"></path><circle cx="12" cy="10" r="2.3"></circle>'),
   truck: svg('<path d="M3 6h11v10H3zM14 10h4l3 3v3h-7z"></path><circle cx="7" cy="18" r="1.7"></circle><circle cx="18" cy="18" r="1.7"></circle>'),
+  trash: svg('<path d="M4 7h16M9.5 7V4.5h5V7M6.5 7l1 13.5h9l1-13.5M10 11v6M14 11v6"></path>'),
   refresh: svg('<path d="M20 11a8 8 0 0 0-14.6-4L3 10M3 5v5h5M4 13a8 8 0 0 0 14.6 4L21 14m0 5v-5h-5"></path>')
 }[name] || '');
 
@@ -218,18 +218,7 @@ async function addShopifyProduct(flavour, quantity, buyNow = false) {
   await cartOperation(() => {
     const lines = [{ merchandiseId: variant.id, quantity }];
     return commerce.cart ? commerce.client.add(commerce.cart.id, lines) : commerce.client.create(lines, state.coupon ? [state.coupon] : []);
-  }, () => { showToast(`${quantity} × ${flavour} added to your cart`); return buyNow ? openShopifyCheckout() : (currentRoute() === 'shop' ? undefined : navigate('cart')); }, { action: buyNow ? 'buy' : 'add', flavour });
-}
-
-function requestRemoveCartLine(id) {
-  if (!id || commerce.busy) return;
-  state.removeConfirm = id;
-  render();
-}
-
-function productCartLine() {
-  const variant = selectedVariant();
-  return commerce.cart?.lines.nodes.find(line => line.merchandise?.id === variant?.id) || null;
+  }, () => { if (buyNow) return openShopifyCheckout(); showToast('Product added to bag'); render(); }, { action: buyNow ? 'buy' : 'add', flavour });
 }
 
 async function changeCartLine(action, id) {
@@ -240,7 +229,7 @@ async function changeCartLine(action, id) {
   await cartOperation(() => action === 'line-remove'
     ? commerce.client.remove(commerce.cart.id, [id])
     : commerce.client.update(commerce.cart.id, [{ id, quantity }]), () => {
-      if (action === 'line-remove') { showToast('Product removed from your cart'); return; }
+      if (action === 'line-remove') return;
       const updated = commerce.cart.lines.nodes.find(item => item.id === id);
       if (!updated || updated.quantity === line.quantity) return;
       if (action === 'line-up') state.auraDownStreak = 0;
@@ -351,7 +340,6 @@ function shell(content) {
         <div class="footer-bottom"><span>© 2026 Aura Whey, made with 💖 by Dinesh and Kanishk</span></div>
       </footer>
       ${searchDialog()}
-      ${removeConfirmSheet()}
     </div>`;
 }
 
@@ -504,30 +492,6 @@ function shopInvitation() {
 }
 
 const approvedReviews = Object.freeze([]);
-const reviewImageDrafts = Object.create(null);
-
-function reviewImages(review, className = 'review-media') {
-  const images = Array.isArray(review?.images) ? review.images.filter(src => typeof src === 'string' && src.trim()).slice(0, 4) : [];
-  if (!images.length) return '';
-  return `<div class="${className}">${images.map((src, index) => `<img src="${escapeHtml(src)}" alt="Customer review image ${index + 1}" loading="lazy" decoding="async" />`).join('')}</div>`;
-}
-
-function productReviewItem(review, preview = false) {
-  const rating = Math.max(1, Math.min(5, Number(review.rating) || 1));
-  const name = String(review.name || 'Aura Whey customer').trim();
-  const date = review.date ? String(review.date) : '';
-  const verified = review.verified === true && !preview;
-  return `<article class="verified-review-item${preview ? ' review-preview' : ''}"><div class="verified-review-name"><strong>${escapeHtml(name)}</strong>${verified ? '<span class="verified-review-check" aria-label="Verified purchase">✓</span>' : '<span class="review-badge">Private preview</span>'}${date ? `<time>${escapeHtml(date)}</time>` : ''}</div><div class="verified-review-stars" aria-label="${rating} out of 5 stars">${'★'.repeat(rating)}<span aria-hidden="true">${'☆'.repeat(5 - rating)}</span></div><p>${escapeHtml(review.text || '')}</p>${reviewImages(review)}</article>`;
-}
-
-function productReviewPanel(reviews = approvedReviews) {
-  const visible = reviews.filter(review => review?.approved === true && (!review.flavour || review.flavour === state.flavour));
-  const average = visible.length ? visible.reduce((total, review) => total + Math.max(1, Math.min(5, Number(review.rating) || 1)), 0) / visible.length : 0;
-  const media = visible.flatMap(review => Array.isArray(review.images) ? review.images : []).filter(src => typeof src === 'string' && src.trim());
-  const mediaPreview = media.length ? `<div class="verified-review-gallery">${media.slice(0, 5).map((src, index) => `<img src="${escapeHtml(src)}" alt="${escapeHtml(state.flavour)} customer review image ${index + 1}" loading="lazy" decoding="async" />`).join('')}${media.length > 5 ? `<span>+${media.length - 5} more</span>` : ''}</div>` : '';
-  const reviewList = visible.length ? visible.map(review => productReviewItem(review)).join('') : `<div class="verified-review-empty"><strong>No approved reviews yet.</strong><p>Be the first to share your ${escapeHtml(state.flavour)} experience.</p></div>`;
-  return `<div class="verified-review-panel"><header class="verified-review-summary"><h2 id="product-customer-reviews-title">Verified Reviews</h2><div class="verified-review-score"><span class="verified-review-stars" aria-label="${average.toFixed(1)} out of 5 stars">${'★'.repeat(Math.round(average))}<span aria-hidden="true">${'☆'.repeat(5 - Math.round(average))}</span></span><strong>${visible.length ? average.toFixed(1) : '0.0'} out of 5</strong></div><p>Based on ${visible.length} approved ${escapeHtml(state.flavour)} ${visible.length === 1 ? 'review' : 'reviews'}</p>${mediaPreview}<button type="button" class="button primary verified-review-write" data-action="open-review-form">Write a review ✎</button></header><div class="verified-review-list" aria-label="Verified ${escapeHtml(state.flavour)} reviews">${reviewList}<div id="review-preview" hidden></div></div></div>`;
-}
 
 function reviewCard(review) {
   const rating = Math.max(1, Math.min(5, Number(review.rating) || 1));
@@ -551,7 +515,6 @@ function approvedReviewCards(reviews = approvedReviews, scope = 'product') {
 function reviewShowcase(scope = 'home', reviews = approvedReviews) {
   const isProduct = scope === 'product';
   const titleId = isProduct ? 'product-customer-reviews-title' : 'home-customer-reviews-title';
-  if (isProduct) return `<section class="section product-reviews review-showcase-product" data-review-scope="product" aria-labelledby="${titleId}"><div class="section-inner">${productReviewPanel(reviews)}</div></section>`;
   const hasVisibleReviews = reviews.some(review => review?.approved === true && (!isProduct || !review.flavour || review.flavour === state.flavour));
   const controls = isProduct && hasVisibleReviews ? `<div class="review-carousel-controls" aria-label="Review carousel controls"><button type="button" class="button" data-action="reviews-prev" aria-label="Previous review">${icon('arrowLeft')}</button><button type="button" class="button" data-action="reviews-next" aria-label="Next review">${icon('arrowRight')}</button></div>` : '';
   const supportingCopy = isProduct
@@ -561,7 +524,7 @@ function reviewShowcase(scope = 'home', reviews = approvedReviews) {
 }
 
 function productReviews() {
-  return `${reviewShowcase('product')}<section id="review-form-section" class="section review-contribute-section"><div class="section-inner"><div class="review-contribute"><div class="review-layout"><div><p class="hero-overline">Your turn</p><h3>Share your Aura.</h3><p>How did it taste? How did it mix? Tell us what made it part of your routine.</p><p class="small">Your review is saved as a private preview until Shopify review moderation is connected.</p></div><form class="form" data-form="review"><label class="field">Your name<input name="reviewName" maxlength="60" required autocomplete="given-name" /></label><fieldset class="review-rating"><legend>Your rating</legend>${[1,2,3,4,5].map(n => `<label><input type="radio" name="rating" value="${n}" required /><span>${n} ★</span></label>`).join('')}</fieldset><label class="field">Your review<textarea name="reviewText" rows="4" minlength="10" maxlength="1000" required placeholder="Tell us about the flavour and your experience"></textarea></label><label class="field review-image-field">Add images <span>Up to 4 JPG, PNG or WebP images</span><input name="reviewImages" type="file" accept="image/jpeg,image/png,image/webp" multiple /></label><div id="review-image-preview" class="review-image-preview" aria-live="polite"></div><button type="submit" class="button primary">Preview my review</button><div id="review-result" role="status" aria-live="polite"></div></form></div></div></div></section>`;
+  return `${reviewShowcase('product')}<section class="section review-contribute-section"><div class="section-inner"><div class="review-contribute"><div class="review-layout"><div><p class="hero-overline">Your turn</p><h3>Share your Aura.</h3><p>How did it taste? How did it mix? Tell us what made it part of your routine.</p><p class="small">For now, this creates a private preview in your browser. It will not be published until Shopify review moderation is connected.</p></div><form class="form" data-form="review"><label class="field">Your name<input name="reviewName" maxlength="60" required autocomplete="given-name" /></label><fieldset class="review-rating"><legend>Your rating</legend>${[1,2,3,4,5].map(n => `<label><input type="radio" name="rating" value="${n}" required /><span>${n} ★</span></label>`).join('')}</fieldset><label class="field">Your review<textarea name="reviewText" rows="4" minlength="10" maxlength="1000" required placeholder="Tell us about the flavour and your experience"></textarea></label><button type="submit" class="button primary">Preview my review</button><div id="review-result" role="status" aria-live="polite"></div></form></div></div></div></section>`;
 }
 
 function showSavedReview() {
@@ -570,7 +533,23 @@ function showSavedReview() {
   try {
     const review = JSON.parse(localStorage.getItem('aura-review-' + state.flavour) || 'null');
     if (!review || typeof review.name !== 'string' || typeof review.text !== 'string' || !Number.isInteger(review.rating) || review.rating < 1 || review.rating > 5) return;
-    preview.innerHTML = productReviewItem(review, true);
+    preview.replaceChildren();
+    const stars = document.createElement('div');
+    stars.className = 'review-stars';
+    stars.setAttribute('aria-label', review.rating + ' out of 5 stars');
+    stars.textContent = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
+    const body = document.createElement('p');
+    body.className = 'review-copy';
+    body.textContent = review.text;
+    const footer = document.createElement('div');
+    footer.className = 'review-preview-footer';
+    const heading = document.createElement('strong');
+    heading.textContent = review.name + ' · ' + state.flavour;
+    const badge = document.createElement('span');
+    badge.className = 'review-badge';
+    badge.textContent = 'Private preview';
+    footer.append(heading, badge);
+    preview.append(stars, body, footer);
     preview.hidden = false;
   } catch { preview.hidden = true; }
 }
@@ -581,25 +560,67 @@ function storeFaq() {
 
 function floatingPurchaseBar() {
   const productImage = productFlavours[state.flavour].images[0];
+  return `<aside class="floating-purchase" id="floating-purchase" aria-label="Quick purchase" aria-hidden="true"><div class="floating-purchase-inner"><div class="floating-product-summary">${image(productImage, `Aura Whey ${state.flavour}`)}<div><strong>${liveTitle()}</strong><span>1 kg · 28 servings</span></div><b>${livePrice()}</b></div><div class="floating-purchase-actions">${floatingActions()}</div></div></aside>`;
+}
+
+
+function productCartLine() {
+  const variantId = selectedVariant()?.id;
+  return commerce.cart?.lines.nodes.find(line => line.merchandise?.id === variantId) || null;
+}
+
+function qtyLeftButton(quantity) {
+  return quantity > 1
+    ? `<button type="button" class="pack-btn" data-action="box-down" aria-label="Decrease quantity">−</button>`
+    : `<button type="button" class="pack-btn pack-trash" data-action="open-remove" aria-label="Remove item from cart">${icon('trash')}</button>`;
+}
+
+function packControls(line) {
+  const plus = `<button type="button" class="pack-btn" data-action="box-up" aria-label="Increase quantity">+</button>`;
+  return `<div class="aura-quantity pack-row" role="group" aria-label="Quantity">${qtyLeftButton(line.quantity)}<output class="aura-quantity-value" aria-live="polite">${line.quantity}</output>${plus}<div class="aura-bursts" aria-hidden="true"></div></div>`;
+}
+
+function productActions() {
   const line = productCartLine();
-  if (line) return `<aside class="floating-purchase product-cart-dock is-visible" id="floating-purchase" aria-label="Cart controls" aria-hidden="false"><div class="floating-purchase-inner"><div class="floating-product-summary">${image(productImage, `Aura Whey ${state.flavour}`)}<div><strong>${liveTitle()}</strong><span>${line.quantity} in your cart</span></div><b>${formatMoney(line.cost.totalAmount)}</b></div><div class="product-cart-dock-actions"><button class="product-cart-remove" type="button" data-action="product-line-remove" data-line-id="${escapeHtml(line.id)}" aria-label="Remove ${escapeHtml(state.flavour)} from cart">${icon('trash')}</button><span class="product-cart-quantity" aria-label="${line.quantity} in cart">${line.quantity}</span><button class="product-cart-plus" type="button" data-action="product-line-up" data-line-id="${escapeHtml(line.id)}" aria-label="Increase quantity">+</button>${routeLink('cart', 'Go to cart', 'button-link primary product-cart-go')}</div></div></aside>`;
-  return `<aside class="floating-purchase" id="floating-purchase" aria-label="Quick purchase" aria-hidden="true"><div class="floating-purchase-inner"><div class="floating-product-summary">${image(productImage, `Aura Whey ${state.flavour}`)}<div><strong>${liveTitle()}</strong><span>1 kg · 28 servings</span></div><b>${livePrice()}</b></div><div class="floating-purchase-actions">${purchaseButton('add-cart', 'Add to cart', 'floating-add')}${purchaseButton('buy-now', 'Buy now', 'primary floating-buy')}</div></div></aside>`;
+  if (line) return `${packControls(line)}<div class="button-row">${routeLink('cart', 'Go to cart', 'button primary go-to-cart')}</div>`;
+  return `${auraQuantity()}<div class="button-row">${purchaseButton('add-cart', 'Add to cart', 'floating-add', 'bag')}${purchaseButton('buy-now', 'Buy now', 'primary')}${routeLink('quality', 'View quality documents', 'button-link secondary')}</div>`;
 }
 
-function productPurchaseActions() {
+function floatingActions() {
   const line = productCartLine();
-  if (!line) return `<div class="button-row">${purchaseButton('add-cart', 'Add to cart', 'floating-add', 'bag')}${purchaseButton('buy-now', 'Buy now', 'primary')}${routeLink('quality', 'View quality documents', 'button-link secondary')}</div>`;
-  return `<div class="product-line-controls"><button class="product-cart-remove" type="button" data-action="product-line-remove" data-line-id="${escapeHtml(line.id)}" aria-label="Remove ${escapeHtml(state.flavour)} from cart">${icon('trash')}</button><span class="product-cart-quantity" aria-label="${line.quantity} in cart">${line.quantity}</span><button class="product-cart-plus" type="button" data-action="product-line-up" data-line-id="${escapeHtml(line.id)}" aria-label="Increase quantity">+</button>${routeLink('cart', 'Go to cart', 'button-link primary')}</div>${routeLink('quality', 'View quality documents', 'button-link secondary')}`;
+  if (line) {
+    return `<div class="floating-qty-group">${qtyLeftButton(line.quantity)}<output class="floating-qty" aria-live="polite">${line.quantity}</output><button type="button" class="pack-btn" data-action="box-up" aria-label="Increase quantity">+</button></div>${routeLink('cart', 'Go to cart', 'button primary floating-buy')}`;
+  }
+  return `${purchaseButton('add-cart', 'Add to cart', 'floating-add')}${purchaseButton('buy-now', 'Buy now', 'primary floating-buy')}`;
 }
 
-function removeConfirmSheet() {
-  if (!state.removeConfirm) return '';
-  return `<div class="remove-confirm-backdrop" role="presentation"><section class="remove-confirm-sheet" role="dialog" aria-modal="true" aria-labelledby="remove-confirm-title"><button class="remove-confirm-close" type="button" data-action="cancel-remove" aria-label="Close">${icon('close')}</button><h2 id="remove-confirm-title">Remove item?</h2><p>Are you sure you want to remove this item from your cart?</p><div class="remove-confirm-actions"><button class="button primary" type="button" data-action="cancel-remove">Go back</button><button class="button remove-confirm-button" type="button" data-action="confirm-remove">Remove item</button></div></section></div>`;
+async function setCartLineQuantity(line, delta) {
+  const quantity = line.quantity + delta;
+  if (!commerce.cart || quantity < 1) return;
+  await cartOperation(() => commerce.client.update(commerce.cart.id, [{ id: line.id, quantity }]));
 }
 
+async function removeCartLine(line) {
+  if (!commerce.cart) return;
+  await cartOperation(() => commerce.client.remove(commerce.cart.id, [line.id]));
+  showToast('Product removed from bag');
+}
+
+function openRemoveModal(line) {
+  document.querySelector('.remove-modal')?.remove();
+  const overlay = document.createElement('div');
+  overlay.className = 'remove-modal';
+  overlay.innerHTML = `<div class="remove-modal-card" role="dialog" aria-modal="true" aria-label="Remove item"><div class="remove-modal-head"><strong>Remove item?</strong><button type="button" class="remove-modal-close" aria-label="Close">${icon('close')}</button></div><p>Are you sure you want to remove this item from your cart?</p><button type="button" class="button primary remove-go-back">Go back</button><button type="button" class="button remove-confirm">Remove item</button></div>`;
+  const close = () => overlay.remove();
+  overlay.addEventListener('click', event => { if (event.target === overlay) close(); });
+  overlay.querySelector('.remove-modal-close').addEventListener('click', close);
+  overlay.querySelector('.remove-go-back').addEventListener('click', close);
+  overlay.querySelector('.remove-confirm').addEventListener('click', () => { close(); removeCartLine(line); });
+  document.body.appendChild(overlay);
+}
 
 function shop() {
-  return `<div class="product-page ${productFlavours[state.flavour].theme}">${commerceStatus()}<h1 class="page-title">Aura Whey Protein</h1><div class="product-layout"><section class="product-gallery"><button type="button" class="product-main-image" data-image-viewer aria-label="Open ${state.flavour} image viewer">${image(productFlavours[state.flavour].images[state.productImage], `${state.flavour} Aura Whey product`, 'product-main-photo')}<span class="product-image-hint" aria-hidden="true">${icon('search')}</span></button><div class="thumbnail-row" aria-label="Product images">${productFlavours[state.flavour].images.map((src, index) => `<button type="button" class="thumbnail" data-action="product-image-${index}" aria-label="View ${state.flavour} image ${index + 1}" aria-pressed="${state.productImage === index}">${image(src, `${state.flavour}, image ${index + 1}`)}</button>`).join('')}</div></section><section class="purchase-panel"><p class="breadcrumb">Shop / Whey protein</p><h2>${liveTitle()}</h2><div class="price">${livePrice()}<span>Inclusive of taxes</span></div><p>1 kg · 28 servings · 35 g serving size</p><div class="flavour-picker"><span>Choose flavour</span><div class="button-row"><button type="button" class="flavour ${state.flavour === 'Mawa Kulfi' ? 'active' : ''}" data-action="select-Mawa Kulfi">Mawa Kulfi</button><button type="button" class="flavour ${state.flavour === 'Rich Chocolate' ? 'active' : ''}" data-action="select-Rich Chocolate">Rich Chocolate</button></div></div>${variantPicker()}<p role="status">${selectedVariant()?.availableForSale ? 'In stock' : commerce.loading ? 'Checking availability…' : 'Unavailable'}</p><p>${escapeHtml(commerce.products[state.flavour]?.description || '')}</p><div class="coupon-entry">${couponEntry()}</div><div class="product-actions">${auraQuantity()}${productPurchaseActions()}</div>${deliveryOptions()}${productInside()}</section></div>${productReviews()}${nutritionTrust()}${shopInvitation()}${storeFaq()}${floatingPurchaseBar()}</div>`;
+  return `<div class="product-page ${productFlavours[state.flavour].theme}">${commerceStatus()}<h1 class="page-title">Aura Whey Protein</h1><div class="product-layout"><section class="product-gallery"><button type="button" class="product-main-image" data-image-viewer aria-label="Open ${state.flavour} image viewer">${image(productFlavours[state.flavour].images[state.productImage], `${state.flavour} Aura Whey product`, 'product-main-photo')}<span class="product-image-hint" aria-hidden="true">${icon('search')}</span></button><div class="thumbnail-row" aria-label="Product images">${productFlavours[state.flavour].images.map((src, index) => `<button type="button" class="thumbnail" data-action="product-image-${index}" aria-label="View ${state.flavour} image ${index + 1}" aria-pressed="${state.productImage === index}">${image(src, `${state.flavour}, image ${index + 1}`)}</button>`).join('')}</div></section><section class="purchase-panel"><p class="breadcrumb">Shop / Whey protein</p><h2>${liveTitle()}</h2><div class="price">${livePrice()}<span>Inclusive of taxes</span></div><p>1 kg · 28 servings · 35 g serving size</p><div class="flavour-picker"><span>Choose flavour</span><div class="button-row"><button type="button" class="flavour ${state.flavour === 'Mawa Kulfi' ? 'active' : ''}" data-action="select-Mawa Kulfi">Mawa Kulfi</button><button type="button" class="flavour ${state.flavour === 'Rich Chocolate' ? 'active' : ''}" data-action="select-Rich Chocolate">Rich Chocolate</button></div></div>${variantPicker()}<p role="status">${selectedVariant()?.availableForSale ? 'In stock' : commerce.loading ? 'Checking availability…' : 'Unavailable'}</p><p>${escapeHtml(commerce.products[state.flavour]?.description || '')}</p><div class="coupon-entry">${couponEntry()}</div><div class="product-actions">${productActions()}</div>${deliveryOptions()}${productInside()}</section></div>${productReviews()}${nutritionTrust()}${shopInvitation()}${storeFaq()}${floatingPurchaseBar()}</div>`;
 }
 
 function auraQuantity() {
@@ -964,7 +985,6 @@ function initFloatingPurchaseBar() {
   const purchaseGallery = document.querySelector('.product-main-image');
   const purchaseBar = document.querySelector('#floating-purchase');
   if (!purchaseGallery || !purchaseBar) return;
-  if (purchaseBar.classList.contains?.('product-cart-dock')) return;
 
   const setVisible = visible => {
     purchaseBar.classList.toggle('is-visible', visible);
@@ -1052,52 +1072,7 @@ function bindEvents() {
     state.quantity = 1;
     render();
   });
-  document.querySelector('input[name="reviewImages"]')?.addEventListener('change', event => handleReviewImageInput(event.currentTarget));
   document.querySelectorAll('form[data-form]').forEach(form => form.addEventListener('submit', handleForm));
-}
-
-async function handleReviewImageInput(input) {
-  const preview = document.querySelector('#review-image-preview');
-  const result = document.querySelector('#review-result');
-  if (!preview) return;
-  const selected = Array.from(input.files || []);
-  const valid = selected.filter(file => /^image\/(jpeg|png|webp)$/.test(file.type) && file.size <= 8 * 1024 * 1024).slice(0, 4);
-  if (!valid.length) {
-    reviewImageDrafts[state.flavour] = [];
-    preview.replaceChildren();
-    if (selected.length && result) result.textContent = 'Choose JPG, PNG or WebP images smaller than 8 MB.';
-    return;
-  }
-  let images;
-  try {
-    images = await Promise.all(valid.map(resizeReviewImage));
-  } catch {
-    reviewImageDrafts[state.flavour] = [];
-    preview.replaceChildren();
-    if (result) result.textContent = 'One of the selected images could not be read. Please choose it again.';
-    return;
-  }
-  reviewImageDrafts[state.flavour] = images;
-  preview.innerHTML = images.map((src, index) => `<img src="${escapeHtml(src)}" alt="Selected review image ${index + 1}" />`).join('');
-  if (result) result.textContent = selected.length > 4 ? 'The first 4 images will be included.' : `${images.length} ${images.length === 1 ? 'image' : 'images'} ready to preview.`;
-}
-
-function resizeReviewImage(file) {
-  return new Promise((resolve, reject) => {
-    const source = URL.createObjectURL(file);
-    const photo = new Image();
-    photo.onload = () => {
-      const scale = Math.min(1, 1000 / Math.max(photo.naturalWidth, photo.naturalHeight));
-      const canvas = document.createElement('canvas');
-      canvas.width = Math.max(1, Math.round(photo.naturalWidth * scale));
-      canvas.height = Math.max(1, Math.round(photo.naturalHeight * scale));
-      canvas.getContext('2d').drawImage(photo, 0, 0, canvas.width, canvas.height);
-      URL.revokeObjectURL(source);
-      resolve(canvas.toDataURL('image/jpeg', .78));
-    };
-    photo.onerror = () => { URL.revokeObjectURL(source); reject(new Error('Image could not be read.')); };
-    photo.src = source;
-  });
 }
 
 function showToast(message) {
@@ -1115,21 +1090,24 @@ function showToast(message) {
   toast._timer = setTimeout(() => toast.classList.remove('visible'), 2800);
 }
 
-function handleAction(action, element) {
+async function handleAction(action, element) {
   if (action === 'open-search') return openSearch();
   if (action === 'close-search') return closeSearch();
   if (action === 'apply-coupon') return applyShopifyCoupon('DISC5');
   if (action === 'retry-shopify') return initCommerce();
-  if (action === 'line-remove' || action === 'product-line-remove') return requestRemoveCartLine(element.dataset.lineId);
-  if (action === 'product-line-up') return changeCartLine('line-up', element.dataset.lineId);
   if (action.startsWith('line-')) return changeCartLine(action, element.dataset.lineId);
-  if (action === 'cancel-remove') { state.removeConfirm = null; return render(); }
-  if (action === 'confirm-remove') {
-    const id = state.removeConfirm;
-    state.removeConfirm = null;
-    if (id) return changeCartLine('line-remove', id);
-    return render();
+  if (action === 'box-up' || action === 'box-down') {
+    const line = productCartLine();
+    if (!line) return;
+    const newQuantity = line.quantity + (action === 'box-up' ? 1 : -1);
+    if (newQuantity < 1) return;
+    await setCartLineQuantity(line, action === 'box-up' ? 1 : -1);
+    if (action === 'box-up') state.auraDownStreak = 0; else state.auraDownStreak += 1;
+    const control = document.querySelector('.product-actions .pack-row') || document.querySelector('.floating-qty-group');
+    showAuraBurst(control, action === 'box-up' ? `+${newQuantity * 1000} AURA` : `−${state.auraDownStreak * 1000} AURA`);
+    return;
   }
+  if (action === 'open-remove') { const line = productCartLine(); if (line) openRemoveModal(line); return; }
   if (action === 'toggle-theme') { state.theme = state.theme === 'dark' ? 'light' : 'dark'; localStorage.setItem('aura-theme', state.theme); return render(); }
   if (action === 'toggle-coupon') { state.couponOpen = false; return render(); }
   if (action === 'show-coupon') { state.couponOpen = true; return render(); }
@@ -1142,12 +1120,6 @@ function handleAction(action, element) {
     const card = track.querySelector('.review-card');
     const distance = (card?.getBoundingClientRect().width || 280) + 16;
     track.scrollBy({ left: action === 'reviews-prev' ? -distance : distance, behavior: 'smooth' });
-    return;
-  }
-  if (action === 'open-review-form') {
-    const section = document.querySelector('#review-form-section');
-    section?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    setTimeout(() => section?.querySelector('input[name="reviewName"]')?.focus(), 350);
     return;
   }
   if (action.startsWith('hero-') && /^hero-\d+$/.test(action)) {
@@ -1220,13 +1192,10 @@ async function handleForm(event) {
     const result = document.querySelector('#review-result');
     if (!name || text.length < 10 || text.length > 1000 || name.length > 60 || !Number.isInteger(rating) || rating < 1 || rating > 5) { result.textContent = 'Add your name, a rating and at least 10 characters about your experience.'; return; }
     try {
-      const images = reviewImageDrafts[state.flavour] || [];
-      localStorage.setItem('aura-review-' + state.flavour, JSON.stringify({ name, text, rating, images, flavour: state.flavour, date: new Date().toLocaleDateString('en-GB') }));
+      localStorage.setItem('aura-review-' + state.flavour, JSON.stringify({ name, text, rating }));
       showSavedReview();
       result.textContent = 'Your review preview is saved in this browser. It has not been published.';
       form.reset();
-      reviewImageDrafts[state.flavour] = [];
-      document.querySelector('#review-image-preview')?.replaceChildren();
     } catch { result.textContent = 'Browser storage is unavailable. Your review has not been saved; please keep a copy of your text.'; }
     return;
   }

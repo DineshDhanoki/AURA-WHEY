@@ -41,22 +41,6 @@ test('both products remain independent; updates, removal, totals and saved ID us
   assert.equal(run('state.cart'), 0);
 });
 
-test('product-page add stays on the product and exposes cart controls with removal confirmation', async () => {
-  const { run } = storefront();
-  run("location.pathname = '/shop'");
-  await run("addShopifyProduct('Mawa Kulfi', 1)");
-  assert.equal(run('location.pathname'), '/shop');
-  assert.match(run('shop()'), /product-cart-dock/);
-  assert.match(run('shop()'), /product-line-remove/);
-  const lineId = run('commerce.cart.lines.nodes[0].id');
-  run(`handleAction('product-line-remove', { dataset: { lineId: '${lineId}' } })`);
-  assert.equal(run('state.removeConfirm'), lineId);
-  assert.match(run('removeConfirmSheet()'), /Remove item\?/);
-  await run("handleAction('confirm-remove')");
-  assert.equal(run('state.cart'), 0);
-  assert.equal(run('state.removeConfirm'), null);
-});
-
 test('failed mutations preserve cart contents and release loading state', async () => {
   const { run } = storefront();
   await run("addShopifyProduct('Mawa Kulfi', 2)");
