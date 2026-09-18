@@ -482,8 +482,24 @@ function shopInvitation() {
   return `<section class="section shop-invitation"><div class="section-inner"><div><h2>Find your everyday flavour.</h2><p>Mawa Kulfi or Rich Chocolate. Make it your routine.</p></div><div class="button-row">${routeLink('shop', 'Shop now', 'button-link primary')}${routeLink('article/mawa-kulfi-or-rich-chocolate', 'Compare flavours', 'button-link secondary')}</div></div></section>`;
 }
 
+const approvedReviews = Object.freeze([]);
+
+function reviewCard(review) {
+  const rating = Math.max(1, Math.min(5, Number(review.rating) || 1));
+  const name = String(review.name || 'Aura Whey customer').trim();
+  const initials = name.split(/\s+/).slice(0, 2).map(part => part.charAt(0)).join('').toUpperCase() || 'AW';
+  const badge = review.verified ? 'Verified purchase' : 'Customer review';
+  return `<article class="review-card"><div class="review-card-top"><span class="review-avatar" aria-hidden="true">${escapeHtml(initials)}</span><div><strong>${escapeHtml(name)}</strong><span>${escapeHtml(review.flavour || state.flavour)}</span></div></div><div class="review-stars" aria-label="${rating} out of 5 stars">${'★'.repeat(rating)}<span aria-hidden="true">${'☆'.repeat(5 - rating)}</span></div><p class="review-copy">“${escapeHtml(review.text || '')}”</p><span class="review-badge">${escapeHtml(badge)}</span></article>`;
+}
+
+function approvedReviewCards(reviews = approvedReviews) {
+  const visible = reviews.filter(review => review?.approved === true && (!review.flavour || review.flavour === state.flavour));
+  if (!visible.length) return `<div class="review-empty"><span aria-hidden="true">♡</span><div><h3>Community stories are warming up.</h3><p>Approved customer reviews for ${escapeHtml(state.flavour)} will appear here.</p></div></div>`;
+  return `<div class="review-card-grid">${visible.map(reviewCard).join('')}</div>`;
+}
+
 function productReviews() {
-  return `<section class="section product-reviews"><div class="section-inner"><div class="section-head"><div><h2>Your flavour. Your take.</h2><p>Write a review of Aura Whey ${state.flavour}.</p></div></div><div class="review-layout"><div><h3>Add your review</h3><p>How did it taste? How did it mix? Share the details you would want to know.</p><p class="small">Reviews saved here are private previews in this browser. They are not published or verified purchases.</p></div><form class="form" data-form="review"><label class="field">Your name<input name="reviewName" maxlength="60" required autocomplete="given-name" /></label><fieldset class="review-rating"><legend>Your rating</legend>${[1,2,3,4,5].map(n => `<label><input type="radio" name="rating" value="${n}" required /><span>${n} ★</span></label>`).join('')}</fieldset><label class="field">Your review<textarea name="reviewText" rows="4" minlength="10" maxlength="1000" required placeholder="Tell us about the flavour and your experience"></textarea></label><button type="submit" class="button primary">Save review preview</button><div id="review-result" role="status" aria-live="polite"></div></form></div><div id="review-preview" class="review-preview" hidden></div></div></section>`;
+  return `<section class="section product-reviews" aria-labelledby="customer-reviews-title"><div class="section-inner"><header class="review-love-header"><p class="hero-overline">Love from the routine</p><h2 id="customer-reviews-title">Strong routines. Big love.</h2><p>From people who take their training seriously — and still believe a great shake should make them smile.</p></header><div class="review-board">${approvedReviewCards()}<article id="review-preview" class="review-card review-preview" hidden></article></div><div class="review-contribute"><div class="review-layout"><div><p class="hero-overline">Your turn</p><h3>Share your Aura.</h3><p>How did it taste? How did it mix? Tell us what made it part of your routine.</p><p class="small">For now, this creates a private preview in your browser. It will not be published until Shopify review moderation is connected.</p></div><form class="form" data-form="review"><label class="field">Your name<input name="reviewName" maxlength="60" required autocomplete="given-name" /></label><fieldset class="review-rating"><legend>Your rating</legend>${[1,2,3,4,5].map(n => `<label><input type="radio" name="rating" value="${n}" required /><span>${n} ★</span></label>`).join('')}</fieldset><label class="field">Your review<textarea name="reviewText" rows="4" minlength="10" maxlength="1000" required placeholder="Tell us about the flavour and your experience"></textarea></label><button type="submit" class="button primary">Preview my review</button><div id="review-result" role="status" aria-live="polite"></div></form></div></div></div></section>`;
 }
 
 function showSavedReview() {
@@ -493,11 +509,22 @@ function showSavedReview() {
     const review = JSON.parse(localStorage.getItem('aura-review-' + state.flavour) || 'null');
     if (!review || typeof review.name !== 'string' || typeof review.text !== 'string' || !Number.isInteger(review.rating) || review.rating < 1 || review.rating > 5) return;
     preview.replaceChildren();
-    const heading = document.createElement('strong');
-    heading.textContent = review.name + ' · ' + review.rating + '/5 · Private preview';
+    const stars = document.createElement('div');
+    stars.className = 'review-stars';
+    stars.setAttribute('aria-label', review.rating + ' out of 5 stars');
+    stars.textContent = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
     const body = document.createElement('p');
+    body.className = 'review-copy';
     body.textContent = review.text;
-    preview.append(heading, body);
+    const footer = document.createElement('div');
+    footer.className = 'review-preview-footer';
+    const heading = document.createElement('strong');
+    heading.textContent = review.name + ' · ' + state.flavour;
+    const badge = document.createElement('span');
+    badge.className = 'review-badge';
+    badge.textContent = 'Private preview';
+    footer.append(heading, badge);
+    preview.append(stars, body, footer);
     preview.hidden = false;
   } catch { preview.hidden = true; }
 }
