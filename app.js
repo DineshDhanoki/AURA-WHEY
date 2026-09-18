@@ -491,6 +491,30 @@ function shopInvitation() {
 }
 
 const approvedReviews = Object.freeze([]);
+const reviewImageDrafts = Object.create(null);
+
+function reviewImages(review, className = 'review-media') {
+  const images = Array.isArray(review?.images) ? review.images.filter(src => typeof src === 'string' && src.trim()).slice(0, 4) : [];
+  if (!images.length) return '';
+  return `<div class="${className}">${images.map((src, index) => `<img src="${escapeHtml(src)}" alt="Customer review image ${index + 1}" loading="lazy" decoding="async" />`).join('')}</div>`;
+}
+
+function productReviewItem(review, preview = false) {
+  const rating = Math.max(1, Math.min(5, Number(review.rating) || 1));
+  const name = String(review.name || 'Aura Whey customer').trim();
+  const date = review.date ? String(review.date) : '';
+  const verified = review.verified === true && !preview;
+  return `<article class="verified-review-item${preview ? ' review-preview' : ''}"><div class="verified-review-name"><strong>${escapeHtml(name)}</strong>${verified ? '<span class="verified-review-check" aria-label="Verified purchase">✓</span>' : '<span class="review-badge">Private preview</span>'}${date ? `<time>${escapeHtml(date)}</time>` : ''}</div><div class="verified-review-stars" aria-label="${rating} out of 5 stars">${'★'.repeat(rating)}<span aria-hidden="true">${'☆'.repeat(5 - rating)}</span></div><p>${escapeHtml(review.text || '')}</p>${reviewImages(review)}</article>`;
+}
+
+function productReviewPanel(reviews = approvedReviews) {
+  const visible = reviews.filter(review => review?.approved === true && (!review.flavour || review.flavour === state.flavour));
+  const average = visible.length ? visible.reduce((total, review) => total + Math.max(1, Math.min(5, Number(review.rating) || 1)), 0) / visible.length : 0;
+  const media = visible.flatMap(review => Array.isArray(review.images) ? review.images : []).filter(src => typeof src === 'string' && src.trim());
+  const mediaPreview = media.length ? `<div class="verified-review-gallery">${media.slice(0, 5).map((src, index) => `<img src="${escapeHtml(src)}" alt="${escapeHtml(state.flavour)} customer review image ${index + 1}" loading="lazy" decoding="async" />`).join('')}${media.length > 5 ? `<span>+${media.length - 5} more</span>` : ''}</div>` : '';
+  const reviewList = visible.length ? visible.map(review => productReviewItem(review)).join('') : `<div class="verified-review-empty"><strong>No approved reviews yet.</strong><p>Be the first to share your ${escapeHtml(state.flavour)} experience.</p></div>`;
+  return `<div class="verified-review-panel"><header class="verified-review-summary"><h2 id="product-customer-reviews-title">Verified Reviews</h2><div class="verified-review-score"><span class="verified-review-stars" aria-label="${average.toFixed(1)} out of 5 stars">${'★'.repeat(Math.round(average))}<span aria-hidden="true">${'☆'.repeat(5 - Math.round(average))}</span></span><strong>${visible.length ? average.toFixed(1) : '0.0'} out of 5</strong></div><p>Based on ${visible.length} approved ${escapeHtml(state.flavour)} ${visible.length === 1 ? 'review' : 'reviews'}</p>${mediaPreview}<button type="button" class="button primary verified-review-write" data-action="open-review-form">Write a review ✎</button></header><div class="verified-review-list" aria-label="Verified ${escapeHtml(state.flavour)} reviews">${reviewList}<div id="review-preview" hidden></div></div></div>`;
+}
 
 function reviewCard(review) {
   const rating = Math.max(1, Math.min(5, Number(review.rating) || 1));
@@ -514,6 +538,7 @@ function approvedReviewCards(reviews = approvedReviews, scope = 'product') {
 function reviewShowcase(scope = 'home', reviews = approvedReviews) {
   const isProduct = scope === 'product';
   const titleId = isProduct ? 'product-customer-reviews-title' : 'home-customer-reviews-title';
+  if (isProduct) return `<section class="section product-reviews review-showcase-product" data-review-scope="product" aria-labelledby="${titleId}"><div class="section-inner">${productReviewPanel(reviews)}</div></section>`;
   const hasVisibleReviews = reviews.some(review => review?.approved === true && (!isProduct || !review.flavour || review.flavour === state.flavour));
   const controls = isProduct && hasVisibleReviews ? `<div class="review-carousel-controls" aria-label="Review carousel controls"><button type="button" class="button" data-action="reviews-prev" aria-label="Previous review">${icon('arrowLeft')}</button><button type="button" class="button" data-action="reviews-next" aria-label="Next review">${icon('arrowRight')}</button></div>` : '';
   const supportingCopy = isProduct
@@ -523,7 +548,7 @@ function reviewShowcase(scope = 'home', reviews = approvedReviews) {
 }
 
 function productReviews() {
-  return `${reviewShowcase('product')}<section class="section review-contribute-section"><div class="section-inner"><div class="review-contribute"><div class="review-layout"><div><p class="hero-overline">Your turn</p><h3>Share your Aura.</h3><p>How did it taste? How did it mix? Tell us what made it part of your routine.</p><p class="small">For now, this creates a private preview in your browser. It will not be published until Shopify review moderation is connected.</p></div><form class="form" data-form="review"><label class="field">Your name<input name="reviewName" maxlength="60" required autocomplete="given-name" /></label><fieldset class="review-rating"><legend>Your rating</legend>${[1,2,3,4,5].map(n => `<label><input type="radio" name="rating" value="${n}" required /><span>${n} ★</span></label>`).join('')}</fieldset><label class="field">Your review<textarea name="reviewText" rows="4" minlength="10" maxlength="1000" required placeholder="Tell us about the flavour and your experience"></textarea></label><button type="submit" class="button primary">Preview my review</button><div id="review-result" role="status" aria-live="polite"></div></form></div></div></div></section>`;
+  return `${reviewShowcase('product')}<section id="review-form-section" class="section review-contribute-section"><div class="section-inner"><div class="review-contribute"><div class="review-layout"><div><p class="hero-overline">Your turn</p><h3>Share your Aura.</h3><p>How did it taste? How did it mix? Tell us what made it part of your routine.</p><p class="small">Your review is saved as a private preview until Shopify review moderation is connected.</p></div><form class="form" data-form="review"><label class="field">Your name<input name="reviewName" maxlength="60" required autocomplete="given-name" /></label><fieldset class="review-rating"><legend>Your rating</legend>${[1,2,3,4,5].map(n => `<label><input type="radio" name="rating" value="${n}" required /><span>${n} ★</span></label>`).join('')}</fieldset><label class="field">Your review<textarea name="reviewText" rows="4" minlength="10" maxlength="1000" required placeholder="Tell us about the flavour and your experience"></textarea></label><label class="field review-image-field">Add images <span>Up to 4 JPG, PNG or WebP images</span><input name="reviewImages" type="file" accept="image/jpeg,image/png,image/webp" multiple /></label><div id="review-image-preview" class="review-image-preview" aria-live="polite"></div><button type="submit" class="button primary">Preview my review</button><div id="review-result" role="status" aria-live="polite"></div></form></div></div></div></section>`;
 }
 
 function showSavedReview() {
@@ -532,23 +557,7 @@ function showSavedReview() {
   try {
     const review = JSON.parse(localStorage.getItem('aura-review-' + state.flavour) || 'null');
     if (!review || typeof review.name !== 'string' || typeof review.text !== 'string' || !Number.isInteger(review.rating) || review.rating < 1 || review.rating > 5) return;
-    preview.replaceChildren();
-    const stars = document.createElement('div');
-    stars.className = 'review-stars';
-    stars.setAttribute('aria-label', review.rating + ' out of 5 stars');
-    stars.textContent = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
-    const body = document.createElement('p');
-    body.className = 'review-copy';
-    body.textContent = review.text;
-    const footer = document.createElement('div');
-    footer.className = 'review-preview-footer';
-    const heading = document.createElement('strong');
-    heading.textContent = review.name + ' · ' + state.flavour;
-    const badge = document.createElement('span');
-    badge.className = 'review-badge';
-    badge.textContent = 'Private preview';
-    footer.append(heading, badge);
-    preview.append(stars, body, footer);
+    preview.innerHTML = productReviewItem(review, true);
     preview.hidden = false;
   } catch { preview.hidden = true; }
 }
@@ -1016,7 +1025,52 @@ function bindEvents() {
     state.quantity = 1;
     render();
   });
+  document.querySelector('input[name="reviewImages"]')?.addEventListener('change', event => handleReviewImageInput(event.currentTarget));
   document.querySelectorAll('form[data-form]').forEach(form => form.addEventListener('submit', handleForm));
+}
+
+async function handleReviewImageInput(input) {
+  const preview = document.querySelector('#review-image-preview');
+  const result = document.querySelector('#review-result');
+  if (!preview) return;
+  const selected = Array.from(input.files || []);
+  const valid = selected.filter(file => /^image\/(jpeg|png|webp)$/.test(file.type) && file.size <= 8 * 1024 * 1024).slice(0, 4);
+  if (!valid.length) {
+    reviewImageDrafts[state.flavour] = [];
+    preview.replaceChildren();
+    if (selected.length && result) result.textContent = 'Choose JPG, PNG or WebP images smaller than 8 MB.';
+    return;
+  }
+  let images;
+  try {
+    images = await Promise.all(valid.map(resizeReviewImage));
+  } catch {
+    reviewImageDrafts[state.flavour] = [];
+    preview.replaceChildren();
+    if (result) result.textContent = 'One of the selected images could not be read. Please choose it again.';
+    return;
+  }
+  reviewImageDrafts[state.flavour] = images;
+  preview.innerHTML = images.map((src, index) => `<img src="${escapeHtml(src)}" alt="Selected review image ${index + 1}" />`).join('');
+  if (result) result.textContent = selected.length > 4 ? 'The first 4 images will be included.' : `${images.length} ${images.length === 1 ? 'image' : 'images'} ready to preview.`;
+}
+
+function resizeReviewImage(file) {
+  return new Promise((resolve, reject) => {
+    const source = URL.createObjectURL(file);
+    const photo = new Image();
+    photo.onload = () => {
+      const scale = Math.min(1, 1000 / Math.max(photo.naturalWidth, photo.naturalHeight));
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.max(1, Math.round(photo.naturalWidth * scale));
+      canvas.height = Math.max(1, Math.round(photo.naturalHeight * scale));
+      canvas.getContext('2d').drawImage(photo, 0, 0, canvas.width, canvas.height);
+      URL.revokeObjectURL(source);
+      resolve(canvas.toDataURL('image/jpeg', .78));
+    };
+    photo.onerror = () => { URL.revokeObjectURL(source); reject(new Error('Image could not be read.')); };
+    photo.src = source;
+  });
 }
 
 function showToast(message) {
@@ -1052,6 +1106,12 @@ function handleAction(action, element) {
     const card = track.querySelector('.review-card');
     const distance = (card?.getBoundingClientRect().width || 280) + 16;
     track.scrollBy({ left: action === 'reviews-prev' ? -distance : distance, behavior: 'smooth' });
+    return;
+  }
+  if (action === 'open-review-form') {
+    const section = document.querySelector('#review-form-section');
+    section?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    setTimeout(() => section?.querySelector('input[name="reviewName"]')?.focus(), 350);
     return;
   }
   if (action.startsWith('hero-') && /^hero-\d+$/.test(action)) {
@@ -1124,10 +1184,13 @@ async function handleForm(event) {
     const result = document.querySelector('#review-result');
     if (!name || text.length < 10 || text.length > 1000 || name.length > 60 || !Number.isInteger(rating) || rating < 1 || rating > 5) { result.textContent = 'Add your name, a rating and at least 10 characters about your experience.'; return; }
     try {
-      localStorage.setItem('aura-review-' + state.flavour, JSON.stringify({ name, text, rating }));
+      const images = reviewImageDrafts[state.flavour] || [];
+      localStorage.setItem('aura-review-' + state.flavour, JSON.stringify({ name, text, rating, images, flavour: state.flavour, date: new Date().toLocaleDateString('en-GB') }));
       showSavedReview();
       result.textContent = 'Your review preview is saved in this browser. It has not been published.';
       form.reset();
+      reviewImageDrafts[state.flavour] = [];
+      document.querySelector('#review-image-preview')?.replaceChildren();
     } catch { result.textContent = 'Browser storage is unavailable. Your review has not been saved; please keep a copy of your text.'; }
     return;
   }

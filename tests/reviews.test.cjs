@@ -2,15 +2,15 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { storefront } = require('./storefront-helper.cjs');
 
-test('reviews section combines community love, approved cards and the submission form', () => {
+test('product reviews render the verified review panel and image-enabled submission form', () => {
   const { run } = storefront();
   const markup = run('productReviews()');
-  assert.ok(markup.includes('Strong routines. Big love.'));
-  assert.ok(markup.includes('take their training seriously'));
-  assert.ok(markup.includes('Community stories are warming up.'));
+  assert.ok(markup.includes('Verified Reviews'));
+  assert.ok(markup.includes('Write a review'));
   assert.ok(markup.includes('data-form="review"'));
-  assert.ok(markup.includes('Shopify review moderation'));
-  assert.ok(!markup.includes('data-action="reviews-prev"'));
+  assert.ok(markup.includes('name="reviewImages"'));
+  assert.ok(markup.includes('accept="image/jpeg,image/png,image/webp"'));
+  assert.ok(markup.includes('review moderation'));
 });
 
 test('only approved reviews for the selected flavour are displayed', () => {
@@ -46,12 +46,14 @@ test('homepage renders the all-flavour customer review section', () => {
   assert.ok(markup.includes('Mawa Kulfi and Rich Chocolate'));
 });
 
-test('product reviews use compact horizontal cards with two-way controls', () => {
+test('product reviews use a vertical verified list with ratings, dates and images', () => {
   const { run } = storefront();
   const markup = run(`reviewShowcase('product', [
-    { approved: true, flavour: 'Mawa Kulfi', name: 'Product customer', rating: 5, text: 'Creamy and easy to mix.' }
+    { approved: true, verified: true, flavour: 'Mawa Kulfi', name: 'Product customer', rating: 5, date: '19/09/2026', text: 'Creamy and easy to mix.', images: ['review-1.webp'] }
   ])`);
-  assert.ok(markup.includes('review-card-track'));
-  assert.ok(markup.includes('data-action="reviews-prev"'));
-  assert.ok(markup.includes('data-action="reviews-next"'));
+  assert.ok(markup.includes('verified-review-list'));
+  assert.ok(markup.includes('Verified purchase'));
+  assert.ok(markup.includes('19/09/2026'));
+  assert.ok(markup.includes('review-1.webp'));
+  assert.ok(!markup.includes('review-card-track'));
 });
