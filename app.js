@@ -89,6 +89,7 @@ heroSlides.forEach((slide, index) => {
 const state = {
   flavour: 'Mawa Kulfi', productImage: 0, imageZoom: 1, quantity: 1, tab: 'Details', cart: 0, coupon: '',
   couponOpen: true, searchQuery: '', heroSlide: 0, theme: localStorage.getItem('aura-theme') || 'dark',
+  delivery: { pincode: '', status: 'idle', message: '' },
   document: 'FSSAI licence', auraDownStreak: 0
 };
 
@@ -110,6 +111,9 @@ const icon = (name) => ({
   facebook: svg('<path d="M14 21v-8h2.8l.4-3H14V8.1c0-.9.3-1.6 1.7-1.6H17V3.8c-.6-.1-1.3-.2-2.2-.2-2.3 0-3.8 1.4-3.8 4V10H8.5v3H11v8"></path>'),
   linkedin: svg('<path d="M6.5 9.5V18M6.5 6.5v.1M10.5 18v-5.1c0-2.3 4.5-2.5 4.5 0V18M10.5 12.1V9.5M15 12.1V9.5"></path><rect x="3" y="3" width="18" height="18" rx="2"></rect>'),
   youtube: svg('<path d="M20.4 7.1c-.2-1-1-1.8-2-2C16.6 4.7 7.4 4.7 5.6 5.1c-1 .2-1.8 1-2 2-.4 1.8-.4 8 0 9.8.2 1 1 1.8 2 2 1.8.4 11 .4 12.8 0 1-.2 1.8-1 2-2 .4-1.8.4-8 0-9.8Z"></path><path d="m10 9 5 3-5 3Z"></path>')
+  ,mapPin: svg('<path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 1 1 14 0Z"></path><circle cx="12" cy="10" r="2.3"></circle>'),
+  truck: svg('<path d="M3 6h11v10H3zM14 10h4l3 3v3h-7z"></path><circle cx="7" cy="18" r="1.7"></circle><circle cx="18" cy="18" r="1.7"></circle>'),
+  refresh: svg('<path d="M20 11a8 8 0 0 0-14.6-4L3 10M3 5v5h5M4 13a8 8 0 0 0 14.6 4L21 14m0 5v-5h-5"></path>')
 }[name] || '');
 
 const routeLink = (route, label, className = '') => `<a href="/${route}" class="${className}" data-route="${route}">${label}</a>`;
@@ -454,6 +458,15 @@ function productInside() {
   </div>`;
 }
 
+function deliveryOptions() {
+  const result = state.delivery.status === 'error'
+    ? `<p class="delivery-result is-error" id="delivery-result" role="alert">${escapeHtml(state.delivery.message)}</p>`
+    : state.delivery.status === 'ready'
+      ? `<p class="delivery-result is-ready" id="delivery-result" role="status">${escapeHtml(state.delivery.message)}</p>`
+      : `<p class="delivery-result" id="delivery-result" role="status">${escapeHtml(state.delivery.message || 'Enter your pincode to check delivery availability.')}</p>`;
+  return `<section class="delivery-options" aria-labelledby="delivery-options-title"><h3 id="delivery-options-title">${icon('mapPin')} Delivery options</h3><form class="delivery-check-form" data-form="delivery-check"><label class="sr-only" for="delivery-pincode">Delivery pincode</label><input id="delivery-pincode" name="pincode" inputmode="numeric" autocomplete="postal-code" maxlength="6" pattern="[0-9]{6}" value="${escapeHtml(state.delivery.pincode)}" placeholder="Enter pincode" required /><button type="submit" class="button" ${commerce.busy ? 'disabled' : ''}>Check</button></form>${result}<ul class="delivery-promises"><li>${icon('truck')}<span>Free shipping on orders above ₹2,000</span></li><li>${icon('refresh')}<a href="/policy" data-route="policy">Replacement and cancellation policy</a></li></ul></section>`;
+}
+
 function nutritionTrust() {
   return `<section class="section nutrition-trust"><div class="section-inner">
     <div class="section-head"><div><h2>Know what goes into your routine.</h2><div class="gold-rule"></div></div><p>Nutrition at a glance. Quality information within reach.</p></div>
@@ -499,7 +512,7 @@ function floatingPurchaseBar() {
 
 
 function shop() {
-  return `<div class="product-page ${productFlavours[state.flavour].theme}">${commerceStatus()}<h1 class="page-title">Aura Whey Protein</h1><div class="product-layout"><section class="product-gallery"><button type="button" class="product-main-image" data-image-viewer aria-label="Open ${state.flavour} image viewer">${image(productFlavours[state.flavour].images[state.productImage], `${state.flavour} Aura Whey product`, 'product-main-photo')}<span class="product-image-hint" aria-hidden="true">${icon('search')}</span></button><div class="thumbnail-row" aria-label="Product images">${productFlavours[state.flavour].images.map((src, index) => `<button type="button" class="thumbnail" data-action="product-image-${index}" aria-label="View ${state.flavour} image ${index + 1}" aria-pressed="${state.productImage === index}">${image(src, `${state.flavour}, image ${index + 1}`)}</button>`).join('')}</div></section><section class="purchase-panel"><p class="breadcrumb">Shop / Whey protein</p><h2>${liveTitle()}</h2><div class="price">${livePrice()}<span>Inclusive of taxes</span></div><p>1 kg · 28 servings · 35 g serving size</p><div class="flavour-picker"><span>Choose flavour</span><div class="button-row"><button type="button" class="flavour ${state.flavour === 'Mawa Kulfi' ? 'active' : ''}" data-action="select-Mawa Kulfi">Mawa Kulfi</button><button type="button" class="flavour ${state.flavour === 'Rich Chocolate' ? 'active' : ''}" data-action="select-Rich Chocolate">Rich Chocolate</button></div></div>${variantPicker()}<p role="status">${selectedVariant()?.availableForSale ? 'In stock' : commerce.loading ? 'Checking availability…' : 'Unavailable'}</p><p>${escapeHtml(commerce.products[state.flavour]?.description || '')}</p><div class="coupon-entry">${couponEntry()}</div><div class="product-actions">${auraQuantity()}<div class="button-row">${purchaseButton('add-cart', 'Add to cart', 'floating-add', 'bag')}${purchaseButton('buy-now', 'Buy now', 'primary')}${routeLink('quality', 'View quality documents', 'button-link secondary')}</div></div>${productInside()}</section></div>${productReviews()}${nutritionTrust()}${floatingPurchaseBar()}</div>`;
+  return `<div class="product-page ${productFlavours[state.flavour].theme}">${commerceStatus()}<h1 class="page-title">Aura Whey Protein</h1><div class="product-layout"><section class="product-gallery"><button type="button" class="product-main-image" data-image-viewer aria-label="Open ${state.flavour} image viewer">${image(productFlavours[state.flavour].images[state.productImage], `${state.flavour} Aura Whey product`, 'product-main-photo')}<span class="product-image-hint" aria-hidden="true">${icon('search')}</span></button><div class="thumbnail-row" aria-label="Product images">${productFlavours[state.flavour].images.map((src, index) => `<button type="button" class="thumbnail" data-action="product-image-${index}" aria-label="View ${state.flavour} image ${index + 1}" aria-pressed="${state.productImage === index}">${image(src, `${state.flavour}, image ${index + 1}`)}</button>`).join('')}</div></section><section class="purchase-panel"><p class="breadcrumb">Shop / Whey protein</p><h2>${liveTitle()}</h2><div class="price">${livePrice()}<span>Inclusive of taxes</span></div><p>1 kg · 28 servings · 35 g serving size</p><div class="flavour-picker"><span>Choose flavour</span><div class="button-row"><button type="button" class="flavour ${state.flavour === 'Mawa Kulfi' ? 'active' : ''}" data-action="select-Mawa Kulfi">Mawa Kulfi</button><button type="button" class="flavour ${state.flavour === 'Rich Chocolate' ? 'active' : ''}" data-action="select-Rich Chocolate">Rich Chocolate</button></div></div>${variantPicker()}<p role="status">${selectedVariant()?.availableForSale ? 'In stock' : commerce.loading ? 'Checking availability…' : 'Unavailable'}</p><p>${escapeHtml(commerce.products[state.flavour]?.description || '')}</p><div class="coupon-entry">${couponEntry()}</div><div class="product-actions">${auraQuantity()}<div class="button-row">${purchaseButton('add-cart', 'Add to cart', 'floating-add', 'bag')}${purchaseButton('buy-now', 'Buy now', 'primary')}${routeLink('quality', 'View quality documents', 'button-link secondary')}</div></div>${deliveryOptions()}${productInside()}</section></div>${productReviews()}${nutritionTrust()}${floatingPurchaseBar()}</div>`;
 }
 
 function auraQuantity() {
@@ -1000,9 +1013,38 @@ function handleAction(action, element) {
   if (action.startsWith('faq-')) { const panel = element.nextElementSibling; const expanded = element.getAttribute('aria-expanded') === 'true'; element.setAttribute('aria-expanded', String(!expanded)); panel.hidden = expanded; return; }
 }
 
-function handleForm(event) {
+async function handleForm(event) {
   event.preventDefault();
   const form = event.currentTarget;
+  if (form.dataset.form === 'delivery-check') {
+    const pincode = form.elements.pincode.value.trim();
+    state.delivery.pincode = pincode;
+    if (!/^\d{6}$/.test(pincode)) {
+      state.delivery.status = 'error';
+      state.delivery.message = 'Enter a valid 6-digit pincode.';
+      render();
+      document.querySelector('#delivery-pincode')?.focus();
+      return;
+    }
+    state.delivery.status = 'checking';
+    state.delivery.message = 'Checking delivery availability…';
+    render();
+    try {
+      const endpoint = window.AURA_SHIPPING_ENDPOINT || '/api/shipping/check';
+      const response = await fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ pincode, flavour: state.flavour, quantity: state.quantity, weight: 1, cod: true }) });
+      const result = await response.json();
+      if (!response.ok || !result.available) throw new Error(result.message || 'Delivery is not available for this pincode.');
+      state.delivery.status = 'ready';
+      state.delivery.message = result.message || `Delivery available${result.eta ? ` · Estimated delivery ${result.eta}` : ''}.`;
+    } catch (error) {
+      state.delivery.status = 'unavailable';
+      state.delivery.message = error.message === 'Shipping endpoint is not configured.'
+        ? 'Pincode accepted. Delivery availability will be confirmed at checkout.'
+        : error.message;
+    }
+    render();
+    return;
+  }
   if (form.dataset.form === 'review') {
     if (!form.reportValidity()) return;
     const name = form.elements.reviewName.value.trim();
