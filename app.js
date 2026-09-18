@@ -442,7 +442,7 @@ function productCard(flavour) {
 
 function couponEntry() {
   const result = commerce.couponMessage || (state.coupon ? 'Code saved; Shopify will validate it when you add an item.' : 'Have a code? Apply it before checkout.');
-  return `<form class="coupon-form" data-form="coupon"><label class="field">Coupon code<input name="coupon" maxlength="100" value="${escapeHtml(state.coupon)}" placeholder="Enter coupon code" /></label><button type="submit" class="button" ${commerce.busy ? 'disabled' : ''}>Apply</button></form><div class="coupon-result" aria-live="polite">${escapeHtml(result)}</div>`;
+  return `<form class="coupon-form" data-form="coupon"><label class="field" for="coupon-code">Coupon code</label><div class="inline-action-row"><input id="coupon-code" name="coupon" maxlength="100" value="${escapeHtml(state.coupon)}" placeholder="Enter coupon code" /><button type="submit" class="button" ${commerce.busy ? 'disabled' : ''}>Apply</button></div></form><div class="coupon-result" aria-live="polite">${escapeHtml(result)}</div>`;
 }
 
 function productInside() {
@@ -465,7 +465,7 @@ function deliveryOptions() {
     : state.delivery.status === 'ready'
       ? `<p class="delivery-result is-ready" id="delivery-result" role="status">${escapeHtml(state.delivery.message)}</p>`
       : `<p class="delivery-result" id="delivery-result" role="status">${escapeHtml(state.delivery.message || 'Enter your pincode to check delivery availability.')}</p>`;
-  return `<section class="delivery-options" aria-labelledby="delivery-options-title"><h3 id="delivery-options-title">${icon('mapPin')} Delivery options</h3><form class="delivery-check-form" data-form="delivery-check"><label class="sr-only" for="delivery-pincode">Delivery pincode</label><input id="delivery-pincode" name="pincode" inputmode="numeric" autocomplete="postal-code" maxlength="6" pattern="[0-9]{6}" value="${escapeHtml(state.delivery.pincode)}" placeholder="Enter pincode" required /><button type="submit" class="button" ${commerce.busy ? 'disabled' : ''}>Check</button></form>${result}<ul class="delivery-promises"><li>${icon('truck')}<span>Free shipping on orders above ₹2,000</span></li><li>${icon('refresh')}<a href="/policy" data-route="policy">Replacement and cancellation policy</a></li></ul></section>`;
+  return `<section class="delivery-options" aria-labelledby="delivery-options-title"><h3 id="delivery-options-title">${icon('mapPin')} Delivery options</h3><form class="delivery-check-form" data-form="delivery-check"><label class="sr-only" for="delivery-pincode">Delivery pincode</label><div class="inline-action-row"><input id="delivery-pincode" name="pincode" inputmode="numeric" autocomplete="postal-code" maxlength="6" pattern="[0-9]{6}" value="${escapeHtml(state.delivery.pincode)}" placeholder="Enter pincode" required /><button type="submit" class="button" ${commerce.busy ? 'disabled' : ''}>Check</button></div></form>${result}<ul class="delivery-promises"><li>${icon('truck')}<span>Free shipping on orders above ₹2,000</span></li><li>${icon('refresh')}<a href="/policy" data-route="policy">Replacement and cancellation policy</a></li></ul></section>`;
 }
 
 function nutritionTrust() {

@@ -19,3 +19,9 @@ test('delivery options preserve a validated pincode state between renders', () =
   assert.ok(markup.includes('value="400001"'));
   assert.ok(markup.includes('Delivery available'));
 });
+
+test('coupon and delivery controls share the same responsive action row', () => {
+  const { run } = storefront();
+  assert.ok(run('couponEntry()').includes('class="inline-action-row"'));
+  assert.ok(run('deliveryOptions()').includes('class="inline-action-row"'));
+});
