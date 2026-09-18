@@ -473,7 +473,9 @@ main { width: 100%; padding-top: calc(var(--banner-h) + var(--header-h)); overfl
 .shop-invitation p { margin: .75rem 0 0; }
 .faq-sources { margin-top: 1.5rem; font-size: .75rem; }
 .accordion-panel a { text-decoration: underline; text-underline-offset: 3px; }
-.product-reviews { overflow: hidden; background: var(--bg); }
+.product-page .product-reviews,
+.product-page .review-contribute-section { background: var(--bg); }
+.product-reviews { overflow: hidden; }
 .review-heading-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 1.5rem; }
 .review-love-header { max-width: 48rem; margin-bottom: 2rem; }
 .review-love-header h2 { max-width: 14ch; margin: .45rem 0 .75rem; font-size: clamp(2rem, 5vw, 4rem); line-height: .98; }
