@@ -2,6 +2,27 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { storefront } = require('./storefront-helper.cjs');
 
+for (const buyNow of [false, true]) {
+  test(`purchase loading label follows ${buyNow ? 'Buy now' : 'Add to cart'} and clears after failure`, async () => {
+    const { context, run } = storefront();
+    let reject;
+    context.pendingPurchaseRequest = new Promise((resolve, fail) => { reject = fail; });
+    run('commerce.client.create = () => pendingPurchaseRequest');
+    const request = run(`addShopifyProduct('Mawa Kulfi', 1, ${buyNow})`);
+    const add = run("purchaseButton('add-cart', 'Add to cart')");
+    const buy = run("purchaseButton('buy-now', 'Buy now')");
+    assert.match(add, /disabled/);
+    assert.match(buy, /disabled/);
+    assert.ok(add.includes(buyNow ? 'Add to cart' : 'Adding…'));
+    assert.ok(buy.includes(buyNow ? 'Opening checkout…' : 'Buy now'));
+    assert.ok(!run("purchaseButton('add-flavour-Rich Chocolate', 'Add to cart', '', '', 'Rich Chocolate')").includes('Adding…'));
+    reject(new Error('Request failed'));
+    await request;
+    assert.equal(run('commerce.pendingPurchase'), null);
+    assert.equal(run('commerce.busy'), false);
+  });
+}
+
 test('both products remain independent; updates, removal, totals and saved ID use the Shopify response', async () => {
   const { run, storage } = storefront();
   await run("addShopifyProduct('Mawa Kulfi', 2)");

@@ -121,7 +121,7 @@ const routeLink = (route, label, className = '') => `<a href="/${route}" class="
 const iconLink = (route, name, label, className = '') => routeLink(route, `${icon(name)}<span class="sr-only">${label}</span>`, `icon-button ${className}`);
 const button = (action, label, className = '', iconName = '') => `<button type="button" class="button ${className}" data-action="${action}">${iconName ? icon(iconName) : ''}<span>${label}</span></button>`;
 const image = (src, alt, className = '') => src ? `<img class="${className}" src="${escapeHtml(src)}" alt="${escapeHtml(alt)}" loading="${className === 'product-main-photo' ? 'eager' : 'lazy'}" decoding="async" />` : '<span class="small">Image unavailable</span>';
-const commerce = { client: createShopifyClient(SHOPIFY_CONFIG), products: {}, cart: null, cartReady: false, loading: true, busy: false, error: '', couponMessage: '' };
+const commerce = { client: createShopifyClient(SHOPIFY_CONFIG), products: {}, cart: null, cartReady: false, loading: true, busy: false, pendingPurchase: null, error: '', couponMessage: '' };
 const cartStorageKey = 'aura-shopify-cart:' + SHOPIFY_CONFIG.domain;
 const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
 const formatMoney = money => money ? new Intl.NumberFormat('en-IN', { style: 'currency', currency: money.currencyCode }).format(Number(money.amount)) : '—';
@@ -134,7 +134,9 @@ function livePrice(flavour = state.flavour) { return formatMoney(selectedVariant
 function purchaseButton(action, label, className = '', iconName = '', flavour = state.flavour) {
   const available = selectedVariant(flavour)?.availableForSale;
   const disabled = commerce.loading || commerce.busy || !commerce.cartReady || !available;
-  const text = commerce.loading ? 'Loading…' : commerce.busy ? 'Updating…' : !available ? (commerce.products[flavour] ? 'Sold out' : 'Unavailable') : label;
+  const purchaseAction = action === 'buy-now' ? 'buy' : 'add';
+  const active = commerce.busy && commerce.pendingPurchase?.action === purchaseAction && commerce.pendingPurchase.flavour === flavour;
+  const text = commerce.loading ? 'Loading…' : active ? (purchaseAction === 'buy' ? 'Opening checkout…' : 'Adding…') : !available ? (commerce.products[flavour] ? 'Sold out' : 'Unavailable') : label;
   return button(action, text, className, iconName).replace('<button ', '<button ' + (disabled ? 'disabled ' : ''));
 }
 function commerceStatus() {
@@ -189,9 +191,10 @@ async function initCommerce() {
   }
 }
 
-async function cartOperation(operation, after) {
+async function cartOperation(operation, after, pendingPurchase = null) {
   if (commerce.busy || commerce.loading || !commerce.cartReady) return;
   commerce.busy = true;
+  commerce.pendingPurchase = pendingPurchase;
   commerce.error = '';
   render();
   try {
@@ -205,7 +208,7 @@ async function cartOperation(operation, after) {
     commerce.error = error.message;
     console.warn('Shopify:', error.message);
     showToast('Could not update your cart. Please retry.');
-  } finally { commerce.busy = false; render(); }
+  } finally { commerce.busy = false; commerce.pendingPurchase = null; render(); }
 }
 
 async function addShopifyProduct(flavour, quantity, buyNow = false) {
@@ -214,7 +217,7 @@ async function addShopifyProduct(flavour, quantity, buyNow = false) {
   await cartOperation(() => {
     const lines = [{ merchandiseId: variant.id, quantity }];
     return commerce.cart ? commerce.client.add(commerce.cart.id, lines) : commerce.client.create(lines, state.coupon ? [state.coupon] : []);
-  }, () => { showToast(`${quantity} × ${flavour} added to your cart`); return buyNow ? openShopifyCheckout() : navigate('cart'); });
+  }, () => { showToast(`${quantity} × ${flavour} added to your cart`); return buyNow ? openShopifyCheckout() : navigate('cart'); }, { action: buyNow ? 'buy' : 'add', flavour });
 }
 
 async function changeCartLine(action, id) {
@@ -327,11 +330,13 @@ function shell(content) {
       <footer class="footer">
         <div class="footer-grid">
           <div class="footer-intro">${brand()}<p>Whey protein in Mawa Kulfi and Rich Chocolate flavours. Built around the routine, not the noise.</p></div>
-          <div><strong>Shop</strong><ul><li>${routeLink('shop', 'Whey protein')}</li><li>${routeLink('cart', 'Your cart')}</li></ul></div>
-          <div><strong>Support</strong><ul><li>${routeLink('verify', 'Verify a batch')}</li><li>${routeLink('track-order', 'Track your order')}</li><li>${routeLink('faq', 'FAQs')}</li><li>${routeLink('contact', 'Contact')}</li></ul></div>
-          <div><strong>Learn</strong><ul><li>${routeLink('quality', 'Quality & lab reports')}</li><li>${routeLink('blog', 'Journal')}</li><li>${routeLink('policy', 'Policies')}</li></ul></div>
+          <div class="footer-column"><strong>Shop</strong><ul><li>${routeLink('shop', 'Whey protein')}</li><li>${routeLink('cart', 'Your cart')}</li></ul></div>
+          <div class="footer-column"><strong>Quick links</strong><ul><li>${routeLink('policy', 'Shipping & delivery')}</li><li>${routeLink('policy', 'Returns & replacement')}</li><li>${routeLink('quality', 'Quality & lab reports')}</li><li>${routeLink('blog', 'Journal')}</li></ul></div>
+          <div class="footer-column footer-contact"><strong>Contact us</strong><p>Questions about your order or your routine?</p>${routeLink('contact', 'Get in touch', 'footer-contact-link')}<p>We’ll get back to you as soon as possible.</p></div>
         </div>
-        <div class="footer-bottom"><div class="footer-socials" aria-label="Social links"><a href="#" aria-label="Facebook">${icon('facebook')}</a><a href="#" aria-label="Instagram">${icon('instagram')}</a><a href="#" aria-label="LinkedIn">${icon('linkedin')}</a><a href="#" aria-label="YouTube">${icon('youtube')}</a></div><span>© 2026 Aura Whey</span></div>
+        <div class="footer-socials footer-socials-after" aria-label="Social links"><a href="#" aria-label="Facebook">${icon('facebook')}</a><a href="#" aria-label="Instagram">${icon('instagram')}</a><a href="#" aria-label="LinkedIn">${icon('linkedin')}</a><a href="#" aria-label="YouTube">${icon('youtube')}</a></div>
+        <p class="footer-tagline">Fuel your aura. Build a routine you love.</p>
+        <div class="footer-bottom"><span>© 2026 Aura Whey, made with 💖 by Dinesh and Kanishk</span></div>
       </footer>
       ${searchDialog()}
     </div>`;
