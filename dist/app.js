@@ -271,13 +271,14 @@ function brand() {
 function shell(content) {
   const current = currentRoute();
   const trailingSections = current === 'shop' ? '' : `${shopInvitation()}${storeFaq()}`;
+  const shellTheme = current === 'shop' ? productFlavours[state.flavour].theme : '';
   const nav = links.map(([route, text]) => routeLink(route, text, `nav-link ${route === current ? 'active' : ''}`)).join('');
   const themeLabel = state.theme === 'dark' ? 'Use light mode' : 'Use dark mode';
   const themeIcon = state.theme === 'dark' ? 'sun' : 'moon';
   const root = document.querySelector('#app');
   if (!root) return;
   root.innerHTML = `
-    <div class="shell">
+    <div class="shell ${shellTheme} ${current === 'shop' ? 'product-route' : ''}">
       <header class="site-header">
         <div class="coupon-wrap" role="region" aria-label="Special Offers">
           <div class="coupon-ticker-track" data-action="apply-coupon" title="Click to copy & apply code DISC5 (5% OFF)">

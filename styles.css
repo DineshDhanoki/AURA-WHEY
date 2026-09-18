@@ -47,6 +47,10 @@ html { scroll-behavior: smooth; background: var(--bg); }
 main, .grid > *, .section-inner, .product-layout > *, .cart-layout > * { min-width: 0; }
 .brand-logo { width: 74px; height: 74px; object-fit: contain; border-radius: 6px; }
 .footer .brand-logo { width: 128px; height: 128px; }
+.shell.product-route .footer { background: var(--flavour-bg); border-top-color: color-mix(in srgb, var(--flavour-ink) 22%, transparent); color: var(--flavour-ink); }
+.shell.product-route .footer strong { color: var(--flavour-ink); }
+.shell.product-route .footer li a, .shell.product-route .footer-bottom, .shell.product-route .footer-socials a { color: color-mix(in srgb, var(--flavour-ink) 72%, transparent); }
+.shell.product-route .footer-bottom, .shell.product-route .footer-socials a { border-color: color-mix(in srgb, var(--flavour-ink) 22%, transparent); }
 body.menu-open { overflow: hidden; }
 :focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
 body { margin: 0; overflow-x: hidden; background: var(--bg); color: var(--text); font-family: "Plus Jakarta Sans", Arial, sans-serif; font-size: 15px; line-height: 1.6; }
