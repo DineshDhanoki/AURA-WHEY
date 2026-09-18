@@ -992,7 +992,7 @@ html[data-theme="light"] .product-page .button.primary:hover, html[data-theme="l
   .footer li { margin: .15rem 0; }
   .footer li a { min-height: 2rem; font-size: .86rem; }
   .footer-tagline { margin-top: 2.5rem; padding-inline: .5rem; line-height: 1.5; }
-  .footer-bottom { flex-direction: column; gap: .25rem; margin-top: 1rem; }
+  .footer-bottom { flex-direction: column; align-items: center; gap: .25rem; margin-top: 1rem; text-align: center; }
   .header-inner { gap: .25rem; padding-inline: max(.5rem, env(safe-area-inset-left)); }
   .brand-logo { width: 52px; height: 52px; }
   .header-actions { gap: 0; }
