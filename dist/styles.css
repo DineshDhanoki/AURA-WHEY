@@ -879,6 +879,27 @@ html[data-theme="dark"] .product-page.flavour-chocolate { --bg: #291c16; --surfa
 .floating-product-summary > b { color: var(--gold); font: 900 1.35rem/1 Montserrat, Arial, sans-serif; white-space: nowrap; }
 .floating-purchase-actions { flex: 0 0 auto; display: grid; grid-template-columns: repeat(2, minmax(10rem, 12rem)); gap: .65rem; }
 .floating-purchase .button { width: 100%; min-height: 48px; }
+.product-line-controls, .product-cart-dock-actions { display: flex; align-items: center; gap: .6rem; }
+.product-line-controls { width: 100%; margin-bottom: .75rem; padding: .25rem; border: 1px solid var(--flavour-button); border-radius: 6px; background: var(--surface); }
+.product-line-controls > .button-link { margin-left: auto; min-width: 9rem; }
+.product-cart-remove, .product-cart-plus { display: grid; place-items: center; width: 3rem; height: 2.75rem; border: 0; border-radius: 4px; background: var(--flavour-button); color: var(--flavour-button-text); font: 800 1.1rem/1 Montserrat, sans-serif; cursor: pointer; }
+.product-cart-remove svg { width: 1.1rem; height: 1.1rem; }
+.product-cart-remove:hover, .product-cart-plus:hover { background: var(--flavour-hover); }
+.product-cart-quantity { min-width: 2rem; color: var(--text); font: 800 .9rem/1 Montserrat, sans-serif; text-align: center; }
+.product-cart-dock { opacity: 1; visibility: visible; transform: translateY(0); pointer-events: auto; }
+.product-cart-dock .floating-purchase-inner { gap: 1rem; }
+.product-cart-dock-actions { flex: 0 0 auto; }
+.product-cart-dock-actions .product-cart-go { min-width: 9.5rem; }
+.remove-confirm-backdrop { position: fixed; inset: 0; z-index: 120; display: grid; place-items: end center; padding: 1rem; background: rgba(0,0,0,.58); }
+.remove-confirm-sheet { position: relative; width: min(30rem, 100%); padding: 1.6rem; border: 1px solid var(--line-strong); border-radius: 16px 16px 8px 8px; background: var(--surface); color: var(--text); box-shadow: 0 20px 70px #0008; }
+.remove-confirm-sheet h2 { margin: 0 2rem .7rem 0; font-size: 1.35rem; text-transform: uppercase; }
+.remove-confirm-sheet p { margin: 0 0 1.35rem; color: var(--muted); }
+.remove-confirm-close { position: absolute; top: .85rem; right: .85rem; display: grid; place-items: center; width: 2rem; height: 2rem; border: 0; background: transparent; color: var(--text); cursor: pointer; }
+.remove-confirm-close svg { width: 1.2rem; height: 1.2rem; }
+.remove-confirm-actions { display: grid; gap: .6rem; }
+.remove-confirm-actions .button { width: 100%; }
+.remove-confirm-button { border-color: var(--flavour-button, var(--gold)); background: transparent; color: var(--text); }
+.remove-confirm-button:hover { background: color-mix(in srgb, var(--gold) 12%, transparent); }
 .product-page .floating-add { border-color: var(--flavour-button); background: #fffaf4; color: var(--flavour-button); font-weight: 800; }
 .product-page .floating-add:hover { border-color: var(--flavour-hover); background: color-mix(in srgb, var(--flavour-button) 10%, #fffaf4); color: var(--flavour-hover); }
 .aura-quantity { position: relative; display: grid; grid-template-columns: 48px 1fr 48px; align-items: stretch; width: 100%; margin-bottom: 1rem; border: 1px solid var(--gold); border-radius: 6px; }
@@ -973,6 +994,14 @@ html[data-theme="dark"] .product-page.flavour-chocolate { --bg: #291c16; --surfa
   .floating-purchase-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; }
   .floating-purchase .button { min-height: 64px; padding-inline: .5rem; border-radius: 0; font-size: .72rem; }
   .product-page .floating-add { background: #fffaf4; color: var(--flavour-button); }
+  .product-cart-dock { padding: 0 env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); }
+  .product-cart-dock .floating-purchase-inner { min-height: 64px; display: flex; }
+  .product-cart-dock-actions { width: 100%; justify-content: flex-end; gap: .3rem; }
+  .product-cart-dock-actions .product-cart-remove, .product-cart-dock-actions .product-cart-plus { width: 3rem; height: 3.5rem; border-radius: 0; }
+  .product-cart-dock-actions .product-cart-go { min-width: 8.5rem; min-height: 3.5rem; border-radius: 0; }
+  .product-line-controls > .button-link { min-width: 0; flex: 1; }
+  .remove-confirm-backdrop { padding: 0; }
+  .remove-confirm-sheet { width: 100%; padding: 1.6rem 1.25rem 1.25rem; border-radius: 14px 14px 0 0; }
   .nutrition-trust-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 1.5rem; }
   .nutrition-trust-stats > div:nth-child(3) { border-left: 0; padding-left: 0; }
   .certification-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; }
