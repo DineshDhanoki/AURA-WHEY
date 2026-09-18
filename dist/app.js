@@ -376,6 +376,7 @@ function home() {
   return `
     ${heroBannerCarousel()}
     <section class="section"><div class="section-inner"><div class="section-head"><div><h2>Pick your flavour</h2><div class="gold-rule"></div></div><p>Choose the flavour that fits the ritual you want to repeat.</p></div><div class="grid product-grid">${productCard('Mawa Kulfi')}${productCard('Rich Chocolate')}</div></div></section>
+    ${reviewShowcase('home')}
     <section class="section"><div class="section-inner"><div class="section-head"><div><h2>Made for the routine</h2><div class="gold-rule"></div></div><p>Simple product details. Familiar flavours. A dependable post-training choice.</p></div><div class="image-section">${routeLink('shop', image(assets.why, 'Aura Whey athlete campaign with Mawa Kulfi and Rich Chocolate'), 'routine-banner-link')}</div><p class="button-row">${routeLink('shop', 'Shop now', 'button-link primary')}${routeLink('article/plan-your-protein-routine', 'Build your routine', 'button-link secondary')}</p></div></section>
     <section class="section"><div class="section-inner"><div class="section-head"><div><h2>Know your pack</h2><div class="gold-rule"></div></div><p>Read the nutrition panel, check the documents, then find your batch report.</p></div><div class="grid grid-2"><div class="card label-card">${image(assets.labelMawa, 'Aura Whey Mawa Kulfi nutrition label', 'label-preview')}</div><div class="quality-cta"><h3>Quality documents and batch reports</h3><p>Our quality library keeps the supplied certification documents in one place. Check whether a third-party laboratory report is available for your batch.</p><div class="button-row">${routeLink('quality', 'Open quality library', 'button-link primary')}${routeLink('verify', 'Verify a batch', 'button-link')}</div></div></div></div></section>
     <section class="section"><div class="section-inner"><div class="section-head"><div><h2>Better-informed training</h2><div class="gold-rule"></div></div><p>Practical guides for choosing, using, and enjoying your whey protein.</p></div><div class="grid grid-3">${blogCard(0)}${blogCard(1)}${blogCard(2)}</div><p>${routeLink('blog', 'Browse the journal', 'button-link secondary')}</p></div></section>
@@ -492,14 +493,30 @@ function reviewCard(review) {
   return `<article class="review-card"><div class="review-card-top"><span class="review-avatar" aria-hidden="true">${escapeHtml(initials)}</span><div><strong>${escapeHtml(name)}</strong><span>${escapeHtml(review.flavour || state.flavour)}</span></div></div><div class="review-stars" aria-label="${rating} out of 5 stars">${'★'.repeat(rating)}<span aria-hidden="true">${'☆'.repeat(5 - rating)}</span></div><p class="review-copy">“${escapeHtml(review.text || '')}”</p><span class="review-badge">${escapeHtml(badge)}</span></article>`;
 }
 
-function approvedReviewCards(reviews = approvedReviews) {
-  const visible = reviews.filter(review => review?.approved === true && (!review.flavour || review.flavour === state.flavour));
-  if (!visible.length) return `<div class="review-empty"><span aria-hidden="true">♡</span><div><h3>Community stories are warming up.</h3><p>Approved customer reviews for ${escapeHtml(state.flavour)} will appear here.</p></div></div>`;
-  return `<div class="review-card-grid">${visible.map(reviewCard).join('')}</div>`;
+function approvedReviewCards(reviews = approvedReviews, scope = 'product') {
+  const visible = reviews.filter(review => review?.approved === true && (scope === 'home' || !review.flavour || review.flavour === state.flavour));
+  if (!visible.length) {
+    const subject = scope === 'home' ? 'Mawa Kulfi and Rich Chocolate' : state.flavour;
+    return `<div class="review-empty"><span aria-hidden="true">♡</span><div><h3>Community stories are warming up.</h3><p>Approved customer reviews for ${escapeHtml(subject)} will appear here.</p></div></div>`;
+  }
+  const className = scope === 'product' ? 'review-card-track' : 'review-card-grid';
+  const label = scope === 'product' ? `Customer reviews for ${state.flavour}` : 'Customer reviews for all Aura Whey flavours';
+  return `<div class="${className}" aria-label="${escapeHtml(label)}">${visible.map(reviewCard).join('')}</div>`;
+}
+
+function reviewShowcase(scope = 'home', reviews = approvedReviews) {
+  const isProduct = scope === 'product';
+  const titleId = isProduct ? 'product-customer-reviews-title' : 'home-customer-reviews-title';
+  const hasVisibleReviews = reviews.some(review => review?.approved === true && (!isProduct || !review.flavour || review.flavour === state.flavour));
+  const controls = isProduct && hasVisibleReviews ? `<div class="review-carousel-controls" aria-label="Review carousel controls"><button type="button" class="button" data-action="reviews-prev" aria-label="Previous review">${icon('arrowLeft')}</button><button type="button" class="button" data-action="reviews-next" aria-label="Next review">${icon('arrowRight')}</button></div>` : '';
+  const supportingCopy = isProduct
+    ? `What ${escapeHtml(state.flavour)} customers say — people who take their training seriously and still believe a great shake should make them smile.`
+    : 'A collection of love for Mawa Kulfi and Rich Chocolate from people who take their fitness and wellbeing seriously.';
+  return `<section class="section product-reviews review-showcase-${scope}" data-review-scope="${scope}" aria-labelledby="${titleId}"><div class="section-inner"><div class="review-heading-row"><header class="review-love-header"><p class="hero-overline">Love from the routine</p><h2 id="${titleId}">Strong routines. Big love.</h2><p>${supportingCopy}</p></header>${controls}</div><div class="review-board">${approvedReviewCards(reviews, scope)}${isProduct ? '<article id="review-preview" class="review-card review-preview" hidden></article>' : ''}</div></div></section>`;
 }
 
 function productReviews() {
-  return `<section class="section product-reviews" aria-labelledby="customer-reviews-title"><div class="section-inner"><header class="review-love-header"><p class="hero-overline">Love from the routine</p><h2 id="customer-reviews-title">Strong routines. Big love.</h2><p>From people who take their training seriously — and still believe a great shake should make them smile.</p></header><div class="review-board">${approvedReviewCards()}<article id="review-preview" class="review-card review-preview" hidden></article></div><div class="review-contribute"><div class="review-layout"><div><p class="hero-overline">Your turn</p><h3>Share your Aura.</h3><p>How did it taste? How did it mix? Tell us what made it part of your routine.</p><p class="small">For now, this creates a private preview in your browser. It will not be published until Shopify review moderation is connected.</p></div><form class="form" data-form="review"><label class="field">Your name<input name="reviewName" maxlength="60" required autocomplete="given-name" /></label><fieldset class="review-rating"><legend>Your rating</legend>${[1,2,3,4,5].map(n => `<label><input type="radio" name="rating" value="${n}" required /><span>${n} ★</span></label>`).join('')}</fieldset><label class="field">Your review<textarea name="reviewText" rows="4" minlength="10" maxlength="1000" required placeholder="Tell us about the flavour and your experience"></textarea></label><button type="submit" class="button primary">Preview my review</button><div id="review-result" role="status" aria-live="polite"></div></form></div></div></div></section>`;
+  return `${reviewShowcase('product')}<section class="section review-contribute-section"><div class="section-inner"><div class="review-contribute"><div class="review-layout"><div><p class="hero-overline">Your turn</p><h3>Share your Aura.</h3><p>How did it taste? How did it mix? Tell us what made it part of your routine.</p><p class="small">For now, this creates a private preview in your browser. It will not be published until Shopify review moderation is connected.</p></div><form class="form" data-form="review"><label class="field">Your name<input name="reviewName" maxlength="60" required autocomplete="given-name" /></label><fieldset class="review-rating"><legend>Your rating</legend>${[1,2,3,4,5].map(n => `<label><input type="radio" name="rating" value="${n}" required /><span>${n} ★</span></label>`).join('')}</fieldset><label class="field">Your review<textarea name="reviewText" rows="4" minlength="10" maxlength="1000" required placeholder="Tell us about the flavour and your experience"></textarea></label><button type="submit" class="button primary">Preview my review</button><div id="review-result" role="status" aria-live="polite"></div></form></div></div></div></section>`;
 }
 
 function showSavedReview() {
@@ -1021,6 +1038,15 @@ function handleAction(action, element) {
   if (action === 'show-coupon') { state.couponOpen = true; return render(); }
   if (action === 'hero-next') return setHeroSlide(state.heroSlide + 1);
   if (action === 'hero-prev') return setHeroSlide(state.heroSlide - 1);
+  if (action === 'reviews-prev' || action === 'reviews-next') {
+    const showcase = element.closest('.product-reviews');
+    const track = showcase?.querySelector('.review-card-track');
+    if (!track) return;
+    const card = track.querySelector('.review-card');
+    const distance = (card?.getBoundingClientRect().width || 280) + 16;
+    track.scrollBy({ left: action === 'reviews-prev' ? -distance : distance, behavior: 'smooth' });
+    return;
+  }
   if (action.startsWith('hero-') && /^hero-\d+$/.test(action)) {
     return setHeroSlide(Number(action.replace('hero-', '')));
   }
