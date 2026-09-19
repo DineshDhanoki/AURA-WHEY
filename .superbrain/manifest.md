@@ -1,13 +1,19 @@
 # Project Manifest
-Project: AURA-WHEY-main 2
-Total Files: 242
-Languages: png(71), jpg(50), webp(44), js(36), pdf(16), cjs(6), mjs(4), json(3), html(3), md(3), css(2), jpeg(2), py(1), ps1(1)
+Project: AURA-WHEY-main 3
+Total Files: 249
+Languages: png(71), jpg(50), webp(44), js(42), pdf(16), cjs(7), mjs(4), html(3), md(3), json(3), css(2), jpeg(2), py(1), ps1(1)
 Size: 152.7 MB
 
 ## Files
 DESIGN.md                                                10.1 KB   [docs]
+api/_lib/customer-auth.js                                 9.6 KB   [source]
+api/account/orders.js                                     1.0 KB   [source]
+api/auth/callback.js                                      1.5 KB   [source]
+api/auth/login.js                                         1.2 KB   [source]
+api/auth/logout.js                                         995 B   [source]
+api/auth/session.js                                       1.1 KB   [source]
 api/shipping/check.js                                     3.8 KB   [source]
-app.js                                                   86.1 KB   [source]
+app.js                                                   94.7 KB   [source]
 assets/BLOG/BLOG-1.png                                    2.0 MB   [asset]
 assets/BLOG/BLOG-2.png                                    2.1 MB   [asset]
 assets/BLOG/BLOG-3.png                                    2.1 MB   [asset]
@@ -91,7 +97,7 @@ assets/optimized/site/image.webp                         71.1 KB   [asset]
 assets/optimized/site/lab image.webp                     43.9 KB   [asset]
 batch-reports.js                                           484 B   [source]
 code.html                                               122.6 KB   [markup]
-dist/app.js                                              86.1 KB   [source]
+dist/app.js                                              94.7 KB   [source]
 dist/assets/BLOG/BLOG-1.png                               2.0 MB   [asset]
 dist/assets/BLOG/BLOG-2.png                               2.1 MB   [asset]
 dist/assets/BLOG/BLOG-3.png                               2.1 MB   [asset]
@@ -190,7 +196,7 @@ dist/stitch_aura_whey_storefront_design/chatgpt_image_sep_4_2026_06_59_38_pm_4.p
 dist/stitch_aura_whey_storefront_design/chatgpt_image_sep_4_2026_07_04_00_pm.png/screen.png   1.2 MB   [asset]
 dist/stitch_aura_whey_storefront_design/chatgpt_image_sep_4_2026_07_09_56_pm.png/screen.png   1.1 MB   [asset]
 dist/stitch_aura_whey_storefront_design/whatsapp_image_2026_07_22_at_21.31.00.jpeg/screen.png 454.6 KB   [asset]
-dist/styles.css                                          72.7 KB   [style]
+dist/styles.css                                          79.4 KB   [style]
 docs/FRONTEND_STRUCTURE.md                                2.8 KB   [docs]
 docs/SHIPROCKET.md                                         985 B   [docs]
 index.html                                                1.0 KB   [markup]
@@ -238,7 +244,8 @@ stitch_aura_whey_storefront_design/chatgpt_image_sep_4_2026_06_59_38_pm_4.png/sc
 stitch_aura_whey_storefront_design/chatgpt_image_sep_4_2026_07_04_00_pm.png/screen.png   1.2 MB   [asset]
 stitch_aura_whey_storefront_design/chatgpt_image_sep_4_2026_07_09_56_pm.png/screen.png   1.1 MB   [asset]
 stitch_aura_whey_storefront_design/whatsapp_image_2026_07_22_at_21.31.00.jpeg/screen.png 454.6 KB   [asset]
-styles.css                                               72.7 KB   [style]
+styles.css                                               79.4 KB   [style]
+tests/customer-auth.test.cjs                              7.0 KB   [test]
 tests/delivery-options.test.cjs                           1.2 KB   [test]
 tests/product-cards.test.cjs                              9.3 KB   [test]
 tests/product-viewer.test.cjs                             3.4 KB   [test]

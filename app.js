@@ -93,6 +93,7 @@ const state = {
   delivery: { pincode: '', status: 'idle', message: '' },
   document: 'FSSAI licence', auraDownStreak: 0
 };
+const customerAccount = { loading: true, authenticated: false, customer: null, error: '' };
 
 const svg = (paths) => `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths}</svg>`;
 const icon = (name) => ({
@@ -197,19 +198,98 @@ async function cartOperation(operation, after, pendingPurchase = null) {
   commerce.busy = true;
   commerce.pendingPurchase = pendingPurchase;
   commerce.error = '';
-  render();
   try {
     const result = await operation();
     acceptCart(result.cart);
     if (result.warnings.length) showToast(result.warnings.map(warning => warning.message).join(' '));
     commerce.busy = false;
-    render();
+    // Patch the visible line items in place instead of rebuilding the shell, so the cart
+    // page and drawer do not flash on every quantity change.
+    if (!patchCartLines()) render();
     if (after && !result.warnings.length) await after();
   } catch (error) {
     commerce.error = error.message;
     console.warn('Shopify:', error.message);
     showToast('Could not update your cart. Please retry.');
-  } finally { commerce.busy = false; commerce.pendingPurchase = null; render(); }
+  } finally { commerce.busy = false; commerce.pendingPurchase = null; if (commerce.error) render(); }
+}
+
+function cartLineMarkup(line) {
+  const variant = line.merchandise;
+  return `<article class="cart-item" data-line-id="${escapeHtml(line.id)}"><div class="cart-image">${variant.image ? image(variant.image.url, variant.image.altText || variant.product.title) : ''}</div><div class="cart-item-body"><div class="cart-item-head"><h2>${escapeHtml(variant.product.title)}</h2><button class="cart-item-remove" type="button" data-action="line-remove" data-line-id="${escapeHtml(line.id)}" aria-label="Remove ${escapeHtml(variant.product.title)}" ${commerce.busy ? 'disabled' : ''}>${icon('trash')}</button></div><p class="cart-item-price"><strong class="item-price">${formatMoney(variant.price)}</strong></p><p class="line-total">Total: ${formatMoney(line.cost.totalAmount)}</p><div class="cart-item-controls"><button class="quantity-button" type="button" data-action="line-down" data-line-id="${escapeHtml(line.id)}" aria-label="Decrease quantity" ${commerce.busy || line.quantity <= 1 ? 'disabled' : ''}>−</button><span class="quantity-value">${line.quantity}</span><button class="quantity-button" type="button" data-action="line-up" data-line-id="${escapeHtml(line.id)}" aria-label="Increase quantity" ${commerce.busy ? 'disabled' : ''}>+</button></div></div></article>`;
+}
+
+function appliedCoupons() {
+  const codes = commerce.cart?.discountCodes || [];
+  if (!codes.length) return '';
+  return codes.map(code => `<div class="applied-coupon"><span class="applied-coupon-code">${escapeHtml(code.code)}</span><span class="applied-coupon-state">${code.applicable ? 'Applied' : 'Not applicable'}</span><button type="button" class="applied-coupon-remove" data-action="remove-coupon" data-code="${escapeHtml(code.code)}" aria-label="Remove coupon ${escapeHtml(code.code)}" ${commerce.busy ? 'disabled' : ''}>Remove</button></div>`).join('');
+}
+
+function deliveryPincodeCard() {
+  const { pincode, status, message } = state.delivery;
+  const saved = Boolean(pincode);
+  const result = status === 'ready'
+    ? `<p class="delivery-result is-ready" role="status">${escapeHtml(message)}</p>`
+    : status === 'error' || status === 'unavailable'
+      ? `<p class="delivery-result is-error" role="alert">${escapeHtml(message)}</p>`
+      : saved ? `<p class="delivery-result" role="status">${escapeHtml(message || 'Pincode saved.')}</p>` : '';
+  return `<section class="summary-card"><h3 class="summary-card-title">Enter delivery pincode</h3>${saved ? `<div class="pincode-saved"><span class="pincode-value">${escapeHtml(pincode)}</span>${result}<button type="button" class="text-button pincode-change" data-action="change-pincode">Change pincode</button></div>` : `<div class="inline-action-row"><input id="summary-pincode" name="summary-pincode" inputmode="numeric" autocomplete="postal-code" maxlength="6" placeholder="Enter pincode here" aria-label="Delivery pincode" /><button type="button" class="button" data-action="check-pincode">Check</button></div><p class="summary-card-note">Enter your pincode to check delivery availability.</p>`}</section>`;
+}
+
+function cartSummaryMarkup() {
+  const cost = commerce.cart.cost;
+  const currency = cost.subtotalAmount.currencyCode;
+  // Shopify reports the discount as a negative amount on the total; surface it as savings.
+  const subtotal = Number(cost.subtotalAmount.amount);
+  const total = Number(cost.totalAmount.amount);
+  const savings = Math.max(0, subtotal - total);
+  const count = commerce.cart.lines.nodes.reduce((sum, line) => sum + line.quantity, 0);
+  const money = amount => formatMoney({ amount: Number(amount).toFixed(2), currencyCode: currency });
+  return `<section class="summary-card"><h3 class="summary-card-title">Coupons and offers</h3><p class="summary-card-note">Save more with coupon and offers</p><div class="cart-coupon">${couponEntry()}</div>${appliedCoupons()}</section>${deliveryPincodeCard()}<section class="summary-card"><h3 class="summary-card-title">Price Summary</h3><div class="summary-row"><span>Subtotal (${count} item${count === 1 ? '' : 's'})</span><span>${money(subtotal)}</span></div><div class="summary-row"><span>Shipping</span><span>Calculated at checkout</span></div>${savings > 0 ? `<div class="summary-row summary-row-savings"><span>Total savings</span><span>(−) ${money(savings)}</span></div>` : ''}<div class="summary-row summary-row-total"><strong>Grand total</strong><strong>${formatMoney(cost.totalAmount)}</strong></div><p class="summary-tax-note">Inclusive of all taxes</p>${savings > 0 ? `<p class="summary-savings-banner">You saved ${money(savings)} on this order</p>` : ''}</section><section class="summary-card summary-payments-card"><span class="summary-payments-badge" aria-hidden="true">VISA</span><span class="summary-payments-badge" aria-hidden="true">Mastercard</span><span class="summary-payments-badge" aria-hidden="true">RuPay</span><span class="summary-payments-badge" aria-hidden="true">UPI</span><p class="summary-payments-note">100% secured payments</p></section>`;
+}
+
+function cartSummaryCard() {
+  return `<h2>Order summary</h2>${cartSummaryMarkup()}<p><button class="button primary" type="button" data-action="checkout" ${commerce.busy ? 'disabled' : ''}>Secure checkout</button></p><p class="small">Final shipping and taxes are confirmed at checkout.</p>`;
+}
+
+// Returns false when the visible cart cannot be patched (wrong view, empty cart, or the
+// line count changed), letting the caller fall back to a full render.
+function patchCartLines() {
+  // The product page's own quantity controls read from the cart line, not .cart-layout,
+  // so patch them too or the number never moves while a cart line exists.
+  patchProductQuantityControls();
+  const hosts = [...document.querySelectorAll('.cart-layout > section')];
+  const lines = commerce.cart?.lines.nodes || [];
+  if (!hosts.length || !lines.length) return false;
+  const existing = [...document.querySelectorAll('.cart-item[data-line-id]')];
+  if (lines.length !== existing.length) return false;
+  const html = lines.map(cartLineMarkup).join('');
+  const summaries = [...document.querySelectorAll('.summary')];
+  if (hosts.length !== summaries.length) return false;
+  hosts.forEach(host => { host.innerHTML = html; });
+  summaries.forEach(summary => summary.innerHTML = cartSummaryCard());
+  if (cartDrawerState.open) setCartDrawer(true, false);
+  return true;
+}
+
+function patchProductQuantityControls() {
+  const line = productCartLine();
+  if (!line) return;
+  document.querySelectorAll('.product-actions .aura-quantity.pack-row, .floating-qty-group').forEach(control => {
+    const output = control.querySelector('output');
+    if (output) output.textContent = String(line.quantity);
+    const left = control.querySelector('[data-action="box-down"], [data-action="open-remove"]');
+    if (!left) return;
+    // Swap between the decrement button and the trash button at quantity 1.
+    const replacement = qtyLeftButton(line.quantity);
+    if (left.dataset.action !== (line.quantity > 1 ? 'box-down' : 'open-remove')) {
+      const holder = document.createElement('div');
+      holder.innerHTML = replacement;
+      left.replaceWith(holder.firstElementChild);
+    }
+    const plus = control.querySelector('[data-action="box-up"]');
+    if (plus) plus.disabled = commerce.busy;
+  });
 }
 
 async function addShopifyProduct(flavour, quantity, buyNow = false) {
@@ -279,6 +359,8 @@ function shell(content) {
   const nav = links.map(([route, text]) => routeLink(route, text, `nav-link ${route === current ? 'active' : ''}`)).join('');
   const themeLabel = state.theme === 'dark' ? 'Use light mode' : 'Use dark mode';
   const themeIcon = state.theme === 'dark' ? 'sun' : 'moon';
+  const accountLabel = customerAccount.authenticated ? `Account for ${customerAccount.customer?.displayName || 'customer'}` : 'Sign in or log in';
+  const mobileAccountLabel = customerAccount.authenticated ? 'Your account' : 'Sign in / Log in';
   const root = document.querySelector('#app');
   if (!root) return;
   root.innerHTML = `
@@ -312,8 +394,8 @@ function shell(content) {
             <nav class="desktop-nav" aria-label="Primary navigation">${nav}</nav>
             <div class="header-actions">
               <button type="button" class="icon-button" data-action="open-search" aria-label="Search products" aria-haspopup="dialog">${icon('search')}</button>
-              ${iconLink('account', 'account', 'Sign in or log in')}
-              ${routeLink('cart', `${icon('bag')}<span class="cart-count" aria-label="${state.cart} items in cart">${state.cart}</span><span class="sr-only">Cart</span>`, 'icon-button cart-link')}
+              ${iconLink('account', 'account', accountLabel, customerAccount.authenticated ? 'is-authenticated' : '')}
+              <button type="button" class="icon-button cart-link" data-action="open-cart" aria-label="${state.cart} items in cart, open cart" aria-haspopup="dialog">${icon('bag')}<span class="cart-count" aria-label="${state.cart} items in cart">${state.cart}</span><span class="sr-only">Cart</span></button>
               <button class="icon-button theme-toggle" type="button" data-action="toggle-theme" aria-label="${themeLabel}" title="${themeLabel}">${icon(themeIcon)}</button>
               <button class="icon-button menu-button" type="button" data-action="open-menu" aria-label="Open menu" aria-expanded="false">${icon('menu')}</button>
             </div>
@@ -321,10 +403,14 @@ function shell(content) {
         </div>
       </header>
       <div class="overlay" data-action="close-menu"></div>
+      <aside class="cart-drawer" id="cart-drawer" aria-label="Your cart" aria-hidden="true" inert>
+        <div class="cart-drawer-head"><h2>Your cart</h2><button type="button" class="icon-button" data-action="close-cart" aria-label="Close cart">${icon('close')}</button></div>
+        <div class="cart-drawer-body">${cart()}</div>
+      </aside>
       <aside class="mobile-panel" id="mobile-menu" aria-label="Mobile navigation" aria-hidden="true" inert>
-        <div class="mobile-panel-top">${brand()}<div class="mobile-panel-actions">${routeLink('cart', `${icon('bag')}<span class="cart-count" aria-label="${state.cart} items in cart">${state.cart}</span><span class="sr-only">Cart</span>`, 'icon-button cart-link mobile-cart-link')}<button class="icon-button menu-close" type="button" data-action="close-menu" aria-label="Close menu">${icon('close')}</button></div></div>
+        <div class="mobile-panel-top">${brand()}<div class="mobile-panel-actions"><button type="button" class="icon-button cart-link mobile-cart-link" data-action="open-cart" aria-label="${state.cart} items in cart, open cart">${icon('bag')}<span class="cart-count" aria-label="${state.cart} items in cart">${state.cart}</span><span class="sr-only">Cart</span></button><button class="icon-button menu-close" type="button" data-action="close-menu" aria-label="Close menu">${icon('close')}</button></div></div>
         <button type="button" class="mobile-search-trigger" data-action="open-search">${icon('search')} Search products</button>
-        <nav>${nav}${routeLink('account', 'Sign in / Log in')}</nav>
+        <nav>${nav}${routeLink('account', mobileAccountLabel)}</nav>
         <div class="mobile-theme"><span>Appearance</span><button type="button" class="text-button" data-action="toggle-theme">${state.theme === 'dark' ? 'Light mode' : 'Dark mode'}</button></div>
       </aside>
       <main tabindex="-1">${content}${trailingSections}</main>
@@ -523,8 +609,12 @@ function reviewShowcase(scope = 'home', reviews = approvedReviews) {
   return `<section class="section product-reviews review-showcase-${scope}" data-review-scope="${scope}" aria-labelledby="${titleId}"><div class="section-inner"><div class="review-heading-row"><header class="review-love-header"><p class="hero-overline">Love from the routine</p><h2 id="${titleId}">Strong routines. Big love.</h2><p>${supportingCopy}</p></header>${controls}</div><div class="review-board">${approvedReviewCards(reviews, scope)}${isProduct ? '<article id="review-preview" class="review-card review-preview" hidden></article>' : ''}</div></div></section>`;
 }
 
+
 function productReviews() {
-  return `${reviewShowcase('product')}<section class="section review-contribute-section"><div class="section-inner"><div class="review-contribute"><div class="review-layout"><div><p class="hero-overline">Your turn</p><h3>Share your Aura.</h3><p>How did it taste? How did it mix? Tell us what made it part of your routine.</p><p class="small">For now, this creates a private preview in your browser. It will not be published until Shopify review moderation is connected.</p></div><form class="form" data-form="review"><label class="field">Your name<input name="reviewName" maxlength="60" required autocomplete="given-name" /></label><fieldset class="review-rating"><legend>Your rating</legend>${[1,2,3,4,5].map(n => `<label><input type="radio" name="rating" value="${n}" required /><span>${n} ★</span></label>`).join('')}</fieldset><label class="field">Your review<textarea name="reviewText" rows="4" minlength="10" maxlength="1000" required placeholder="Tell us about the flavour and your experience"></textarea></label><button type="submit" class="button primary">Preview my review</button><div id="review-result" role="status" aria-live="polite"></div></form></div></div></div></section>`;
+  const labels = ['Poor', 'Fair', 'Good', 'Great', 'Superb'];
+  const star = `<svg viewBox="0 0 24 24" width="36" height="36" focusable="false"><path fill="currentColor" stroke="currentColor" stroke-width="3" stroke-linejoin="round" d="M12 3 14.8 8.7 21 9.6 16.5 14 17.6 20.2 12 17.3 6.4 20.2 7.5 14 3 9.6 9.2 8.7Z"/></svg>`;
+  const rating = `<fieldset class="review-rating peek-rating"><legend>Your rating</legend><div class="peek-rating-stars" role="radiogroup" aria-label="Your rating"><span class="peek-rating-tip" aria-live="polite">Good</span>${[1, 2, 3, 4, 5].map(n => `<label data-rating="${n}"><input class="peek-rating-input" type="radio" name="rating" value="${n}"${n === 3 ? ' checked' : ''} required /><span aria-hidden="true">${star}</span><span class="sr-only">${n} — ${labels[n - 1]}</span></label>`).join('')}</div></fieldset>`;
+  return `${reviewShowcase('product')}<section class="section review-contribute-section"><div class="section-inner"><div class="review-contribute"><div class="review-layout"><div><p class="hero-overline">Your turn</p><h3>Share your Aura.</h3><p>How did it taste? How did it mix? Tell us what made it part of your routine.</p><p class="small">For now, this creates a private preview in your browser. It will not be published until Shopify review moderation is connected.</p></div><form class="form" data-form="review"><label class="field">Your name<input name="reviewName" maxlength="60" required autocomplete="given-name" /></label>${rating}<label class="field">Your review<textarea name="reviewText" rows="4" minlength="10" maxlength="1000" required placeholder="Tell us about the flavour and your experience"></textarea></label><button type="submit" class="button primary">Preview my review</button><div id="review-result" role="status" aria-live="polite"></div></form></div></div></div></section>`;
 }
 
 function showSavedReview() {
@@ -560,7 +650,7 @@ function storeFaq() {
 
 function floatingPurchaseBar() {
   const productImage = productFlavours[state.flavour].images[0];
-  return `<aside class="floating-purchase" id="floating-purchase" aria-label="Quick purchase" aria-hidden="true"><div class="floating-purchase-inner"><div class="floating-product-summary">${image(productImage, `Aura Whey ${state.flavour}`)}<div><strong>${liveTitle()}</strong><span>1 kg · 28 servings</span></div><b>${livePrice()}</b></div><div class="floating-purchase-actions">${floatingActions()}</div></div></aside>`;
+  return `<aside class="floating-purchase${purchaseBarState.visible ? ' is-visible' : ''}" id="floating-purchase" aria-label="Quick purchase" aria-hidden="${purchaseBarState.visible ? 'false' : 'true'}"><div class="floating-purchase-inner"><div class="floating-product-summary">${image(productImage, `Aura Whey ${state.flavour}`)}<div><strong>${liveTitle()}</strong><span>1 kg · 28 servings</span></div><b>${livePrice()}</b></div><div class="floating-purchase-actions">${floatingActions()}</div></div></aside>`;
 }
 
 
@@ -582,14 +672,14 @@ function packControls(line) {
 
 function productActions() {
   const line = productCartLine();
-  if (line) return `${packControls(line)}<div class="button-row">${routeLink('cart', 'Go to cart', 'button primary go-to-cart')}</div>`;
+  if (line) return `${packControls(line)}<div class="button-row">${button('open-cart', 'Go to cart', 'primary go-to-cart')}</div>`;
   return `${auraQuantity()}<div class="button-row">${purchaseButton('add-cart', 'Add to cart', 'floating-add', 'bag')}${purchaseButton('buy-now', 'Buy now', 'primary')}${routeLink('quality', 'View quality documents', 'button-link secondary')}</div>`;
 }
 
 function floatingActions() {
   const line = productCartLine();
   if (line) {
-    return `<div class="floating-qty-group">${qtyLeftButton(line.quantity)}<output class="floating-qty" aria-live="polite">${line.quantity}</output><button type="button" class="pack-btn" data-action="box-up" aria-label="Increase quantity">+</button></div>${routeLink('cart', 'Go to cart', 'button primary floating-buy')}`;
+    return `<div class="floating-qty-group">${qtyLeftButton(line.quantity)}<output class="floating-qty" aria-live="polite">${line.quantity}</output><button type="button" class="pack-btn" data-action="box-up" aria-label="Increase quantity">+</button></div>${button('open-cart', 'Go to cart', 'primary floating-buy')}`;
   }
   return `${purchaseButton('add-cart', 'Add to cart', 'floating-add')}${purchaseButton('buy-now', 'Buy now', 'primary floating-buy')}`;
 }
@@ -662,14 +752,23 @@ function showAuraBurst(control, text) {
   burst.addEventListener('animationend', () => burst.remove(), { once: true });
 }
 
+function setCartDrawer(open, focusClose = true) {
+  const drawer = document.querySelector('.cart-drawer');
+  if (!drawer) return;
+  cartDrawerState.open = open;
+  drawer.classList.toggle('open', open);
+  drawer.toggleAttribute('inert', !open);
+  drawer.setAttribute('aria-hidden', String(!open));
+  document.querySelector('.overlay')?.classList.toggle('open', open);
+  document.querySelector('.overlay')?.setAttribute('data-action', open ? 'close-cart' : 'close-menu');
+  document.body.classList.toggle('cart-open', open);
+  if (open && focusClose) drawer.querySelector('[data-action="close-cart"]')?.focus();
+}
+
 function cart() {
   const lines = commerce.cart?.lines.nodes || [];
   if (!lines.length) return `<section class="empty-state"><div>${commerceStatus()}<p class="hero-overline">Your cart</p><h1>Nothing here yet.</h1><p>Pick a flavour to begin your Aura Whey routine.</p>${routeLink('shop', 'Shop whey protein', 'button-link primary')}</div></section>`;
-  const cost = commerce.cart.cost;
-  return `<h1 class="page-title">Your cart</h1>${commerceStatus()}<div class="cart-layout"><section>${lines.map(line => {
-    const variant = line.merchandise;
-    return `<article class="cart-item"><div class="cart-image">${variant.image ? image(variant.image.url, variant.image.altText || variant.product.title) : ''}</div><div><h2>${escapeHtml(variant.product.title)}</h2><p>${variant.title === 'Default Title' ? '' : escapeHtml(variant.title)}</p><strong class="item-price">${formatMoney(variant.price)}</strong><div class="quantity"><span>Quantity</span><button class="quantity-button" type="button" data-action="line-down" data-line-id="${escapeHtml(line.id)}" aria-label="Decrease quantity" ${commerce.busy || line.quantity <= 1 ? 'disabled' : ''}>−</button><span>${line.quantity}</span><button class="quantity-button" type="button" data-action="line-up" data-line-id="${escapeHtml(line.id)}" aria-label="Increase quantity" ${commerce.busy ? 'disabled' : ''}>+</button></div><p>Line total: ${formatMoney(line.cost.totalAmount)}</p></div><button class="button" type="button" data-action="line-remove" data-line-id="${escapeHtml(line.id)}" ${commerce.busy ? 'disabled' : ''}>Remove</button></article>`;
-  }).join('')}</section><aside class="summary"><h2>Order summary</h2><div class="summary-row"><span>Subtotal</span><span>${formatMoney(cost.subtotalAmount)}</span></div>${commerce.cart.discountCodes.map(code => `<div class="summary-row"><span>${escapeHtml(code.code)}</span><span>${code.applicable ? 'Applied' : 'Not applicable'}</span></div>`).join('')}<div class="summary-row"><span>Shipping</span><span>Calculated at checkout</span></div><div class="summary-row"><strong>Estimated total</strong><strong>${formatMoney(cost.totalAmount)}</strong></div><div class="cart-coupon">${couponEntry()}</div><p><button class="button primary" type="button" data-action="checkout" ${commerce.busy ? 'disabled' : ''}>Secure checkout</button></p><p class="small">Final shipping and taxes are confirmed at checkout.</p></aside></div>`;
+  return `<h1 class="page-title">Your cart</h1>${commerceStatus()}<div class="cart-layout"><section>${lines.map(cartLineMarkup).join('')}</section><aside class="summary">${cartSummaryCard()}</aside></div>`;
 }
 
 function checkout() {
@@ -736,7 +835,16 @@ function closeSearch() {
 }
 
 
-function account() { return `<section class="page-intro compact"><p class="hero-overline">Your account</p><h1>Sign in to Aura Whey.</h1><div class="account-layout"><form class="form" data-form="account"><label class="field">Email address<input name="email" type="email" placeholder="you@example.com" /></label><label class="field">Password<input name="password" type="password" placeholder="Your password" /></label>${button('submit-account', 'Sign in', 'primary')}</form><div class="account-aside"><h3>New here?</h3><p>Create your customer account during Shopify checkout. You can then return to view your orders.</p>${routeLink('track-order', 'Track an order instead', 'text-link')}</div></div><div id="account-result" aria-live="polite"></div></section>`; }
+function account() {
+  const authFailure = new URLSearchParams(location.search).has('auth');
+  if (customerAccount.loading) return `<section class="page-intro compact account-page"><p class="hero-overline">Your account</p><h1>Checking your account…</h1><p role="status">Loading your secure Shopify account session.</p></section>`;
+  if (customerAccount.authenticated) {
+    const name = escapeHtml(customerAccount.customer?.displayName || 'Aura Whey customer');
+    const email = escapeHtml(customerAccount.customer?.email || '');
+    return `<section class="page-intro compact account-page"><p class="hero-overline">Your account</p><h1>Welcome, ${name}.</h1><div class="account-layout"><div class="account-profile"><span class="account-status">Signed in securely with Shopify</span><h2>${name}</h2>${email ? `<p>${email}</p>` : ''}<p>Your order history and fulfillment updates can be displayed here through the authenticated Customer Account API.</p><a class="button-link secondary" href="/api/auth/logout">Sign out</a></div><div class="account-aside"><h3>Your shopping bag stays with you</h3><p>Signing in or out does not reset the products already saved in this browser.</p>${routeLink('cart', 'View your cart', 'text-link')}</div></div></section>`;
+  }
+  return `<section class="page-intro compact account-page"><p class="hero-overline">Your account</p><h1>Sign in to Aura Whey.</h1>${authFailure || customerAccount.error ? '<div class="result state-invalid" role="alert"><strong>Sign-in was not completed.</strong><p>Please try again. Your cart has not been changed.</p></div>' : ''}<div class="account-layout"><div class="account-sign-in"><p>Continue to Shopify’s secure customer sign-in. Shopify will email you a one-time verification code and return you to Aura Whey.</p><a class="button-link primary" href="/api/auth/login">Continue to secure sign in</a></div><div class="account-aside"><h3>New here?</h3><p>Enter your email on Shopify’s secure page. If you do not have an account yet, Shopify will guide you through the customer account flow.</p>${routeLink('track-order', 'Track an order instead', 'text-link')}</div></div></section>`;
+}
 
 function blog() { return `<section class="page-intro"><p class="hero-overline">Aura journal</p><h1>Train with clarity.</h1><p>Practical reads for choosing your product and making your routine easier to keep.</p></section><section class="section"><div class="featured-post"><div class="featured-image">${image(posts[0].image, posts[0].alt)}</div><div><p class="hero-overline">Featured guide</p><h2>${posts[0].title}</h2><p>${posts[0].excerpt}</p>${routeLink(`article/${posts[0].slug}`, 'Read the guide', 'button-link primary')}</div></div></section><section class="section"><div class="section-inner"><div class="grid grid-3">${[0, 1, 2].map(blogCard).join('')}</div></div></section>`; }
 
@@ -894,6 +1002,8 @@ function applyTheme() {
 let heroTimer = null;
 let purchaseBarObserver = null;
 let purchaseBarFallbackCleanup = null;
+let purchaseBarState = { visible: false };
+let cartDrawerState = { open: false };
 
 function setHeroSlide(index) {
   const count = heroSlides.length;
@@ -986,11 +1096,20 @@ function initFloatingPurchaseBar() {
   const purchaseBar = document.querySelector('#floating-purchase');
   if (!purchaseGallery || !purchaseBar) return;
 
-  const setVisible = visible => {
+  const setVisible = (visible, animate = true) => {
+    purchaseBarState.visible = visible;
+    if (!animate) purchaseBar.classList?.add?.('no-transition');
     purchaseBar.classList.toggle('is-visible', visible);
     purchaseBar.setAttribute('aria-hidden', String(!visible));
+    if (!animate) {
+      void purchaseBar.offsetHeight;
+      purchaseBar.classList?.remove?.('no-transition');
+    }
   };
-  setVisible(false);
+  // Re-rendering rebuilds the bar from scratch, so it mounts in its hidden state.
+  // Re-apply the last known state without animating, otherwise the bar drops out and
+  // slides back up on every cart update ("flicker" while adding to cart).
+  setVisible(purchaseBarState.visible, false);
 
   if (!('IntersectionObserver' in window)) {
     const headerHeight = Math.ceil(document.querySelector('.site-header')?.getBoundingClientRect().height || 0);
@@ -1015,8 +1134,51 @@ function initFloatingPurchaseBar() {
   purchaseBarObserver.observe(purchaseGallery);
 }
 
-function render() { document.body.classList.remove('search-open'); document.body.classList.remove('menu-open'); applyTheme(); shell((views[currentRoute()] || home)()); bindEvents(); initHeroCarousel(); initFloatingPurchaseBar(); showSavedReview(); }
-function navigate(route) { history.pushState(null, '', route === 'home' ? '/' : `/${route}`); render(); window.scrollTo({ top: 0, left: 0, behavior: 'instant' }); }
+function render() {
+  const scrollX = window.scrollX;
+  const scrollY = window.scrollY;
+  const active = document.activeElement;
+  const focusKey = active && active.dataset.action ? active.dataset.action : null;
+  const focusLineId = active?.dataset?.lineId || '';
+  const selectionStart = typeof active?.selectionStart === 'number' ? active.selectionStart : null;
+  const selectionEnd = typeof active?.selectionEnd === 'number' ? active.selectionEnd : null;
+  const drawerOpen = cartDrawerState.open;
+  document.body.classList.remove('search-open');
+  document.body.classList.remove('menu-open');
+  applyTheme();
+  shell((views[currentRoute()] || home)());
+  bindEvents();
+  initHeroCarousel();
+  initFloatingPurchaseBar();
+  showSavedReview();
+  if (drawerOpen) setCartDrawer(true, false);
+  if (window.scrollX !== scrollX || window.scrollY !== scrollY) window.scrollTo({ top: scrollY, left: scrollX, behavior: 'instant' });
+  if (!focusKey) return;
+  const restored = [...document.querySelectorAll(`[data-action="${focusKey}"]`)].find(el => (el.dataset.lineId || '') === focusLineId);
+  if (!restored || restored.disabled) return;
+  restored.focus({ preventScroll: true });
+  if (selectionStart !== null && typeof restored.setSelectionRange === 'function') restored.setSelectionRange(selectionStart, selectionEnd);
+}
+
+async function initCustomerAccount() {
+  customerAccount.loading = true;
+  customerAccount.error = '';
+  try {
+    const response = await fetch('/api/auth/session', { credentials: 'same-origin', headers: { Accept: 'application/json' } });
+    if (!response.ok) throw new Error('Account session request failed.');
+    const result = await response.json();
+    customerAccount.authenticated = Boolean(result.authenticated);
+    customerAccount.customer = result.customer || null;
+  } catch (error) {
+    customerAccount.authenticated = false;
+    customerAccount.customer = null;
+    customerAccount.error = error.message;
+  } finally {
+    customerAccount.loading = false;
+    render();
+  }
+}
+function navigate(route) { history.pushState(null, '', route === 'home' ? '/' : `/${route}`); if (cartDrawerState.open) setCartDrawer(false, false); render(); window.scrollTo({ top: 0, left: 0, behavior: 'instant' }); }
 document.addEventListener('click', event => {
   const link = event.target.closest('a[href]');
   if (!link || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || link.hasAttribute('download') || (link.target && link.target !== '_self')) return;
@@ -1024,6 +1186,7 @@ document.addEventListener('click', event => {
   if (url.origin !== location.origin || url.hash || url.search) return;
   const route = url.pathname.replace(/^\//, '').replace(/\/$/, '') || 'home';
   if (!views[route.split('/')[0]]) return;
+  if (cartDrawerState.open) setCartDrawer(false, false);
   event.preventDefault();
   navigate(route);
 });
@@ -1040,7 +1203,30 @@ function setMobileMenu(open) {
   trigger.setAttribute('aria-controls', 'mobile-menu');
   (open ? panel.querySelector('.menu-close') : trigger)?.focus();
 }
+document.addEventListener('change', event => {
+  const select = event.target.closest('[data-qty-select]');
+  if (!select) return;
+  const line = commerce.cart?.lines.nodes.find(item => item.id === select.dataset.lineId);
+  const quantity = Number(select.value);
+  if (!line || !Number.isInteger(quantity) || quantity < 1 || quantity === line.quantity) return;
+  cartOperation(() => commerce.client.update(commerce.cart.id, [{ id: line.id, quantity }]));
+});
+document.addEventListener('click', event => {
+  const element = event.target.closest('[data-action]');
+  // #search-products has its own handler that closes the dialog before dispatching.
+  if (!element || element.closest('#search-products')) return;
+  handleAction(element.dataset.action, element);
+});
 document.addEventListener('keydown', event => {
+  const drawer = document.querySelector('.cart-drawer.open');
+  if (drawer && event.key === 'Escape') { event.preventDefault(); return setCartDrawer(false); }
+  if (drawer && event.key === 'Tab') {
+    const nodes = [...drawer.querySelectorAll('a[href], button:not([disabled]), input')];
+    const first = nodes[0], last = nodes[nodes.length - 1];
+    if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+    if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+    return;
+  }
   const panel = document.querySelector('.mobile-panel.open');
   if (!panel) return;
   if (event.key === 'Escape') { event.preventDefault(); setMobileMenu(false); }
@@ -1051,7 +1237,7 @@ document.addEventListener('keydown', event => {
     if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
   }
 });
-window.addEventListener('popstate', () => { if (document.querySelector('.mobile-panel.open')) setMobileMenu(false); });
+window.addEventListener('popstate', () => { if (document.querySelector('.mobile-panel.open')) setMobileMenu(false); if (document.querySelector('.cart-drawer.open')) setCartDrawer(false); });
 
 function bindEvents() {
   const dialog = document.querySelector('#search-dialog');
@@ -1063,7 +1249,6 @@ function bindEvents() {
     if (card) { closeSearch(); handleAction(card.dataset.action, card); }
   });
   document.querySelectorAll('[data-route]').forEach(link => link.addEventListener('click', () => setTimeout(() => document.querySelector('main')?.focus(), 0)));
-  document.querySelectorAll('[data-action]').forEach(element => element.addEventListener('click', () => handleAction(element.dataset.action, element)));
   document.querySelector('[data-variant-select]')?.addEventListener('change', event => {
     commerce.products[state.flavour].selectedVariantId = event.target.value;
     const variant = selectedVariant();
@@ -1073,6 +1258,42 @@ function bindEvents() {
     render();
   });
   document.querySelectorAll('form[data-form]').forEach(form => form.addEventListener('submit', handleForm));
+  document.querySelectorAll('.peek-rating-stars').forEach(group => {
+    let selected = Number(group.querySelector('input:checked')?.value || 0);
+    updatePeekRating(group, selected);
+    group.querySelectorAll('input').forEach(input => {
+      const item = input.closest('label');
+      item.addEventListener('pointerenter', event => {
+        if (event.pointerType !== 'touch') updatePeekRating(group, Number(input.value));
+      });
+      input.addEventListener('focus', () => updatePeekRating(group, Number(input.value)));
+      input.addEventListener('click', () => {
+        selected = selected === Number(input.value) ? 0 : Number(input.value);
+        group.querySelectorAll('input').forEach(radio => { radio.checked = Number(radio.value) === selected; });
+        updatePeekRating(group, selected);
+        const star = item.querySelector('[aria-hidden]');
+        if (selected && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          star.animate([{ transform: 'scale(1)' }, { transform: 'scale(1.3)' }, { transform: 'scale(1)' }], { duration: 320 });
+        }
+      });
+    });
+    group.addEventListener('pointerleave', () => updatePeekRating(group, selected));
+    group.addEventListener('focusout', event => {
+      if (!group.contains(event.relatedTarget)) updatePeekRating(group, selected);
+    });
+  });
+}
+
+function updatePeekRating(group, value) {
+  if (!group) return;
+  const labels = ['Poor', 'Fair', 'Good', 'Great', 'Superb'];
+  const tip = group.querySelector('.peek-rating-tip');
+  if (tip) tip.textContent = value ? labels[value - 1] : 'Choose a rating';
+  group.querySelectorAll('[data-rating]').forEach(item => {
+    item.classList.toggle('is-previewed', Number(item.dataset.rating) <= value);
+    item.classList.toggle('is-current', Number(item.dataset.rating) === value);
+  });
+  if (tip) tip.style.left = `${value ? (value - 1) * 48 + 22 : 110}px`;
 }
 
 function showToast(message) {
@@ -1087,13 +1308,29 @@ function showToast(message) {
   toast.textContent = message;
   toast.classList.add('visible');
   clearTimeout(toast._timer);
-  toast._timer = setTimeout(() => toast.classList.remove('visible'), 2800);
+  toast._timer = setTimeout(() => toast.classList.remove('visible'), 2000);
 }
 
 async function handleAction(action, element) {
   if (action === 'open-search') return openSearch();
   if (action === 'close-search') return closeSearch();
   if (action === 'apply-coupon') return applyShopifyCoupon('DISC5');
+  if (action === 'remove-coupon') {
+    if (commerce.busy) return;
+    const codes = (commerce.cart?.discountCodes || []).filter(code => code.code !== element.dataset.code).map(code => code.code);
+    return commerce.cart ? cartOperation(() => commerce.client.discount(commerce.cart.id, codes)) : applyShopifyCoupon('');
+  }
+  if (action === 'change-pincode') {
+    state.delivery = { pincode: '', status: 'idle', message: '' };
+    render();
+    document.querySelector('#summary-pincode')?.focus();
+    return;
+  }
+  if (action === 'check-pincode') {
+    const input = document.querySelector('#summary-pincode');
+    if (!input || state.delivery.status === 'checking') return;
+    return handleForm({ preventDefault() {}, currentTarget: { dataset: { form: 'delivery-check' }, elements: { pincode: input } } });
+  }
   if (action === 'retry-shopify') return initCommerce();
   if (action.startsWith('line-')) return changeCartLine(action, element.dataset.lineId);
   if (action === 'box-up' || action === 'box-down') {
@@ -1127,6 +1364,8 @@ async function handleAction(action, element) {
   }
   if (action === 'open-menu') return setMobileMenu(true);
   if (action === 'close-menu') return setMobileMenu(false);
+  if (action === 'open-cart') return setCartDrawer(true);
+  if (action === 'close-cart') return setCartDrawer(false);
   if (action === 'go-shop') return navigate('shop');
   if (action.startsWith('select-')) { state.flavour = action.replace('select-', ''); state.productImage = 0; state.imageZoom = 1; return currentRoute() === 'shop' ? render() : navigate('shop'); }
   if (action.startsWith('product-image-')) {
@@ -1213,7 +1452,6 @@ async function handleForm(event) {
     return;
   }
   if (form.dataset.form === 'contact') { document.querySelector('#contact-result').innerHTML = '<div class="result state-valid"><strong>Message received</strong><p>Thanks. The support team will reply to the email address you provided.</p></div>'; return; }
-  if (form.dataset.form === 'account') { document.querySelector('#account-result').innerHTML = '<div class="result"><strong>Account sign-in</strong><p>Connect this form to Shopify customer accounts when the store integration is enabled.</p></div>'; return; }
   if (form.dataset.form === 'search') return updateSearchResults();
 }
 
@@ -1222,8 +1460,9 @@ window.addEventListener('popstate', () => {
   window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
 });
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => { render(); initCommerce(); });
+  document.addEventListener('DOMContentLoaded', () => { render(); initCommerce(); initCustomerAccount(); });
 } else {
   render();
   initCommerce();
+  initCustomerAccount();
 }

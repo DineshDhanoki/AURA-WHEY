@@ -163,26 +163,41 @@ p { margin: 0 0 1rem; color: var(--muted); }
 
 .site-toast {
   position: fixed;
-  top: calc(var(--banner-h) + var(--header-h) + 1rem);
-  right: 1.5rem;
+  left: 50%;
+  bottom: calc(1.5rem + env(safe-area-inset-bottom));
+  right: auto;
+  top: auto;
   z-index: 100;
-  padding: 0.75rem 1.25rem;
-  background: var(--gold);
-  color: #000;
-  font: 800 0.75rem/1 Montserrat, Arial, sans-serif;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  border-radius: 8px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  width: fit-content;
+  max-width: min(19rem, calc(100vw - 2rem));
+  padding: 0.7rem 1.3rem;
+  background: color-mix(in srgb, var(--gold) 22%, transparent);
+  color: var(--text);
+  font: 600 1rem/1.35 "Plus Jakarta Sans", Arial, sans-serif;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  text-align: center;
+  text-wrap: balance;
+  border: 1px solid color-mix(in srgb, var(--gold) 45%, transparent);
+  border-radius: 999px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.14);
+  backdrop-filter: blur(14px) saturate(160%);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
   opacity: 0;
-  transform: translateY(-10px);
+  transform: translate(-50%, 1.5rem);
   pointer-events: none;
-  transition: opacity 0.25s ease, transform 0.25s ease;
+  transition: opacity 0.28s ease, transform 0.32s cubic-bezier(.22,1.28,.42,1);
 }
 
 .site-toast.visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: translate(-50%, 0);
+}
+
+/* The quick-purchase bar is fixed to the bottom of the product page, so lift the toast
+   clear of it instead of letting the two overlap. */
+body:has(.floating-purchase.is-visible) .site-toast {
+  bottom: calc(var(--floating-purchase-h, 5.5rem) + 1.25rem);
 }
 
 .header { min-height: var(--header-h); border-bottom: 1px solid var(--line); background: color-mix(in srgb, var(--bg) 91%, transparent); box-shadow: 0 4px 24px rgba(0, 0, 0, .45); backdrop-filter: blur(18px); }
@@ -522,6 +537,22 @@ main { width: 100%; padding-top: calc(var(--banner-h) + var(--header-h)); overfl
 .review-rating span { display: block; padding: .7rem .9rem; border: 1px solid var(--line); border-radius: 6px; }
 .review-rating input:checked + span { background: var(--flavour-button); color: #fffaf4; border-color: var(--gold); }
 .review-rating input:focus-visible + span { outline: 2px solid var(--gold); outline-offset: 3px; }
+.peek-rating-stars { position: relative; display: flex; gap: 4px; padding: 40px 0 8px; width: max-content; }
+.peek-rating-stars > label { display: grid; place-items: center; width: 44px; height: 44px; cursor: pointer; touch-action: manipulation; }
+.peek-rating-stars input { inset: 0; z-index: 2; }
+.peek-rating-stars > label > span[aria-hidden] { padding: 0; border: 0; border-radius: 0; background: transparent; color: #52525b; font: 32px/1 Arial, sans-serif; transition: color .16s ease, translate .32s ease, scale .32s ease; }
+.peek-rating-stars > label.is-previewed > span[aria-hidden] { color: #f5b400; }
+.peek-rating-stars > label > span[aria-hidden] svg { display: block; width: 36px; height: 36px; }
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .peek-rating-stars > label:hover > span[aria-hidden] { translate: 0 -7px; scale: 1.15; }
+}
+.peek-rating-stars input:focus-visible + span { outline: 2px solid #f5b400; outline-offset: 5px; border-radius: 3px; }
+.peek-rating-stars .sr-only { padding: 0; border: 0; }
+.peek-rating-stars > .peek-rating-tip { position: absolute; top: 0; left: 118px; translate: -50% 0; padding: 3px 12px; border: 0; border-radius: 999px; background: #27272a; color: #f5f5f5; font: 700 14px/1.3 Arial, sans-serif; white-space: nowrap; pointer-events: none; visibility: hidden; transition: left .32s ease; }
+@media (hover: hover) {
+  .peek-rating-stars:has(> label:hover) > .peek-rating-tip { visibility: visible; }
+}
+@media (prefers-reduced-motion: reduce) { .peek-rating-stars > label > span[aria-hidden], .peek-rating-stars > .peek-rating-tip { transition: none; } .peek-rating-stars > label.is-current > span[aria-hidden] { translate: none; scale: none; } }
 .review-preview { overflow-wrap: anywhere; }
 .review-preview-footer { position: relative; z-index: 1; width: 100%; display: flex; align-items: center; justify-content: space-between; gap: .75rem; flex-wrap: wrap; }
 @media (max-width: 900px) { .review-card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
@@ -609,7 +640,7 @@ button.thumbnail:hover { border-color: var(--gold); }
 .summary-row { display: flex; align-items: baseline; justify-content: space-between; gap: .75rem; padding: .7rem 0; border-bottom: 1px solid var(--line); color: var(--muted); font-size: .82rem; }
 .summary-row strong { color: var(--text); }
 .discount span { color: var(--gold); }
-.cart-coupon { margin-top: .9rem; padding-top: .9rem; border-top: 1px solid var(--line); }
+.summary-block .cart-coupon { margin-top: 0; padding-top: 0; border-top: 0; }
 
 .form { display: grid; gap: 1rem; max-width: 38rem; }
 .field { display: grid; gap: .45rem; color: var(--text); font: 700 .65rem/1.3 Montserrat, Arial, sans-serif; letter-spacing: .09em; text-transform: uppercase; }
@@ -690,8 +721,14 @@ body.search-open { overflow: hidden; }
 @keyframes search-zoom { from { opacity: 0; transform: scale(.93) translateY(12px); } to { opacity: 1; transform: scale(1) translateY(0); } }
 @media (max-width: 480px) { .search-product { gap: .75rem; } .search-product img { width: 68px; height: 68px; } }
 .account-layout, .verify-layout, .track-layout, .contact-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(18rem, .72fr); gap: clamp(1.5rem, 5vw, 4rem); align-items: start; }
+.account-layout > *, .account-page h1, .account-profile h2 { min-width: 0; max-width: 100%; overflow-wrap: anywhere; word-break: break-word; }
 .account-aside, .track-help, .contact-aside { display: grid; gap: .7rem; padding: 1.25rem; border: 1px solid var(--line); border-top: 2px solid var(--gold); border-radius: var(--radius-sm); background: var(--surface); }
 .account-aside p, .track-help p, .contact-aside p { margin: 0; font-size: .82rem; }
+.account-sign-in, .account-profile { display: grid; justify-items: start; gap: 1rem; padding: clamp(1.25rem, 3vw, 2rem); border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface); }
+.account-sign-in p, .account-profile p { margin: 0; max-width: 42rem; }
+.account-profile h2 { margin: 0; }
+.account-status { color: var(--gold); font-size: .72rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.icon-button.is-authenticated { color: var(--gold); }
 .verify-image img { width: 100%; max-height: 390px; object-fit: contain; }
 .featured-post { width: min(var(--container), calc(100% - 2rem)); display: grid; grid-template-columns: minmax(0, 1.18fr) minmax(18rem, .82fr); gap: clamp(1.5rem, 5vw, 4rem); align-items: center; margin: 0 auto; }
 .featured-image, .blog-image { overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--surface-low); }
@@ -772,6 +809,86 @@ body.search-open { overflow: hidden; }
 .overlay { position: fixed; inset: 0; z-index: 55; display: none; background: rgba(0,0,0,.72); backdrop-filter: blur(4px); }
 .overlay.open { display: block; }
 
+/* Slide-in cart drawer. Mirrors the .mobile-panel slide but sits above it and the overlay.
+   Holds the real cart view, so the cart grid is forced to a single column inside it. */
+.cart-drawer { position: fixed; inset: 0 0 0 auto; z-index: 70; width: min(26rem, 100vw); display: flex; flex-direction: column; border-left: 1px solid var(--line); background: var(--bg); box-shadow: -12px 0 40px rgba(0,0,0,.7); transform: translateX(100%); transition: transform .28s cubic-bezier(.22,.8,.3,1); }
+.cart-drawer.open { transform: translateX(0); }
+.cart-drawer:not(.open) { visibility: hidden; }
+.cart-drawer-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.1rem 1.3rem; border-bottom: 1px solid var(--line); background: var(--surface); }
+.cart-drawer-head h2 { margin: 0; color: var(--text); font: 800 1.05rem/1.2 Montserrat, Arial, sans-serif; text-transform: uppercase; letter-spacing: .04em; }
+.cart-drawer-body { flex: 1; overflow-y: auto; padding: 1.1rem 1.3rem max(1.1rem, env(safe-area-inset-bottom)); }
+.cart-drawer .page-title { display: none; }
+.cart-drawer .cart-layout { width: 100%; grid-template-columns: minmax(0, 1fr); gap: 1.2rem; margin: 0; }
+/* Flat list-row card: no outer border, no rounded container, hairline divider between
+   rows, square image on the left, trash icon top-right. */
+.cart-drawer .cart-item { grid-template-columns: 7rem minmax(0, 1fr); gap: 1.1rem; align-items: start; padding: 1.2rem 0; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; background: transparent; }
+.cart-drawer .cart-item:first-child { padding-top: 0; }
+.cart-drawer .cart-item:last-child { border-bottom: 0; }
+.cart-drawer .cart-item-head { display: flex; align-items: flex-start; justify-content: space-between; gap: .6rem; }
+.cart-drawer .cart-item h2 { margin: 0 0 .45rem; color: var(--text); font: 700 1rem/1.35 "Plus Jakarta Sans", Arial, sans-serif; letter-spacing: 0; text-transform: none; }
+.cart-drawer .cart-item-remove { flex: 0 0 auto; display: grid; place-items: center; width: 30px; height: 30px; padding: 0; border: 0; border-radius: 50%; background: transparent; color: var(--soft); cursor: pointer; transition: background .18s ease, color .18s ease; }
+.cart-drawer .cart-item-remove:hover:not(:disabled) { background: color-mix(in srgb, var(--text) 10%, transparent); color: var(--text); }
+.cart-drawer .cart-item-remove .icon { width: 1.05rem; height: 1.05rem; }
+.cart-drawer .cart-item-remove:disabled { opacity: .5; cursor: default; }
+.cart-drawer .cart-image { width: 7rem; height: 7rem; padding: 0; border-radius: var(--radius-sm); }
+.cart-drawer .cart-item-price { margin: 0 0 .1rem; }
+.cart-drawer .item-price { display: inline; margin: 0; font: 800 1.15rem/1.2 Montserrat, Arial, sans-serif; }
+.cart-drawer .line-total { margin: 0 0 .6rem; color: var(--soft); font-size: .8rem; }
+.cart-drawer .cart-item-controls { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; }
+.cart-drawer .cart-item-select { display: inline-flex; align-items: center; gap: .35rem; color: var(--muted); font-size: .82rem; }
+.cart-drawer .cart-item-select select { border: 1px solid var(--line-strong); border-radius: 6px; padding: .3rem .2rem .3rem .5rem; background: var(--surface); color: var(--text); font: 700 .82rem/1.2 Montserrat, Arial, sans-serif; cursor: pointer; }
+.cart-drawer .quantity-button { min-height: 32px; min-width: 32px; border-radius: 6px; font-size: .95rem; }
+.cart-drawer .quantity-value { min-width: 1.2rem; color: var(--text); font-weight: 700; font-size: .95rem; text-align: center; }
+.summary, .cart-drawer .summary { padding: 0; border: 0; background: transparent; box-shadow: none; }
+.summary-card { margin-bottom: .6rem; padding: 1rem; border: 0; border-radius: 0; background: var(--surface); }
+.summary-card-title { margin: 0 0 .6rem; font-size: .95rem; text-transform: none; }
+.summary-card-note { margin: 0 0 .8rem; font-size: .8rem; }
+.summary-card .cart-coupon { margin: 0; padding: 0; border: 0; }
+.summary-card .inline-action-row { display: grid; grid-template-columns: minmax(0, 1fr) 4.75rem; gap: .5rem; }
+.summary-card input { min-width: 0; width: 100%; min-height: 44px; padding: .6rem; border: 1px solid var(--line-strong); border-radius: 6px; background: var(--bg); color: var(--text); }
+.summary-card .inline-action-row .button { width: 100%; min-width: 0; min-height: 40px; height: 40px; padding: .5rem; border-radius: 4px; background: var(--gold); color: var(--ink); font-size: .75rem; text-transform: none; letter-spacing: 0; }
+.summary-card .inline-action-row input { min-height: 40px; height: 40px; background: var(--surface); border-radius: 4px; font-size: .8rem; }
+.summary > h2 { display: none; }
+.summary-card .coupon-form > label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.summary-card .coupon-result { font-size: .75rem; }
+.summary-card .summary-row { padding: .4rem 0; border: 0; font-size: .8rem; }
+.summary-card .summary-row-total { margin-top: .55rem; padding-top: .7rem; border-top: 1px dashed var(--line-strong); }
+.summary-card .summary-card-title { font-family: "Plus Jakarta Sans", Arial, sans-serif; font-size: .88rem; letter-spacing: 0; }
+.cart-drawer .summary { margin-inline: -1.3rem; }
+.cart-drawer .summary-card { padding-inline: 1.3rem; }
+.summary > p { padding-inline: 1rem; }
+.summary > p .button { width: 100%; }
+.applied-coupon { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; margin-top: .8rem; padding: .7rem; border: 1px dashed var(--gold); border-radius: 6px; }
+.applied-coupon-code, .pincode-value { font-weight: 700; }
+.applied-coupon-state { font-size: .75rem; color: var(--muted); }
+.applied-coupon-remove, .pincode-change { min-height: 44px; padding: .4rem; border: 0; background: transparent; color: var(--gold); text-decoration: underline; font-weight: 700; }
+.applied-coupon-remove { margin-left: auto; }
+.summary-payments-card { text-align: center; }
+/* Rebuilt Order summary: stacked blocks with dividers, per the supplied design. */
+.summary-block { padding: 1rem 0; border-bottom: 1px solid var(--line); }
+.summary-block:first-of-type { padding-top: 0; }
+.summary-block:last-of-type { border-bottom: 0; }
+.summary-block-title { margin: 0 0 .35rem; color: var(--text); font: 800 .95rem/1.25 Montserrat, Arial, sans-serif; }
+.summary-block-note { margin: 0 0 .7rem; color: var(--soft); font-size: .78rem; }
+.summary-block .summary-row { padding: .55rem 0; }
+.summary-block .summary-row:first-of-type { padding-top: 0; }
+.summary-row-savings span:last-child { color: var(--green); font-weight: 700; }
+.summary-row-total { border-bottom: 0; padding-top: .8rem; }
+.summary-row-total strong:first-child { font: 800 1.05rem/1.25 Montserrat, Arial, sans-serif; color: var(--text); text-transform: none; }
+.summary-row-total strong:last-child { font: 800 1.2rem/1.25 Montserrat, Arial, sans-serif; }
+.summary-tax-note { margin: .2rem 0 0; color: var(--soft); font-size: .74rem; }
+.summary-savings-banner { margin: .8rem 0 0; padding: .6rem .8rem; border-radius: var(--radius-sm); background: color-mix(in srgb, var(--green) 16%, transparent); color: var(--text); font-size: .82rem; text-align: center; }
+.summary-payments { padding-top: 1rem; text-align: center; }
+.summary-payments-badge { display: inline-grid; place-items: center; min-width: 3rem; height: 1.5rem; margin: 0 .2rem; padding: 0 .4rem; border: 1px solid var(--line); border-radius: 4px; background: var(--surface-low); color: var(--soft); font: 700 .58rem/1 Montserrat, Arial, sans-serif; letter-spacing: .04em; }
+.summary-payments-note { margin: .7rem 0 0; color: var(--soft); font-size: .75rem; }
+.cart-drawer .empty-state { padding: 1.5rem 0; }
+body.cart-open { overflow: hidden; }
+@media (max-width: 480px) {
+  .cart-drawer { width: 100vw; }
+  .cart-drawer .cart-item { grid-template-columns: 5.5rem minmax(0, 1fr); gap: .9rem; }
+  .cart-drawer .cart-image { width: 5.5rem; height: 5.5rem; }
+}
+
 @media (max-width: 1150px) { .desktop-nav { display: none; }.menu-button { display: grid; } }
 @media (max-width: 900px) {
   .product-layout, .quality-process, .featured-post, .account-layout, .verify-layout, .track-layout, .contact-layout { grid-template-columns: 1fr; }
@@ -839,6 +956,12 @@ html[data-theme="light"] .product-page .button.primary:hover, html[data-theme="l
   transition: opacity .2s ease, transform .25s ease, visibility .25s;
 }
 .floating-purchase.is-visible { opacity: 1; visibility: visible; transform: translateY(0); pointer-events: auto; }
+/* Applied for the frame that restores the bar's remembered state after a re-render,
+   so a cart update does not replay the slide-in animation. */
+.floating-purchase.no-transition { transition: none; }
+/* The bar is position: fixed at the bottom, so any height change on a cart update makes
+   it visibly drop and settle. Pin it and never let the two action states differ. */
+.floating-purchase { contain: layout; --floating-purchase-h: 5.5rem; }
 .floating-purchase-inner { width: min(1120px, 100%); min-height: 68px; display: flex; align-items: center; justify-content: space-between; gap: 2rem; margin: 0 auto; }
 .floating-product-summary { min-width: 0; display: grid; grid-template-columns: 58px minmax(12rem, 1fr) auto; align-items: center; gap: .85rem; }
 .floating-product-summary img { width: 58px; height: 58px; padding: 2px; border-radius: 6px; background: var(--flavour-media); object-fit: contain; }
@@ -1017,7 +1140,7 @@ html[data-theme="light"] .product-page .button.primary:hover, html[data-theme="l
   .product-page .price > span { font-size: .85rem; }
   .purchase-panel { padding-bottom: 1.5rem; }
   .product-zoom-controls .button { min-width: 44px; min-height: 44px; }
-  .site-toast { left: 1rem; right: 1rem; font-size: .85rem; line-height: 1.5; text-transform: none; letter-spacing: 0; }
+  .site-toast { left: 50%; right: auto; width: fit-content; max-width: calc(100vw - 2rem); font-size: .95rem; line-height: 1.45; padding: .8rem 1.2rem; }
   .cart-item { grid-template-columns: minmax(0, 1fr); }
   .cart-image { width: min(100%, 12rem); margin-inline: auto; }
   .quantity, .button-row { flex-wrap: wrap; }
@@ -1037,15 +1160,21 @@ html[data-theme="light"] .product-page .button.primary:hover, html[data-theme="l
 .floating-qty-group .pack-btn { background: transparent; color: var(--flavour-ink); }
 .floating-qty-group .pack-btn:hover:not(:disabled) { background: color-mix(in srgb, var(--flavour-ink) 10%, transparent); }
 .floating-qty-group .floating-qty { min-width: 3.5rem; }
-.floating-purchase-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); justify-content: end; gap: .75rem; max-width: 24rem; }
+/* One fixed action-row height for both states: before a cart line exists (Add to cart +
+   Buy now) and after (quantity group + Go to cart). Without this the row is 52px before
+   and 48px after, so the fixed bottom bar drops and settles on every cart update. */
+.floating-purchase-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); justify-content: end; gap: .75rem; max-width: 24rem; align-items: stretch; }
+.floating-purchase-actions > * { min-height: 52px; box-sizing: border-box; }
 .floating-purchase-actions .button { width: 100%; min-height: 52px; border-radius: 10px; }
+.floating-purchase-actions .floating-qty-group { min-height: 52px; }
 .product-page .floating-purchase-actions .button.floating-add { background: #fffdf8 !important; border-color: #fffdf8 !important; color: #3d2b1a !important; box-shadow: none; }
 .product-page .floating-purchase-actions .button.floating-add:hover { background: #ffffff !important; border-color: #ffffff !important; color: #3d2b1a !important; transform: none; }
 .floating-qty { min-width: 5.5rem; color: var(--flavour-ink); text-align: center; font: 900 1rem/1 Montserrat, Arial, sans-serif; }
 @media (min-width: 641px) {
   /* Keep the quick-purchase buttons the same footprint before and after a cart line exists. */
-  .floating-purchase-actions { grid-template-columns: repeat(2, 12rem); max-width: none; }
+  .floating-purchase-actions { grid-template-columns: repeat(2, 12rem); max-width: none; align-items: stretch; }
   .floating-purchase-actions > .button { width: 12rem; }
+  .floating-purchase-actions > .floating-qty-group { width: 12rem; }
 }
 @media (max-width: 640px) {
   /* The mobile quick-purchase bar must use the full viewport width. */
@@ -1100,5 +1229,9 @@ html[data-theme="light"] .product-page .button.primary:hover, html[data-theme="l
 /* Keep the mobile action bar exactly as tall as its buttons. */
 @media (max-width: 640px) {
   .floating-purchase-inner { min-height: 0 !important; }
-  .floating-purchase-actions { min-height: 52px; }
+  .floating-purchase-actions { min-height: 64px; }
+  /* Mobile forces 64px buttons, so the quantity group must match or the bar resizes. */
+  .floating-purchase-actions > *,
+  .floating-purchase-actions > .button,
+  .floating-purchase-actions .floating-qty-group { min-height: 64px !important; }
 }
