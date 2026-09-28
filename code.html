@@ -1,0 +1,1018 @@
+<!DOCTYPE html><html class="dark" lang="en" style=""><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&amp;family=Plus+Jakarta+Sans:wght@400;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+          "secondary-fixed": "#ffdea4",
+          "secondary-container": "#e3a600",
+          "secondary-fixed-dim": "#fcbc24",
+          "secondary": "#ffc23d",
+          "surface": "#131313",
+          "on-error-container": "#ffdad6",
+          "tertiary-container": "#4ce378",
+          "background": "#131313",
+          "surface-container-low": "#1c1b1b",
+          "on-secondary-fixed-variant": "#5d4200",
+          "on-primary": "#402d00",
+          "inverse-on-surface": "#313030",
+          "primary-container": "#fbbf24",
+          "inverse-primary": "#795900",
+          "primary": "#ffe1a7",
+          "surface-container-highest": "#353534",
+          "on-primary-fixed": "#261a00",
+          "on-primary-fixed-variant": "#5c4300",
+          "on-primary-container": "#6c4f00",
+          "outline-variant": "#4f4633",
+          "surface-tint": "#f9bd22",
+          "inverse-surface": "#e5e2e1",
+          "on-background": "#e5e2e1",
+          "error": "#ffb4ab",
+          "on-tertiary-container": "#006129",
+          "on-surface-variant": "#d3c5ac",
+          "surface-container-lowest": "#0e0e0e",
+          "tertiary": "#78ff96",
+          "on-tertiary-fixed-variant": "#005321",
+          "on-tertiary": "#003915",
+          "surface-container-high": "#2a2a2a",
+          "on-secondary-fixed": "#261900",
+          "surface-bright": "#3a3939",
+          "surface-variant": "#353534",
+          "on-secondary-container": "#593f00",
+          "surface-dim": "#131313",
+          "outline": "#9c8f79",
+          "on-tertiary-fixed": "#002109",
+          "on-surface": "#e5e2e1",
+          "surface-container": "#201f1f",
+          "tertiary-fixed-dim": "#4ae176",
+          "primary-fixed": "#ffdf9f",
+          "on-error": "#690005",
+          "primary-fixed-dim": "#f9bd22",
+          "on-secondary": "#412d00",
+          "error-container": "#93000a",
+          "tertiary-fixed": "#6bff8f"
+        },
+        "borderRadius": {
+          "DEFAULT": "0.25rem",
+          "lg": "0.5rem",
+          "xl": "0.75rem",
+          "full": "9999px"
+        },
+        "spacing": {
+          "xs": "0.5rem",
+          "margin-mobile": "1rem",
+          "container-max": "1280px",
+          "gutter-desktop": "1.5rem",
+          "sm": "0.75rem",
+          "3xs": "0.125rem",
+          "gutter-mobile": "1rem",
+          "md": "1rem",
+          "margin-desktop": "3rem",
+          "xl": "2rem",
+          "lg": "1.5rem",
+          "2xs": "0.25rem",
+          "3xl": "4rem",
+          "2xl": "3rem",
+          "margin-tablet": "2rem"
+        },
+        "fontFamily": {
+          "metric-number": ["Montserrat"],
+          "display-xl": ["Montserrat"],
+          "headline-md": ["Montserrat"],
+          "body-md": ["Plus Jakarta Sans"],
+          "label-caps": ["Montserrat"],
+          "headline-lg-mobile": ["Montserrat"],
+          "headline-lg": ["Montserrat"],
+          "display-xl-mobile": ["Montserrat"],
+          "body-lg": ["Plus Jakarta Sans"],
+          "headline-sm": ["Montserrat"],
+          "body-sm": ["Plus Jakarta Sans"],
+          "label-spec": ["Plus Jakarta Sans"]
+        },
+        "fontSize": {
+          "metric-number": ["32px", {"lineHeight": "36px", "letterSpacing": "0", "fontWeight": "900"}],
+          "display-xl": ["56px", {"lineHeight": "64px", "letterSpacing": "-0.02em", "fontWeight": "900"}],
+          "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "0.03em", "fontWeight": "700"}],
+          "body-md": ["15px", {"lineHeight": "24px", "fontWeight": "400"}],
+          "label-caps": ["11px", {"lineHeight": "14px", "letterSpacing": "0.12em", "fontWeight": "700"}],
+          "headline-lg-mobile": ["26px", {"lineHeight": "32px", "letterSpacing": "0.01em", "fontWeight": "800"}],
+          "headline-lg": ["36px", {"lineHeight": "44px", "letterSpacing": "0.02em", "fontWeight": "800"}],
+          "display-xl-mobile": ["36px", {"lineHeight": "42px", "letterSpacing": "-0.01em", "fontWeight": "900"}],
+          "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+          "headline-sm": ["18px", {"lineHeight": "24px", "letterSpacing": "0.04em", "fontWeight": "700"}],
+          "body-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+          "label-spec": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600"}]
+        }
+      }
+    }
+  }</script></head><body class="bg-background font-body-md text-body-md text-on-surface antialiased selection:bg-primary-container selection:text-on-primary-container"><header class="fixed top-0 w-full z-50 bg-surface/90 backdrop-blur-xl shadow-[0_4px_24px_rgba(0,0,0,0.6)]"><div class="w-full bg-surface-container-lowest text-center py-2 px-margin-mobile flex items-center justify-center gap-xs overflow-x-auto whitespace-nowrap"><span class="material-symbols-outlined text-primary text-sm">local_shipping</span><span class="text-label-caps font-label-caps uppercase text-on-surface-variant tracking-wider">🇮🇳 Fast Nationwide Delivery Across India | Free Shipping on Orders Over ₹999 | 100% Genuine &amp; Lab Tested</span></div><div class="h-20 max-w-[1280px] mx-auto px-gutter-mobile lg:px-gutter-desktop flex items-center justify-between gap-md"><div class="flex items-center gap-sm shrink-0"><a href="#" class="flex items-center gap-3 group"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCwFnuWf1_r96fbGsW0MJk8vggiyGI7Gf2vqTUEypnTFOvJ7oYU8Qxy1meN9G8Pn8xvjR0ieNNEDdVOOFInEK8S9sqiHSgEGGANw3ecvcEYWbwX0aYX6ENbsdHkqAV0IX-xwJNU64EAbugu4SIWP8G__Gyq8nm30pWGKimO_5pYp75Vm6EJ19fihQv7_EnpdSpfYTmE67P7H1raa9ppCCVDQgrLzyApKp7eCP1z8MfedaenUmm3YkiiTbRDU2CwH_DvuA" alt="Aura Whey Logo" class="h-10 w-10 object-contain rounded-md group-hover:scale-105 transition-transform duration-200"><div class="flex flex-col"><span class="text-headline-sm font-headline-sm uppercase tracking-wider text-primary font-bold leading-tight">AURA WHEY</span><span class="text-label-caps font-label-caps text-on-surface-variant uppercase tracking-widest text-[10px] -mt-0.5">FUEL YOUR AURA</span></div></a></div><nav class="hidden xl:flex items-center gap-lg" data-active-classes="text-primary font-bold"><a aria-current="page" class="transition-colors whitespace-nowrap text-primary font-bold" data-path="home" href="#">Home</a><a class="text-body-sm font-body-sm text-on-surface-variant hover:text-on-surface transition-colors whitespace-nowrap" data-path="shop" href="#">Shop</a><a class="text-body-sm font-body-sm text-on-surface-variant hover:text-on-surface transition-colors whitespace-nowrap" data-path="why-aura-whey" href="#">Why Aura Whey</a><a class="text-body-sm font-body-sm text-on-surface-variant hover:text-on-surface transition-colors whitespace-nowrap" data-path="nutrition-and-ingredients" href="#">Nutrition &amp; Ingredients</a><a class="text-body-sm font-body-sm text-on-surface-variant hover:text-on-surface transition-colors whitespace-nowrap" data-path="quality-and-testing" href="#">Quality &amp; Testing</a><a class="text-body-sm font-body-sm text-on-surface-variant hover:text-on-surface transition-colors whitespace-nowrap" data-path="flavours" href="#">Flavours</a><a class="text-body-sm font-body-sm text-on-surface-variant hover:text-on-surface transition-colors whitespace-nowrap" data-path="about" href="#">About</a><a class="text-body-sm font-body-sm text-on-surface-variant hover:text-on-surface transition-colors whitespace-nowrap" data-path="faqs" href="#">FAQs</a><a class="text-body-sm font-body-sm text-on-surface-variant hover:text-on-surface transition-colors whitespace-nowrap" data-path="contact" href="#">Contact</a></nav><div class="flex items-center gap-xs md:gap-sm shrink-0"><button aria-label="Quick Search" class="p-2 text-on-surface-variant hover:text-primary transition-colors flex items-center justify-center" type="button"><span class="material-symbols-outlined">search</span></button><button aria-label="Cart Preview" class="flex items-center gap-xs px-3 py-1.5 rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface transition-all" type="button"><span class="material-symbols-outlined text-primary text-sm">shopping_bag</span><span class="text-label-spec font-label-spec hidden sm:inline text-on-surface">0 items • ₹0.00</span><span class="sm:hidden flex items-center justify-center bg-primary-container text-on-primary-container text-[10px] font-bold h-4 w-4 rounded-full">0</span></button><a class="hidden sm:inline-flex items-center justify-center px-4 py-2 rounded-lg bg-primary-container hover:bg-secondary-container text-on-primary font-headline-sm text-label-caps uppercase transition-all shadow-[0_0_20px_rgba(251,191,36,0.25)]" href="#">Buy on Shopify</a><img alt="Profile" class="w-8 h-8 rounded-full object-cover ml-1" src="https://lh3.googleusercontent.com/aida/AEtjO1VftH68twXK-54H_7B_xt5LfPBIOy7RLAHCadLtYY1K4-UAsGNV1ZwzrBO9NKJt9t9d8iuCN_tdMCp1y2MDsUhCZlmI-2FJibnwKdut9nIsTmNLLmfmD5gd_RoPmCfSXqu6RJDI14_eSikRo3utP0LLxQ6WAjS-7zvHX0_gIxl3IJg7HqA_X-xRHfOlk1DV0Ri85Cfc5ITRrH12tAM0L1crm-Pa2c3KAbDH36kjqW40BlpeT4M9FDWDbQb8SPNMylaiHneZUDjQIg"></div></div></header><main class="w-full pt-20 bg-background pb-28"><div class="flex flex-col w-full text-on-surface">
+<!-- PRODUCT-FOCUSED HERO SECTION WITH TWO-COLUMN IMAGE SLIDER -->
+<section class="relative w-full bg-[#000000] overflow-hidden">
+<div class="max-w-[1280px] mx-auto px-gutter-mobile lg:px-gutter-desktop min-h-[580px] lg:min-h-[640px] lg:max-h-[700px] flex flex-col justify-center py-8 lg:py-12">
+<div class="flex flex-col-reverse lg:flex-row items-center justify-between gap-8 lg:gap-12">
+<!-- LEFT COLUMN (approx 40-45% width): Concise text & High-Contrast CTAs -->
+<div class="w-full lg:w-[42%] flex flex-col justify-center text-left z-10">
+<div class="inline-flex items-center gap-2 mb-3">
+<span class="w-2.5 h-2.5 rounded-full bg-primary-container animate-pulse"></span>
+<span class="text-label-caps font-label-caps uppercase text-primary tracking-widest">PURE NUTRACEUTICAL FORMULATION</span>
+</div>
+<h1 class="text-display-xl-mobile sm:text-4xl lg:text-5xl font-display-xl text-white uppercase tracking-tight leading-[1.05] mb-4">
+Fuel Your <span class="text-primary-container drop-shadow-[0_0_24px_rgba(251,191,36,0.35)]">Aura.</span>
+</h1>
+<p class="text-body-md font-body-md text-on-surface-variant max-w-md mb-8">
+Discover Aura Whey in Rich Chocolate and Mawa Kulfi.
+</p>
+<div class="flex flex-wrap items-center gap-4">
+<a class="px-6 py-3.5 rounded-lg bg-primary-container hover:bg-secondary-container text-on-primary font-headline-sm text-sm uppercase tracking-wider transition-all shadow-[0_0_20px_rgba(251,191,36,0.3)] flex items-center gap-2 font-bold" href="#shop">
+<span class="">Shop Both Flavours</span>
+<span class="material-symbols-outlined text-sm font-bold">arrow_forward</span>
+</a>
+<a class="px-6 py-3.5 rounded-lg bg-transparent hover:bg-surface-container-high text-white border border-primary/50 hover:border-primary font-headline-sm text-sm uppercase tracking-wider transition-all flex items-center gap-2 font-bold" href="#why-aura-whey">
+<span class="">Why Aura Whey</span>
+<span class="material-symbols-outlined text-sm">info</span>
+</a>
+</div>
+<div class="flex items-center gap-6 mt-8 pt-6 border-t border-surface-container-highest/60 text-label-spec font-label-spec text-on-surface-variant">
+<span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-primary text-sm">verified</span> 24g Protein</span>
+<span class="">•</span>
+<span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-primary text-sm">bolt</span> 5.7g BCAAs</span>
+<span class="">•</span>
+<span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Zero Sugar</span>
+</div>
+</div>
+<!-- RIGHT COLUMN (approx 55-60% width): Interactive Product Image Slider -->
+<div class="w-full lg:w-[58%] flex items-center justify-center relative">
+<div class="relative w-full max-w-[580px] aspect-square rounded-2xl bg-[#0a0a0a] border border-surface-container-highest/50 shadow-2xl flex items-center justify-center overflow-hidden p-2 sm:p-4 group/slider" id="hero-slider-container">
+<!-- Slide 1 (Default): Powerful Nutrition in Every Serving -->
+<div class="hero-slide absolute inset-0 w-full h-full flex items-center justify-center p-3 sm:p-5 transition-opacity duration-700 ease-in-out opacity-0 pointer-events-none z-0" data-hero-slide="0">
+<img alt="Powerful Nutrition in Every Serving" class="w-full h-full object-contain select-none pointer-events-none" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDbZ2ANA2FfaC3mWw0gJdif1roecNSlI0JwEh37_dM41D4nAlIVKPjezYClMAzdSBpr33hLnciu5vLt9Gr4v6RpcEg3INHdIiHC-ZYDDRnI7kmbJHX8bo6AWOIDf1n0AXrF-F2v9HWL3CHlIQZWzgNFwCBYbd5tNKeHDQgsS9iTGmAMOvIaFrQAhN2Q3HIX0xWv8m6PLXhg4f7tQKaDXvjp3xXlM_LfFPVWSCjURA0D85BzfTbdOlIIFgqb9mvfci-7Ig">
+</div>
+<!-- Slide 2: Whey Protein / Fuel Your Aura -->
+<div class="hero-slide absolute inset-0 w-full h-full flex items-center justify-center p-3 sm:p-5 transition-opacity duration-700 ease-in-out opacity-0 pointer-events-none z-0" data-hero-slide="1">
+<img alt="Whey Protein / Fuel Your Aura" class="w-full h-full object-contain select-none pointer-events-none" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5UCOLL9dItcVbQnUK1iCtKnp7-IQGqjNZ7T0VEsBeFI96eJfTPyUulfg5n6bLJUgdSNfF0T2cdbqO9krC4AIq3QUXPCmd0KgT7GFXOgNp1p7qGhObsh2SorW9RpzSLphT0xr7bBVzdBN3h6m80D3grAdrM5PfPR-gUJs9KNfyXa4thgXUT-4S_EjF3bBnmkDWPt7WSIT8L9V4Vgmqlpk0gPbjJE9-B4n8qrzpiMnO5ylCqVgsfD3kt5l61vWGkVUEsA">
+</div>
+<!-- Slide 3: Real photograph of physical containers -->
+<div class="hero-slide absolute inset-0 w-full h-full flex items-center justify-center p-3 sm:p-5 transition-opacity duration-700 ease-in-out opacity-0 pointer-events-none z-0" data-hero-slide="2">
+<img alt="Physical Product Containers - Aura Whey Mawa Kulfi and Rich Chocolate" class="w-full h-full object-contain select-none pointer-events-none" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDshrXRIH7aKJV8aYWZTPCQBayScmJqVDdmH4wIiStjGf0g-YXaSIZkcOh18Iat7x6KaXV63eng21aIdHXupu5eIPU8kHiYQHQgjVn_zxh8orJCbAF7b2d23r7tesS_JSy5WLrhAyDKBCjM7JKUu1hCEbOjlRT7IW_-eJjF_d91Ad2uiNB-xBpltFGYSzf8nYQOvdveMqGl3H_MmcZVV3JEANetsQozuHIb686dR2iJ0yUaU7x5oB_akqQD6sFrQxeE4Q">
+</div>
+<!-- Slide 4: Rich Chocolate promotional banner -->
+<div class="hero-slide absolute inset-0 w-full h-full flex items-center justify-center p-3 sm:p-5 transition-opacity duration-700 ease-in-out opacity-100 z-10" data-hero-slide="3">
+<img alt="Rich Chocolate Flavour Experience" class="w-full h-full object-contain select-none pointer-events-none" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCOL7MFgrVcgH5R343NE32fymejrZCjDELVgFRD09F1HppYcoWH9FBhzqkD8XweM3KaBT-QcqOOmYKFBKwspALsd51sJGWKNXbsZ6wKLv-uKpduZ6UUbqOg0iPU2HeUD_53szLt4sY1JhoSoURc3cK0-DgtIU3mKS1v5_8OGQhV0xit4j5HiUCOzhRrkm-UznFX3of6c5hi0NdBVWwn-slSVirssXWdzK1kvRWln5ewG4ePu_sxWQvycGgjQuQYTwZgyA">
+</div>
+<!-- Slide 5: Mawa Kulfi product image -->
+<div class="hero-slide absolute inset-0 w-full h-full flex items-center justify-center p-3 sm:p-5 transition-opacity duration-700 ease-in-out opacity-0 pointer-events-none z-0" data-hero-slide="4">
+<img alt="Aura Whey Mawa Kulfi Flavour 1kg" class="w-full h-full object-contain select-none pointer-events-none" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBat8sLrxxs20yXwsdXeiEJfoXHlK4qhk3_GdSS9wu6FlAmdoUuWXl5Zra_GY1LqcZNNoLmzos1zMi8TvLmDv7WxS9BIlhj6hDTIlhw8xGXi1dx9fBSXNrWdxQViK4TFYW1UJmtlw4Lo6Z6-z3H6pD0flezBybhKVO-swEmCYJRY8WB0Plzwfjk_hv586y8L0r71mi8Gzxqb1pAVOijt2TP_nJ_W_63LLoV2qAC9eMemW1Qflb2oS0hTMp_Actf0DRUaQ">
+</div>
+<!-- Slide 6: Rich Chocolate product image -->
+<div class="hero-slide absolute inset-0 w-full h-full flex items-center justify-center p-3 sm:p-5 transition-opacity duration-700 ease-in-out opacity-0 pointer-events-none z-0" data-hero-slide="5">
+<img alt="Aura Whey Rich Chocolate Flavour 1kg" class="w-full h-full object-contain select-none pointer-events-none" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_bzTv8duhYbGz4D6Hy5hlordZkXh64HktDryFvtvvG9saad9snnwHPM6LKvctgCM1UO4iGU20YwCQ8TNPF3455-ARXu2QTnSCTRoixFaFQKDw0ap4R9NvbuW4fEZXOLH0g7LUqIu_dqfbjAiivw4zPLtm_s0ul1IEEO_HX7yzmSVXQRfU-lOvz3oadhcBur2rcRguiczCyC0EusLAKhJVLW_G6zPd_EGUlJcx3sDqwxs-a2_Rn7YD7j9im8lF9vQ1IA">
+</div>
+<!-- Slide 7: Why Choose Our Whey Protein informational -->
+<div class="hero-slide absolute inset-0 w-full h-full flex items-center justify-center p-3 sm:p-5 transition-opacity duration-700 ease-in-out opacity-0 pointer-events-none z-0" data-hero-slide="6">
+<img alt="Why Choose Our Whey Protein - Key Benefits" class="w-full h-full object-contain select-none pointer-events-none" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0SePNTwVoN3-eLKpeGAlUa5atO68WcJyeOlbCzVnGbCT9u5YQ8uZv_vXrmWBLgrTD6ubSWhn_POfppuo0RnNG2i6pPMShip5nM6KQllUT6fc_8hqXUd5cBc537PaAJfBBU5lpUkp0MvcYVSzMUD6Y5ChItbZapowfRkWuViWkwGoey8yA02ChF4tE24WEQiG7U2WvusBCxGijlNx_QsqaZjlgxqyMi8fmDLGRaTYRA3YQxiweZUZ9z9Tr3iwV1wLk_A">
+</div>
+<!-- Slider Controls: Previous and Next Arrows -->
+<button aria-label="Previous Slide" class="absolute left-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-black/60 hover:bg-primary-container text-white hover:text-black transition-all flex items-center justify-center backdrop-blur-md border border-white/10 hover:border-primary-container shadow-lg focus:outline-none focus:ring-2 focus:ring-primary" id="hero-prev-btn" type="button">
+<span class="material-symbols-outlined text-xl">chevron_left</span>
+</button>
+<button aria-label="Next Slide" class="absolute right-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-black/60 hover:bg-primary-container text-white hover:text-black transition-all flex items-center justify-center backdrop-blur-md border border-white/10 hover:border-primary-container shadow-lg focus:outline-none focus:ring-2 focus:ring-primary" id="hero-next-btn" type="button">
+<span class="material-symbols-outlined text-xl">chevron_right</span>
+</button>
+<!-- Pagination Dots -->
+<div class="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/10" id="hero-dots-container">
+<button aria-label="Slide 1" class="hero-dot rounded-full transition-all bg-white/40 w-2 h-2" data-slide-index="0" type="button"></button>
+<button aria-label="Slide 2" class="hero-dot rounded-full hover:bg-white/80 transition-all bg-white/40 w-2 h-2" data-slide-index="1" type="button"></button>
+<button aria-label="Slide 3" class="hero-dot rounded-full hover:bg-white/80 transition-all bg-white/40 w-2 h-2" data-slide-index="2" type="button"></button>
+<button aria-label="Slide 4" class="hero-dot rounded-full hover:bg-white/80 transition-all bg-primary-container w-2.5 h-2.5" data-slide-index="3" type="button"></button>
+<button aria-label="Slide 5" class="hero-dot rounded-full hover:bg-white/80 transition-all bg-white/40 w-2 h-2" data-slide-index="4" type="button"></button>
+<button aria-label="Slide 6" class="hero-dot rounded-full hover:bg-white/80 transition-all bg-white/40 w-2 h-2" data-slide-index="5" type="button"></button>
+<button aria-label="Slide 7" class="hero-dot rounded-full hover:bg-white/80 transition-all bg-white/40 w-2 h-2" data-slide-index="6" type="button"></button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- PRODUCT STOREFRONT (#shop) -->
+<section class="w-full bg-background py-20 relative" id="shop"><div class="max-w-[1280px] mx-auto px-gutter-mobile lg:px-gutter-desktop">
+<!-- Section Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+<div>
+<span class="text-label-caps font-label-caps text-primary uppercase tracking-widest flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary inline-block"></span> OFFICIAL STORE CATALOG
+      </span>
+<h2 class="text-headline-lg font-headline-lg text-on-surface uppercase tracking-tight mt-2">
+        SHOP OUR <span class="text-primary">PRODUCTS</span>
+</h2>
+<p class="text-body-md font-body-md text-on-surface-variant mt-2 max-w-2xl">
+        Two iconic flavours engineered with identical 24g pure whey protein purity. Choose your daily ritual.
+      </p>
+</div>
+<div class="flex items-center gap-3 bg-surface-container px-4 py-2.5 rounded-xl self-start md:self-auto">
+<span class="material-symbols-outlined text-tertiary">verified</span>
+<span class="text-body-sm font-body-sm text-on-surface-variant">Pan-India 24-Hour Dispatch • 100% Genuine Direct from Surat</span>
+</div>
+</div>
+<!-- 2 Equal Flagship Product Cards Grid (50/50 prominence) -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10 md:grid-cols-2">
+<!-- PRODUCT 1: RICH CHOCOLATE -->
+<div class="bg-surface-container rounded-2xl p-6 sm:p-8 flex flex-col justify-between relative group hover:bg-surface-container-high transition-all shadow-xl border border-surface-container-highest/40 product-card" id="product-rich-chocolate">
+<div class="absolute top-6 right-6 z-10 flex flex-col items-end gap-2">
+<span class="bg-primary-container text-on-primary-container text-label-caps font-label-caps px-3 py-1 rounded-full uppercase tracking-wider font-bold shadow-sm">40% OFF</span>
+<span class="bg-surface-container-highest text-on-surface text-label-spec font-label-spec px-2.5 py-0.5 rounded-md">Bestseller</span>
+</div>
+<div>
+<!-- Tub Image Container -->
+<div class="relative w-full aspect-square flex items-center justify-center p-6 mb-6 rounded-xl bg-surface-container-lowest/80 overflow-hidden border border-surface-container-highest/30">
+<div class="absolute inset-0 bg-radial from-primary/10 via-transparent to-transparent opacity-60 pointer-events-none"></div>
+<img alt="Aura Whey - Rich Chocolate 1kg Tub" class="max-h-[340px] w-auto object-contain transition-transform duration-500 group-hover:scale-105 z-10" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1fyBKSXBXDq9Kb6t3WFnvOWEy1xQ-I9lrbEqJg7gG9mlVWueC_P_OTw_d9aRrmqfoMbi9zAgePhiPgMHpEUF3RWedOqxwtlH-2V8wlj3fkpGn31XsrqdRaXAwOrld5XyFjJgz3lBhJzCNz1pQ_6b7Ls_sHEqsVlu2bPbPwn1ZNQKs9u0haw-D0tJtUh2BBghORnpFNhTDhZGizV4NmhhaKZrlu-wZQ234ef4WzaA4KmPi07uveozqu9EkPTFMGOZvbg">
+<div class="absolute bottom-3 left-3 z-10 flex items-center gap-1.5 bg-black/70 backdrop-blur-md px-3 py-1 rounded-full text-label-spec font-label-spec text-on-surface">
+<span class="w-2.5 h-2.5 rounded-full bg-green-500 inline-block"></span> 100% Veg Dot
+          </div>
+<div class="absolute bottom-3 right-3 z-10 flex items-center gap-1.5 bg-surface-container-highest/80 backdrop-blur-md px-3 py-1 rounded-full text-label-spec font-label-spec text-tertiary">
+<span class="material-symbols-outlined text-xs">local_shipping</span> In Stock - Dispatched within 24h
+          </div>
+</div>
+<!-- Header Details & Flavour Badges -->
+<div class="space-y-3 mb-5">
+<div class="flex items-center justify-between">
+<span class="text-label-caps font-label-caps text-on-surface-variant uppercase tracking-wider">Whey Protein Concentrate 80% • 1 kg Net Weight</span>
+<div class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-sm fill-current" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm fill-current" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm fill-current" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm fill-current" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm fill-current" style="font-variation-settings: 'FILL' 1;">star_half</span>
+<span class="text-label-spec font-label-spec text-on-surface-variant ml-1">(4.9/5 • 482)</span>
+</div>
+</div>
+<h3 class="text-headline-md font-headline-md text-on-surface uppercase">
+            AURA WHEY • <span class="text-primary">RICH CHOCOLATE</span>
+</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant leading-relaxed">
+            Silky, rich decadent cocoa infused with rapid-action microfiltered whey. Formulated with Dutch cocoa solids and digestive enzymes for zero gut distress.
+          </p>
+</div>
+<!-- Macro Badge Strip -->
+<div class="grid grid-cols-4 gap-2 bg-surface-container-lowest p-3 rounded-lg text-center mb-5 border border-surface-container-highest/40">
+<div>
+<div class="text-headline-sm font-headline-sm text-primary font-bold">24g</div>
+<div class="text-label-caps font-label-caps text-on-surface-variant uppercase text-[10px]">Pure Protein</div>
+</div>
+<div>
+<div class="text-headline-sm font-headline-sm text-primary font-bold">5.7g</div>
+<div class="text-label-caps font-label-caps text-on-surface-variant uppercase text-[10px]">BCAAs</div>
+</div>
+<div>
+<div class="text-headline-sm font-headline-sm text-primary font-bold">28</div>
+<div class="text-label-caps font-label-caps text-on-surface-variant uppercase text-[10px]">Servings</div>
+</div>
+<div>
+<div class="text-headline-sm font-headline-sm text-tertiary font-bold">0g</div>
+<div class="text-label-caps font-label-caps text-on-surface-variant uppercase text-[10px]">Added Sugar</div>
+</div>
+</div>
+<!-- Flavour Selector Switcher -->
+<div class="space-y-2 mb-5">
+<div class="flex items-center justify-between text-label-spec font-label-spec">
+<span class="text-on-surface-variant uppercase font-semibold">Select Flavour:</span>
+<span class="text-primary font-bold">Rich Chocolate (Active)</span>
+</div>
+<div class="grid grid-cols-2 gap-2.5">
+<button class="py-2 px-3 rounded-lg bg-primary-container text-on-primary font-label-caps text-label-caps uppercase flex items-center justify-center gap-1.5 shadow-md font-bold" type="button">
+<span class="material-symbols-outlined text-xs">check_circle</span>
+<span class="">Rich Chocolate</span>
+</button>
+<a class="py-2 px-3 rounded-lg bg-surface-container-lowest hover:bg-surface-container-highest text-on-surface-variant hover:text-on-surface font-label-caps text-label-caps uppercase flex items-center justify-center gap-1.5 transition-colors text-center" href="#product-mawa-kulfi">
+<span class="">Mawa Kulfi</span>
+</a>
+</div>
+</div>
+</div>
+<!-- Pricing, CTA & Shopify Embed Annotation -->
+<div class="space-y-3 pt-4 border-t border-surface-container-highest/60 bg-surface-container">
+<div class="flex items-baseline justify-between">
+<div class="flex items-baseline gap-3">
+<span class="text-headline-lg font-headline-lg text-on-surface font-black">₹2,499</span>
+<span class="text-body-md font-body-md text-on-surface-variant line-through">₹4,199</span>
+<span class="text-label-spec font-label-spec text-tertiary-fixed font-semibold">Save ₹1,700</span>
+</div>
+<a class="text-label-spec font-label-spec text-primary hover:underline flex items-center gap-1" href="#ingredients">
+<span class="">View Details</span>
+<span class="material-symbols-outlined text-xs">open_in_new</span>
+</a>
+</div>
+<!-- Quantity Selector and Add to Cart Button -->
+<div class="flex items-center gap-3 flex-wrap">
+<div class="flex items-center bg-surface-container-lowest rounded-lg p-1 border border-surface-container-highest/50">
+<button class="w-9 h-9 flex items-center justify-center text-on-surface hover:text-primary transition-colors" onclick="var el=this.nextElementSibling; if(parseInt(el.value)&gt;1) el.value=parseInt(el.value)-1;" type="button">-</button>
+<input class="w-8 text-center bg-transparent text-on-surface font-bold text-sm focus:outline-none" readonly="" type="text" value="1">
+<button class="w-9 h-9 flex items-center justify-center text-on-surface hover:text-primary transition-colors" onclick="var el=this.previousElementSibling; el.value=parseInt(el.value)+1;" type="button">+</button>
+</div>
+<button class="btn-add-cart flex-1 py-3.5 px-4 rounded-lg bg-primary-container hover:bg-secondary-container text-on-primary font-headline-sm text-sm uppercase tracking-wider transition-all shadow-[0_0_20px_rgba(251,191,36,0.3)] flex items-center justify-center gap-2 font-bold focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none" data-product-id="rich-chocolate" data-title="Aura Whey • Rich Chocolate" data-flavour="Rich Chocolate" data-price="2499" data-image="https://lh3.googleusercontent.com/aida-public/AB6AXuB0jz4K7oVgrby-pq3y9w07XGi3I31GdXgYyPUsiTmipdcEQOy3Taw0ZCkiiTZO1KIag2CedvtzzBuPQ5oS5eWSqUg5O5PXe24zgj9H-nRuCjz4cgAPzuFV_XD8wH08pj8be_e6JamwWFTVG6ELt8KwuWL7V9gxgwHu_KV4vlR5nhQBBzSVQcJopW0iumOGU5yvh7twyBqlDjP56Ac5_GVMiayzJ27c0fk2GeRYVxgxXqKw_I_65XTjHr79Duh1E8UUkw" type="button"><span class="material-symbols-outlined text-base btn-icon">shopping_cart</span><span class="btn-text">Add to Cart</span></button>
+</div>
+<!-- Annotation Notice for Shopify Integration -->
+<div class="p-2.5 rounded-lg bg-surface-container-lowest/80 border border-surface-container-highest/50 text-[11px] leading-tight text-on-surface-variant flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-sm mt-0.5 shrink-0">info</span>
+<span class="">Embed Shopify Buy Button here. Product price, variant availability and cart behaviour will be supplied by Shopify.</span>
+</div>
+</div>
+</div>
+<!-- PRODUCT 2: MAWA KULFI -->
+<div class="bg-surface-container rounded-2xl p-6 sm:p-8 flex flex-col justify-between relative group hover:bg-surface-container-high transition-all shadow-xl border border-surface-container-highest/40 product-card" id="product-mawa-kulfi">
+<div class="absolute top-6 right-6 z-10 flex flex-col items-end gap-2">
+<span class="bg-primary-container text-on-primary-container text-label-caps font-label-caps px-3 py-1 rounded-full uppercase tracking-wider font-bold shadow-sm">40% OFF</span>
+<span class="bg-secondary-container text-on-secondary-container text-label-spec font-label-spec px-2.5 py-0.5 rounded-md font-semibold">Indian Authentic</span>
+</div>
+<div>
+<!-- Tub Image Container -->
+<div class="relative w-full aspect-square flex items-center justify-center p-6 mb-6 rounded-xl bg-surface-container-lowest/80 overflow-hidden border border-surface-container-highest/30">
+<div class="absolute inset-0 bg-radial from-secondary-fixed-dim/15 via-transparent to-transparent opacity-60 pointer-events-none"></div>
+<img alt="Aura Whey - Mawa Kulfi 1kg Tub" class="max-h-[340px] w-auto object-contain transition-transform duration-500 group-hover:scale-105 z-10" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBEibWalvh7JLhaCBVFscMaAxNBvVCFJbHumLNl-D_jXNkPCGjHKqtGDcU_rYvIkMohRV24OWeYVHaGbDMjPvuMmJw-KTpQKHqyKk3ZJO3lvcy1fA2AmvJvrAtSqVe-VeF9boGmu245PnZiDLuGXG5CLMDuibicUjJniBjbDy0v53ZMs2a_EgJPOfKVthnL3AELkKnoHfNlRw0x6NG0ZRa6psp1l3NZumgICXzV8RC1Z18E98Yc_J7SoAQHddRjHQHt5g">
+<div class="absolute bottom-3 left-3 z-10 flex items-center gap-1.5 bg-black/70 backdrop-blur-md px-3 py-1 rounded-full text-label-spec font-label-spec text-on-surface">
+<span class="w-2.5 h-2.5 rounded-full bg-green-500 inline-block"></span> 100% Veg Dot
+          </div>
+<div class="absolute bottom-3 right-3 z-10 flex items-center gap-1.5 bg-surface-container-highest/80 backdrop-blur-md px-3 py-1 rounded-full text-label-spec font-label-spec text-tertiary">
+<span class="material-symbols-outlined text-xs">local_shipping</span> In Stock - Dispatched within 24h
+          </div>
+</div>
+<!-- Header Details & Flavour Badges -->
+<div class="space-y-3 mb-5">
+<div class="flex items-center justify-between">
+<span class="text-label-caps font-label-caps text-on-surface-variant uppercase tracking-wider">Signature Indian Gourmet • 1 kg Net Weight</span>
+<div class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-sm fill-current" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm fill-current" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm fill-current" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm fill-current" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm fill-current" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-label-spec font-label-spec text-on-surface-variant ml-1">(5.0/5 • 319)</span>
+</div>
+</div>
+<h3 class="text-headline-md font-headline-md text-on-surface uppercase">
+            AURA WHEY • <span class="text-primary">MAWA KULFI</span>
+</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant leading-relaxed">
+            Handcrafted royal Indian palate profile. Authentic thickened mawa sweetness with cardamom &amp; roasted pistachio notes without artificial chalkiness.
+          </p>
+</div>
+<!-- Macro Badge Strip -->
+<div class="grid grid-cols-4 gap-2 bg-surface-container-lowest p-3 rounded-lg text-center mb-5 border border-surface-container-highest/40">
+<div>
+<div class="text-headline-sm font-headline-sm text-primary font-bold">24g</div>
+<div class="text-label-caps font-label-caps text-on-surface-variant uppercase text-[10px]">Pure Protein</div>
+</div>
+<div>
+<div class="text-headline-sm font-headline-sm text-primary font-bold">5.7g</div>
+<div class="text-label-caps font-label-caps text-on-surface-variant uppercase text-[10px]">BCAAs</div>
+</div>
+<div>
+<div class="text-headline-sm font-headline-sm text-primary font-bold">28</div>
+<div class="text-label-caps font-label-caps text-on-surface-variant uppercase text-[10px]">Servings</div>
+</div>
+<div>
+<div class="text-headline-sm font-headline-sm text-secondary-fixed font-bold text-xs pt-1 truncate">Kadi Pista</div>
+<div class="text-label-caps font-label-caps text-on-surface-variant uppercase text-[10px]">Real Notes</div>
+</div>
+</div>
+<!-- Flavour Selector Switcher -->
+<div class="space-y-2 mb-5">
+<div class="flex items-center justify-between text-label-spec font-label-spec">
+<span class="text-on-surface-variant uppercase font-semibold">Select Flavour:</span>
+<span class="text-primary font-bold">Mawa Kulfi (Active)</span>
+</div>
+<div class="grid grid-cols-2 gap-2.5">
+<a class="py-2 px-3 rounded-lg bg-surface-container-lowest hover:bg-surface-container-highest text-on-surface-variant hover:text-on-surface font-label-caps text-label-caps uppercase flex items-center justify-center gap-1.5 transition-colors text-center" href="#product-rich-chocolate">
+<span class="">Rich Chocolate</span>
+</a>
+<button class="py-2 px-3 rounded-lg bg-primary-container text-on-primary font-label-caps text-label-caps uppercase flex items-center justify-center gap-1.5 shadow-md font-bold" type="button">
+<span class="material-symbols-outlined text-xs">check_circle</span>
+<span class="">Mawa Kulfi</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Pricing, CTA & Shopify Embed Annotation -->
+<div class="space-y-3 pt-4 border-t border-surface-container-highest/60 bg-surface-container">
+<div class="flex items-baseline justify-between">
+<div class="flex items-baseline gap-3">
+<span class="text-headline-lg font-headline-lg text-on-surface font-black">₹2,499</span>
+<span class="text-body-md font-body-md text-on-surface-variant line-through">₹4,199</span>
+<span class="text-label-spec font-label-spec text-tertiary-fixed font-semibold">Save ₹1,700</span>
+</div>
+<a class="text-label-spec font-label-spec text-primary hover:underline flex items-center gap-1" href="#ingredients">
+<span class="">View Details</span>
+<span class="material-symbols-outlined text-xs">open_in_new</span>
+</a>
+</div>
+<!-- Quantity Selector and Add to Cart Button -->
+<div class="flex items-center gap-3 flex-wrap">
+<div class="flex items-center bg-surface-container-lowest rounded-lg p-1 border border-surface-container-highest/50">
+<button class="w-9 h-9 flex items-center justify-center text-on-surface hover:text-primary transition-colors" onclick="var el=this.nextElementSibling; if(parseInt(el.value)&gt;1) el.value=parseInt(el.value)-1;" type="button">-</button>
+<input class="w-8 text-center bg-transparent text-on-surface font-bold text-sm focus:outline-none" readonly="" type="text" value="1">
+<button class="w-9 h-9 flex items-center justify-center text-on-surface hover:text-primary transition-colors" onclick="var el=this.previousElementSibling; el.value=parseInt(el.value)+1;" type="button">+</button>
+</div>
+<button class="btn-add-cart flex-1 py-3.5 px-4 rounded-lg bg-primary-container hover:bg-secondary-container text-on-primary font-headline-sm text-sm uppercase tracking-wider transition-all shadow-[0_0_20px_rgba(251,191,36,0.3)] flex items-center justify-center gap-2 font-bold focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none" data-product-id="mawa-kulfi" data-title="Aura Whey • Mawa Kulfi" data-flavour="Mawa Kulfi" data-price="2499" data-image="https://lh3.googleusercontent.com/aida-public/AB6AXuAoeiGGA6y5EgQw7O7fjCq1kX7zNPpYeB-QwuIsSZFfT89vCuDPgJkqJaFN3ttRLfeVaIOsagIXkJt1otFIVpJFCjD6N8PX2AJ3Euo_EFBjxOb2tM2haooBDf_K63Y48F6PFAPmH1p8AoyXRWvLFFLL7KVqMlOuFafZUH8ztzUyiBVl6E-Xyn0uu3KkXYwtIXad05JGpNVtHPKycEBc5ZVYkYH0hne0XxWS49ezHUKaL0NqQbQwXg685iASEso3a03AsA" type="button"><span class="material-symbols-outlined text-base btn-icon">shopping_cart</span><span class="btn-text">Add to Cart</span></button>
+</div>
+<!-- Annotation Notice for Shopify Integration -->
+<div class="p-2.5 rounded-lg bg-surface-container-lowest/80 border border-surface-container-highest/50 text-[11px] leading-tight text-on-surface-variant flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-sm mt-0.5 shrink-0">info</span>
+<span class="">Embed Shopify Buy Button here. Product price, variant availability and cart behaviour will be supplied by Shopify.</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Subtle Duo Bundle Strip below the equal 50/50 flagship grid -->
+<div class="bg-gradient-to-r from-surface-container via-surface-container-high to-surface-container rounded-xl p-4 sm:p-6 flex flex-col md:flex-row items-center justify-between gap-4 border border-surface-container-highest/40">
+<div class="flex items-center gap-4">
+<span class="bg-primary text-on-primary px-3 py-1 rounded-full text-label-caps font-label-caps uppercase font-black shrink-0">ULTIMATE DUO</span>
+<div>
+<h4 class="text-headline-sm font-headline-sm uppercase text-on-surface">Want both flavours? Get the Double Flavour Stack</h4>
+<p class="text-label-spec font-label-spec text-on-surface-variant">1x Rich Chocolate (1kg) + 1x Mawa Kulfi (1kg) • Free Shaker &amp; Express Shipping Included</p>
+</div>
+</div>
+<div class="flex items-center gap-4 shrink-0 w-full md:w-auto justify-between md:justify-end">
+<div>
+<span class="text-headline-md font-headline-md text-primary font-bold">₹4,699</span>
+<span class="text-label-spec font-label-spec text-on-surface-variant line-through ml-1.5">₹8,398</span>
+</div>
+<button class="px-5 py-2.5 rounded-lg bg-surface-bright hover:bg-primary hover:text-on-primary text-on-surface font-label-caps text-label-caps uppercase transition-all font-bold flex items-center gap-1.5" type="button">
+<span class="">Stack Both</span>
+<span class="material-symbols-outlined text-xs">bolt</span>
+</button>
+</div>
+</div>
+</div></section>
+<!-- WHY AURA WHEY (#why-aura-whey) - SCIENTIFIC PILLARS -->
+<section class="w-full bg-surface-container-lowest py-24 relative overflow-hidden" id="why-aura-whey"><div class="max-w-[1280px] mx-auto px-gutter-mobile lg:px-gutter-desktop"><div class="text-center max-w-3xl mx-auto mb-16"><span class="text-label-caps font-label-caps text-primary uppercase tracking-widest flex items-center justify-center gap-2 mb-2"><span class="material-symbols-outlined text-base">verified</span> THE AURA STANDARD</span><h2 class="text-headline-lg font-headline-lg text-on-surface uppercase tracking-tight">WHY CHOOSE <span class="text-primary">AURA WHEY</span></h2><p class="text-body-md font-body-md text-on-surface-variant mt-4">Formulated for Indian athletes and dedicated lifters who demand authentic macro integrity, zero filler compounds, and rapid biological uptake without digestive friction.</p></div><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"><div class="bg-surface-container p-8 rounded-2xl relative flex flex-col justify-between hover:bg-surface-container-high transition-colors border border-surface-container-highest/40"><div class="mb-6"><div class="w-14 h-14 rounded-xl bg-surface-container-highest flex items-center justify-center text-primary mb-6"><span class="material-symbols-outlined text-3xl">fitness_center</span></div><h3 class="text-headline-sm font-headline-sm uppercase text-on-surface mb-3">Concentrated Pure Whey Base</h3><p class="text-body-sm font-body-sm text-on-surface-variant">Crafted with pure whey protein concentrate featuring complete peptide integrity. Zero cheap soy protein blending, zero nitrogen spiking, and zero filler carbs.</p></div><div class="pt-4 flex items-center justify-between text-label-spec font-label-spec text-primary border-t border-surface-container-highest/50"><span class="">Bio-Intact Peptides</span><span class="material-symbols-outlined text-sm">check_circle</span></div></div><div class="bg-surface-container p-8 rounded-2xl relative flex flex-col justify-between hover:bg-surface-container-high transition-colors border border-surface-container-highest/40"><div class="mb-6"><div class="w-14 h-14 rounded-xl bg-surface-container-highest flex items-center justify-center text-primary mb-6"><span class="material-symbols-outlined text-3xl">spa</span></div><h3 class="text-headline-sm font-headline-sm uppercase text-on-surface mb-3">Targeted Digestive Enzyme Matrix</h3><p class="text-body-sm font-body-sm text-on-surface-variant">Formulated with digestive enzyme protease complex and INS 415 stabilizer matrix for quick breakdown and zero bloat, eliminating stomach distress or gas.</p></div><div class="pt-4 flex items-center justify-between text-label-spec font-label-spec text-primary border-t border-surface-container-highest/50"><span class="">Zero Bloat Formulation</span><span class="material-symbols-outlined text-sm">check_circle</span></div></div><div class="bg-surface-container p-8 rounded-2xl relative flex flex-col justify-between hover:bg-surface-container-high transition-colors border border-surface-container-highest/40"><div class="mb-6"><div class="w-14 h-14 rounded-xl bg-surface-container-highest flex items-center justify-center text-primary mb-6"><span class="material-symbols-outlined text-3xl">restaurant</span></div><h3 class="text-headline-sm font-headline-sm uppercase text-on-surface mb-3">Authentic Indian Flavour Engineering</h3><p class="text-body-sm font-body-sm text-on-surface-variant">Engineered specifically for optimal solubility in ambient and chilled Indian water and milk temperatures, delivering smooth texture without artificial cloying sweetness.</p></div><div class="pt-4 flex items-center justify-between text-label-spec font-label-spec text-primary border-t border-surface-container-highest/50"><span class="">Instant Dissolution</span><span class="material-symbols-outlined text-sm">check_circle</span></div></div><div class="bg-surface-container p-8 rounded-2xl relative flex flex-col justify-between hover:bg-surface-container-high transition-colors border border-surface-container-highest/40"><div class="mb-6"><div class="w-14 h-14 rounded-xl bg-surface-container-highest flex items-center justify-center text-primary mb-6"><span class="material-symbols-outlined text-3xl">fact_check</span></div><h3 class="text-headline-sm font-headline-sm uppercase text-on-surface mb-3">Total Label Transparency</h3><p class="text-body-sm font-body-sm text-on-surface-variant">Direct-from-plant manufacturing disclosure from Surat, zero amino spiking guarantee, and published batch test certificates for verified consumer trust.</p></div><div class="pt-4 flex items-center justify-between text-label-spec font-label-spec text-primary border-t border-surface-container-highest/50"><span class="">100% Traceable Plant</span><span class="material-symbols-outlined text-sm">check_circle</span></div></div></div></div></section>
+<!-- NUTRITION & LABEL TRANSPARENCY (#ingredients) -->
+<section class="w-full bg-background py-20" id="ingredients"><div class="max-w-[1280px] mx-auto px-gutter-mobile lg:px-gutter-desktop"><div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4"><div><span class="text-label-caps font-label-caps text-primary uppercase tracking-widest flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-primary inline-block"></span> OFFICIAL PRODUCT DISCLOSURE</span><h2 class="text-headline-lg font-headline-lg text-on-surface uppercase tracking-tight mt-2">INGREDIENTS &amp; <span class="text-primary">NUTRITION</span></h2></div><div class="inline-flex items-center gap-2 bg-surface-container px-3.5 py-1.5 rounded-lg border border-surface-container-highest/50 text-label-spec font-label-spec text-secondary"><span class="material-symbols-outlined text-xs">hourglass_top</span><span class="">Final verified information required [Pending official lab certification for micro-nutrient batch variance]</span></div></div><div class="space-y-12"><div class="bg-surface-container rounded-2xl p-6 lg:p-8 border border-surface-container-highest/40"><div class="flex items-center justify-between border-b border-surface-container-highest pb-4 mb-6"><div class="flex items-center gap-3"><span class="w-3 h-8 bg-primary rounded-sm inline-block"></span><div><h3 class="text-headline-sm font-headline-sm uppercase text-on-surface">Rich Chocolate • Official Label Scan &amp; Facts</h3><span class="text-label-spec font-label-spec text-on-surface-variant">Batch No: GN250507 | Net Wt: 1kg (28 Servings) | Heaping Scoop: 35g</span></div></div><span class="bg-surface-container-highest px-3 py-1 rounded text-label-spec font-label-spec text-primary font-bold">Official Scan</span></div><div class="w-full overflow-x-auto mb-8 rounded-xl bg-surface-container-lowest p-2 border border-surface-container-highest/50"><img alt="Rich Chocolate Official Packaging Label Scan" class="w-full min-w-[720px] object-contain rounded-lg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAIT1YlNImfO2UtPZuJKGYQYkWkH3yR56Te6jVtqtU1fL0DxLKFBQHErE9ZZ9y-1ryh6bu12QK-kIcQaVZ2T8jM9aqJmY9wpUX5yfE1DXxSRaG6KKekPRk8CL-FiK6yorEH1C2lXJ4yB7GYfdFpgNGJOyGWlvSWNdtN_BZSbrAeMY__X7a6gN2yuOJNWb0NsEsIiE7qvXrmZIPD0JWWifQ9pe3nBXRus4VYnnJ4HCGckAuSLkVjVc_Z5jgarIRQsdtKTg"></div><div class="grid grid-cols-1 lg:grid-cols-2 gap-8"><div><h4 class="text-label-caps font-label-caps uppercase text-primary tracking-wider mb-3">Nutritional Information Comparison</h4><div class="bg-surface-container-lowest rounded-xl overflow-hidden text-body-sm font-body-sm border border-surface-container-highest/40"><table class="w-full text-left"><thead><tr class="bg-surface-container-high text-label-spec font-label-spec text-on-surface-variant uppercase"><th class="py-2.5 px-4">Nutrients</th><th class="py-2.5 px-4 text-right">Per 100g</th><th class="py-2.5 px-4 text-right text-primary font-bold">Per 35g Scoop</th></tr></thead><tbody class="divide-y divide-surface-container"><tr class="hover:bg-surface-container/50"><td class="py-2.5 px-4 font-semibold text-on-surface">Energy</td><td class="py-2.5 px-4 text-right text-on-surface-variant">382.06 kcal</td><td class="py-2.5 px-4 text-right text-primary font-bold">133.72 kcal</td></tr><tr class="hover:bg-surface-container/50"><td class="py-2.5 px-4 font-semibold text-on-surface">Total Protein</td><td class="py-2.5 px-4 text-right text-on-surface-variant">68.57 g</td><td class="py-2.5 px-4 text-right text-primary font-bold">24.00 g</td></tr><tr class="hover:bg-surface-container/50"><td class="py-2.5 px-4 font-semibold text-on-surface">Carbohydrates</td><td class="py-2.5 px-4 text-right text-on-surface-variant">15.37 g</td><td class="py-2.5 px-4 text-right text-on-surface">5.38 g</td></tr><tr class="hover:bg-surface-container/50"><td class="py-2.5 px-4 text-on-surface-variant pl-8">• Added Sugars</td><td class="py-2.5 px-4 text-right text-on-surface-variant">0.00 g</td><td class="py-2.5 px-4 text-right text-tertiary font-bold">0.00 g</td></tr><tr class="hover:bg-surface-container/50"><td class="py-2.5 px-4 font-semibold text-on-surface">Total Fat</td><td class="py-2.5 px-4 text-right text-on-surface-variant">5.14 g</td><td class="py-2.5 px-4 text-right text-on-surface">1.80 g</td></tr><tr class="hover:bg-surface-container/50"><td class="py-2.5 px-4 text-on-surface-variant pl-8">• Saturated Fatty Acid</td><td class="py-2.5 px-4 text-right text-on-surface-variant">1.77 g</td><td class="py-2.5 px-4 text-right text-on-surface">0.62 g</td></tr><tr class="hover:bg-surface-container/50"><td class="py-2.5 px-4 text-on-surface-variant pl-8">• Trans Fatty Acid</td><td class="py-2.5 px-4 text-right text-on-surface-variant">0.00 g</td><td class="py-2.5 px-4 text-right text-tertiary font-bold">0.00 g</td></tr><tr class="hover:bg-surface-container/50"><td class="py-2.5 px-4 font-semibold text-on-surface">Sodium</td><td class="py-2.5 px-4 text-right text-on-surface-variant">428.57 mg</td><td class="py-2.5 px-4 text-right text-on-surface">150.0 mg</td></tr><tr class="hover:bg-surface-container/50"><td class="py-2.5 px-4 font-semibold text-on-surface">Cholesterol</td><td class="py-2.5 px-4 text-right text-on-surface-variant">80.00 mg</td><td class="py-2.5 px-4 text-right text-on-surface">28.0 mg</td></tr></tbody></table></div></div><div class="space-y-4"><div><h4 class="text-label-caps font-label-caps uppercase text-primary tracking-wider mb-2">Verbatim Ingredients (From Packaging)</h4><div class="bg-surface-container-lowest p-4 rounded-xl text-body-sm font-body-sm text-on-surface-variant leading-relaxed border border-surface-container-highest/40"><p class="mb-2"><span class="text-on-surface font-semibold">Ingredients:</span> Whey Protein Concentrate, Milk solids, maltodextrin, Coffee Powder, Artificial Flavoring Substances (Chocolate), Emulsifier (INS 322(i)), Stabilizer (INS 415), Digestive Enzyme, Sweetener (INS 955).</p><p class="text-label-spec font-label-spec text-primary flex items-center gap-1.5 mt-2"><span class="material-symbols-outlined text-sm">info</span> THIS CONTAINS SUCRALOSE • CONTAINS ARTIFICIAL SWEETENER AND FOR CALORIE CONSCIOUS CONSUMERS</p></div></div><div><h4 class="text-label-caps font-label-caps uppercase text-on-surface tracking-wider mb-2">Allergen Disclosure</h4><div class="bg-surface-container-lowest p-4 rounded-xl text-body-sm font-body-sm text-on-surface-variant border border-surface-container-highest/40"><p class="flex items-center gap-2 text-on-surface"><span class="material-symbols-outlined text-primary text-sm">warning</span> Allergen Advice: This product contains lactose and milk solids, and soy lecithin emulsifier. Not recommended for individuals with lactose intolerance. Manufactured in a facility that also processes tree nuts.</p></div></div><div class="grid grid-cols-2 gap-3 pt-2"><div class="bg-surface-container-lowest p-3 rounded-lg flex items-center gap-2 text-label-spec font-label-spec text-on-surface border border-surface-container-highest/40"><span class="material-symbols-outlined text-tertiary text-sm">check_circle</span> 0g Added Sugar</div><div class="bg-surface-container-lowest p-3 rounded-lg flex items-center gap-2 text-label-spec font-label-spec text-on-surface border border-surface-container-highest/40"><span class="material-symbols-outlined text-tertiary text-sm">check_circle</span> Gluten Free</div></div></div></div></div><div class="bg-surface-container rounded-2xl p-6 lg:p-8 border border-surface-container-highest/40"><div class="flex items-center justify-between border-b border-surface-container-highest pb-4 mb-6"><div class="flex items-center gap-3"><span class="w-3 h-8 bg-secondary-fixed-dim rounded-sm inline-block"></span><div><h3 class="text-headline-sm font-headline-sm uppercase text-on-surface">Mawa Kulfi • Official Label Scan &amp; Desi Formula</h3><span class="text-label-spec font-label-spec text-on-surface-variant">Batch No: GN250508 | Net Wt: 1kg (28 Servings) | Heaping Scoop: 35g</span></div></div><span class="bg-surface-container-highest px-3 py-1 rounded text-label-spec font-label-spec text-secondary-fixed font-bold">Official Scan</span></div><div class="w-full overflow-x-auto mb-8 rounded-xl bg-surface-container-lowest p-2 border border-surface-container-highest/50"><img alt="Mawa Kulfi Official Packaging Label Scan" class="w-full min-w-[720px] object-contain rounded-lg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDqATFG3l3rDndekhvdaAMeAjbxvnm4OOIMOIqolAuwFyVftbrdKxWNLaNIy9mf5qa3Onwjd8djaHnUwYF7aWG3zTO8_Yx67041MwbbDHTKZGZ4xN2bhiX0tCo5yXJn6vX1yjUiAqlbsxkG0HyuEd3EytGmJT0GoWy3UGVxwT-oRZKSVeeNSkXMQ-OQJ5f87st-yOpfOfOTV-tyNoiWz46vgXvanDdZi8U9yT1oNpZXb8_cJQjgAxOQmVd5TfqRvFiynQ"></div><div class="grid grid-cols-1 md:grid-cols-3 gap-6"><div class="bg-surface-container-lowest p-5 rounded-xl border border-surface-container-highest/40"><span class="text-label-caps font-label-caps uppercase text-primary font-bold">Verbatim Ingredients</span><p class="text-body-sm font-body-sm text-on-surface-variant mt-2 leading-relaxed"><span class="text-on-surface font-semibold">Ingredients:</span> Whey Protein Concentrate, Milk solids, maltodextrin, Artificial Flavoring Substances, Emulsifier (INS 322(i)), Stabilizer (INS 415), Digestive Enzyme, Sweetener (INS 955).</p></div><div class="bg-surface-container-lowest p-5 rounded-xl border border-surface-container-highest/40"><span class="text-label-caps font-label-caps uppercase text-primary font-bold">Digestive Bioavailability</span><div class="text-headline-md font-headline-md text-on-surface mt-2">Enzyme Enhanced</div><p class="text-body-sm font-body-sm text-on-surface-variant mt-1">Fortified with digestive enzyme matrix &amp; INS 415 stabilizer for rapid breakdown without gas or heavy bloated sensations.</p></div><div class="bg-surface-container-lowest p-5 rounded-xl border border-surface-container-highest/40"><span class="text-label-caps font-label-caps uppercase text-primary font-bold">Usage Protocol</span><div class="text-headline-md font-headline-md text-on-surface mt-2">1 Level Scoop (35g)</div><p class="text-body-sm font-body-sm text-on-surface-variant mt-1">Add to 220-250ml water or milk. Shake or stir for 20-30 seconds until completely dissolved. Consume immediately post-workout.</p></div></div></div></div></div></section>
+<!-- QUALITY & COMPLIANCE BADGES (#quality-and-testing) -->
+<section class="w-full bg-surface-container-lowest py-20 relative" id="quality"><div class="max-w-[1280px] mx-auto px-gutter-mobile lg:px-gutter-desktop"><div class="text-center max-w-3xl mx-auto mb-16"><span class="text-label-caps font-label-caps text-primary uppercase tracking-widest flex items-center justify-center gap-2 mb-2"><span class="material-symbols-outlined text-base">verified_user</span> MANUFACTURING &amp; PHARMACEUTICAL RIGOUR</span><h2 class="text-headline-lg font-headline-lg text-on-surface uppercase tracking-tight">QUALITY &amp; <span class="text-primary">TESTING</span></h2><p class="text-body-md font-body-md text-on-surface-variant mt-4">Manufactured by Gomzi Life Science LLP in Surat, Gujarat inside an advanced climate-controlled facility under strict pharmaceutical quality protocols.</p></div><div class="mb-16"><h3 class="text-headline-sm font-headline-sm text-center uppercase tracking-wider text-on-surface mb-8">3-Step Quality Assurance Process</h3><div class="grid grid-cols-1 md:grid-cols-3 gap-6"><div class="bg-surface-container p-6 rounded-2xl border border-surface-container-highest/40 relative"><div class="text-metric-number font-metric-number text-primary/30 mb-3">01</div><h4 class="text-headline-sm font-headline-sm uppercase text-on-surface mb-2">Raw Material Testing</h4><p class="text-body-sm font-body-sm text-on-surface-variant">Every batch of incoming whey protein concentrate is tested for microbiological safety, heavy metals, protein concentration, and zero free amino acid spiking.</p></div><div class="bg-surface-container p-6 rounded-2xl border border-surface-container-highest/40 relative"><div class="text-metric-number font-metric-number text-primary/30 mb-3">02</div><h4 class="text-headline-sm font-headline-sm uppercase text-on-surface mb-2">In-Process Homogeneity</h4><p class="text-body-sm font-body-sm text-on-surface-variant">Dry blending inside climate-monitored cleanrooms to ensure perfect dispersion of digestive enzymes, aroma compounds, and stabilizers across every single gram.</p></div><div class="bg-surface-container p-6 rounded-2xl border border-surface-container-highest/40 relative"><div class="text-metric-number font-metric-number text-primary/30 mb-3">03</div><h4 class="text-headline-sm font-headline-sm uppercase text-on-surface mb-2">Finished Container Testing</h4><p class="text-body-sm font-body-sm text-on-surface-variant">Post-packaging container testing verifies net fill weight, tamper-evident induction cap seals, and assigns unique batch tracking numbers with verifiable QR records.</p></div></div></div><div class="bg-surface-container rounded-3xl p-8 lg:p-12 border border-surface-container-highest/40 mb-12"><div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4"><div><span class="text-label-caps font-label-caps text-primary uppercase">AUTHENTICATED BATCH CERTIFICATES</span><h3 class="text-headline-md font-headline-md uppercase text-on-surface mt-1">Batch Lab Reports &amp; Verification</h3></div><div class="flex items-center gap-2 text-label-spec font-label-spec text-on-surface-variant"><span class="material-symbols-outlined text-tertiary text-sm">check_circle</span><span class="">Direct from Gomzi Life Science LLP Surat</span></div></div><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><div class="bg-surface-container-lowest p-6 rounded-xl border border-surface-container-highest/50 flex flex-col justify-between"><div class="space-y-3 mb-6"><div class="flex items-center justify-between"><span class="text-label-caps font-label-caps text-primary uppercase font-bold">Rich Chocolate 1kg</span><span class="px-2.5 py-0.5 rounded bg-surface-container-high text-label-spec font-label-spec text-on-surface">Batch GN250507</span></div><div class="space-y-1 text-body-sm font-body-sm text-on-surface-variant"><p class=""><span class="text-on-surface font-semibold">MFG Date:</span> July 2026 | <span class="text-on-surface font-semibold">EXP Date:</span> Dec 2027</p><p class=""><span class="text-on-surface font-semibold">Protein Claim Verified:</span> 24.00g / 35g serving (68.57%)</p><p class=""><span class="text-on-surface font-semibold">Facility:</span> 443-444-445, First Floor, RJD Textile Park, Surat-394510</p></div></div><div class="flex items-center gap-3 pt-4 border-t border-surface-container-highest/50"><button class="flex-1 py-2 px-3 rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface font-label-caps text-label-caps uppercase flex items-center justify-center gap-1.5 transition-colors" type="button"><span class="material-symbols-outlined text-xs">download</span><span class="">Download CoA (PDF Placeholder)</span></button><button class="py-2 px-3 rounded-lg bg-primary-container text-on-primary font-label-caps text-label-caps uppercase flex items-center justify-center gap-1 font-bold shadow-sm" type="button"><span class="material-symbols-outlined text-xs">qr_code_scanner</span><span class="">Verify QR</span></button></div></div><div class="bg-surface-container-lowest p-6 rounded-xl border border-surface-container-highest/50 flex flex-col justify-between"><div class="space-y-3 mb-6"><div class="flex items-center justify-between"><span class="text-label-caps font-label-caps text-primary uppercase font-bold">Mawa Kulfi 1kg</span><span class="px-2.5 py-0.5 rounded bg-surface-container-high text-label-spec font-label-spec text-on-surface">Batch GN250508</span></div><div class="space-y-1 text-body-sm font-body-sm text-on-surface-variant"><p class=""><span class="text-on-surface font-semibold">MFG Date:</span> July 2026 | <span class="text-on-surface font-semibold">EXP Date:</span> Dec 2027</p><p class=""><span class="text-on-surface font-semibold">Protein Claim Verified:</span> 24.00g / 35g serving (68.57%)</p><p class=""><span class="text-on-surface font-semibold">Facility:</span> 443-444-445, First Floor, RJD Textile Park, Surat-394510</p></div></div><div class="flex items-center gap-3 pt-4 border-t border-surface-container-highest/50"><button class="flex-1 py-2 px-3 rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface font-label-caps text-label-caps uppercase flex items-center justify-center gap-1.5 transition-colors" type="button"><span class="material-symbols-outlined text-xs">download</span><span class="">Download CoA (PDF Placeholder)</span></button><button class="py-2 px-3 rounded-lg bg-primary-container text-on-primary font-label-caps text-label-caps uppercase flex items-center justify-center gap-1 font-bold shadow-sm" type="button"><span class="material-symbols-outlined text-xs">qr_code_scanner</span><span class="">Verify QR</span></button></div></div></div><div class="flex flex-wrap items-center justify-center gap-4 pt-8 text-label-spec font-label-spec text-on-surface-variant border-t border-surface-container-highest/40 mt-8"><div class="flex items-center gap-2 bg-surface-container-lowest px-4 py-2 rounded-lg text-on-surface border border-surface-container-highest/40"><span class="material-symbols-outlined text-tertiary text-sm">check</span><span class="">FSSAI Lic. No. 10724997000182</span></div><div class="flex items-center gap-2 bg-surface-container-lowest px-4 py-2 rounded-lg text-on-surface border border-surface-container-highest/40"><span class="material-symbols-outlined text-tertiary text-sm">check</span><span class="">GMP Compliant Facility</span></div><div class="flex items-center gap-2 bg-surface-container-lowest px-4 py-2 rounded-lg text-on-surface border border-surface-container-highest/40"><span class="material-symbols-outlined text-tertiary text-sm">check</span><span class="">ISO Certified Manufacturing Infrastructure</span></div></div></div></div></section>
+<!-- HOW TO PREPARE / 3 STEP PROTOCOL -->
+<section class="w-full bg-background py-20">
+<div class="max-w-[1280px] mx-auto px-gutter-mobile lg:px-gutter-desktop">
+<div class="text-center max-w-2xl mx-auto mb-14">
+<span class="text-label-caps font-label-caps text-primary uppercase tracking-widest">USAGE PROTOCOL</span>
+<h2 class="text-headline-lg font-headline-lg text-on-surface uppercase tracking-tight mt-2">
+          30 SECONDS TO <span class="text-primary">PEAK RECOVERY</span>
+</h2>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-2">
+          Engineered for instant dissolution without clumping in ambient or chilled liquid.
+        </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="bg-surface-container p-8 rounded-2xl text-center relative group hover:bg-surface-container-high transition-colors">
+<div class="text-metric-number font-metric-number text-primary/30 absolute top-4 right-6 group-hover:text-primary transition-colors">01</div>
+<div class="w-16 h-16 rounded-2xl bg-surface-container-lowest mx-auto flex items-center justify-center text-primary mb-6">
+<span class="material-symbols-outlined text-3xl">scale</span>
+</div>
+<h3 class="text-headline-sm font-headline-sm uppercase text-on-surface mb-2">Scoop Precision</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+            Add 1 level scoop (35g) of Aura Whey powder into 220ml - 250ml of cold water or skimmed milk.
+          </p>
+</div>
+<div class="bg-surface-container p-8 rounded-2xl text-center relative group hover:bg-surface-container-high transition-colors">
+<div class="text-metric-number font-metric-number text-primary/30 absolute top-4 right-6 group-hover:text-primary transition-colors">02</div>
+<div class="w-16 h-16 rounded-2xl bg-surface-container-lowest mx-auto flex items-center justify-center text-primary mb-6">
+<span class="material-symbols-outlined text-3xl">vibration</span>
+</div>
+<h3 class="text-headline-sm font-headline-sm uppercase text-on-surface mb-2">30-Second Shake</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+            Shake briskly in a standard shaker bottle or stir using a glass spoon until completely dissolved.
+          </p>
+</div>
+<div class="bg-surface-container p-8 rounded-2xl text-center relative group hover:bg-surface-container-high transition-colors">
+<div class="text-metric-number font-metric-number text-primary/30 absolute top-4 right-6 group-hover:text-primary transition-colors">03</div>
+<div class="w-16 h-16 rounded-2xl bg-surface-container-lowest mx-auto flex items-center justify-center text-primary mb-6">
+<span class="material-symbols-outlined text-3xl">sports_gymnastics</span>
+</div>
+<h3 class="text-headline-sm font-headline-sm uppercase text-on-surface mb-2">Optimal Timing</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+            Consume within 30 minutes post-workout for maximum muscle protein synthesis (MPS) or first thing in the morning.
+          </p>
+</div>
+</div>
+</div>
+</section>
+<!-- FLAVOUR PROFILE COMPARISON (#flavours) -->
+<section class="w-full bg-surface-container-lowest py-20" id="flavours"><div class="max-w-[1280px] mx-auto px-gutter-mobile lg:px-gutter-desktop"><div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4"><div><span class="text-label-caps font-label-caps text-primary uppercase tracking-widest flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-primary inline-block"></span> FLAVOUR COMPARISON</span><h2 class="text-headline-lg font-headline-lg text-on-surface uppercase tracking-tight mt-2">CHOOSE YOUR <span class="text-primary">PROFILE</span></h2></div><p class="text-body-sm font-body-sm text-on-surface-variant max-w-sm">Both options share the exact identical base of 24g pure protein and 133.72 kcal per serving. Choose purely on your taste ritual.</p></div><div class="bg-surface-container rounded-2xl overflow-hidden shadow-xl border border-surface-container-highest/40"><div class="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-surface-container-highest"><div class="p-8 lg:p-12 space-y-6"><div class="flex items-center gap-4"><div class="w-16 h-16 rounded-xl bg-surface-container-lowest flex items-center justify-center text-primary"><span class="material-symbols-outlined text-3xl">cookie</span></div><div><span class="text-label-caps font-label-caps uppercase text-primary font-bold">European Style Blend</span><h3 class="text-headline-md font-headline-md uppercase text-on-surface">Rich Chocolate</h3></div></div><p class="text-body-sm font-body-sm text-on-surface-variant">Deep, comforting notes of roasted cocoa beans with a rounded velvety finish. Never synthetic, chalky, or overwhelmingly sweet.</p><div class="space-y-3 bg-surface-container-lowest p-6 rounded-xl text-body-sm font-body-sm border border-surface-container-highest/30"><div class="flex justify-between"><span class="text-on-surface-variant">Nutritional Macro Base:</span><span class="text-on-surface font-semibold">24g Protein • 133.72 kcal (Identical)</span></div><div class="flex justify-between"><span class="text-on-surface-variant">Flavour Profile:</span><span class="text-on-surface font-semibold">Dutch Cocoa &amp; Roasted Bean</span></div><div class="flex justify-between items-center"><span class="text-on-surface-variant">Sweetness Level:</span><span class="text-primary font-bold flex items-center gap-1">Balanced 3.5 / 5.0</span></div><div class="flex justify-between"><span class="text-on-surface-variant">Recommended Serving:</span><span class="text-on-surface font-semibold">Chilled Water / Almond Milk / Cold Brew</span></div><div class="flex justify-between"><span class="text-on-surface-variant">Mixability:</span><span class="text-tertiary font-bold">15 - 20 Seconds Cold Mix</span></div></div><a class="w-full py-3 rounded-lg bg-surface-container-high hover:bg-primary hover:text-on-primary text-on-surface font-label-caps text-label-caps uppercase transition-all flex items-center justify-center gap-2 font-bold" href="#product-rich-chocolate"><span class="">Select Rich Chocolate</span><span class="material-symbols-outlined text-sm">arrow_forward</span></a></div><div class="p-8 lg:p-12 space-y-6"><div class="flex items-center gap-4"><div class="w-16 h-16 rounded-xl bg-surface-container-lowest flex items-center justify-center text-secondary-fixed-dim"><span class="material-symbols-outlined text-3xl">icecream</span></div><div><span class="text-label-caps font-label-caps uppercase text-secondary-fixed-dim font-bold">Desi Signature</span><h3 class="text-headline-md font-headline-md uppercase text-on-surface">Mawa Kulfi</h3></div></div><p class="text-body-sm font-body-sm text-on-surface-variant">Authentic caramelized reduced-milk (mawa) richness infused with green cardamom and crushed pistachio aroma notes.</p><div class="space-y-3 bg-surface-container-lowest p-6 rounded-xl text-body-sm font-body-sm border border-surface-container-highest/30"><div class="flex justify-between"><span class="text-on-surface-variant">Nutritional Macro Base:</span><span class="text-on-surface font-semibold">24g Protein • 133.72 kcal (Identical)</span></div><div class="flex justify-between"><span class="text-on-surface-variant">Flavour Profile:</span><span class="text-on-surface font-semibold">Desi Rabdi, Mawa &amp; Cardamom</span></div><div class="flex justify-between items-center"><span class="text-on-surface-variant">Sweetness Level:</span><span class="text-primary font-bold flex items-center gap-1">Authentic Desi 4.0 / 5.0</span></div><div class="flex justify-between"><span class="text-on-surface-variant">Recommended Serving:</span><span class="text-on-surface font-semibold">Cold Skimmed Milk / Oatmeal Bowl</span></div><div class="flex justify-between"><span class="text-on-surface-variant">Mixability:</span><span class="text-tertiary font-bold">15 - 20 Seconds Cold Mix</span></div></div><a class="w-full py-3 rounded-lg bg-surface-container-high hover:bg-primary hover:text-on-primary text-on-surface font-label-caps text-label-caps uppercase transition-all flex items-center justify-center gap-2 font-bold" href="#product-mawa-kulfi"><span class="">Select Mawa Kulfi</span><span class="material-symbols-outlined text-sm">arrow_forward</span></a></div></div></div></div></section>
+<!-- ATHLETE & USER VERIFIED REVIEWS -->
+<section class="w-full bg-background py-20" id="reviews"><div class="max-w-[1280px] mx-auto px-gutter-mobile lg:px-gutter-desktop"><div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4"><div><span class="text-label-caps font-label-caps text-primary uppercase tracking-widest flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-primary inline-block"></span> ATHLETE &amp; USER FEEDBACK</span><h2 class="text-headline-lg font-headline-lg text-on-surface uppercase tracking-tight mt-2">COMMUNITY <span class="text-primary">REVIEWS</span></h2></div><div class="flex items-center gap-2 text-label-spec font-label-spec text-on-surface-variant"><span class="text-primary font-bold text-headline-sm">5.0</span> / 5.0 Rating Architecture (Pre-Launch Mockup)</div></div><div class="p-4 rounded-xl bg-surface-container mb-10 border border-primary/30 flex items-start gap-3"><span class="material-symbols-outlined text-primary text-base mt-0.5 shrink-0">info</span><p class="text-body-sm font-body-sm text-on-surface-variant"><span class="text-primary font-semibold">Customer Reviews &amp; Athlete Feedback — Visual Structure Only.</span> Placeholders will be populated post-launch via verified purchase integrations and third-party verified buyers.</p></div><div class="grid grid-cols-1 md:grid-cols-3 gap-6"><div class="bg-surface-container p-6 rounded-xl flex flex-col justify-between border border-surface-container-highest/40"><div><div class="flex items-center justify-between mb-4"><div class="flex text-primary"><span class="material-symbols-outlined text-sm fill-current" style="font-variation-settings: 'FILL' 1;">star</span><span class="material-symbols-outlined text-sm fill-current" style="font-variation-settings: 'FILL' 1;">star</span><span class="material-symbols-outlined text-sm fill-current" style="font-variation-settings: 'FILL' 1;">star</span><span class="material-symbols-outlined text-sm fill-current" style="font-variation-settings: 'FILL' 1;">star</span><span class="material-symbols-outlined text-sm fill-current" style="font-variation-settings: 'FILL' 1;">star</span></div><span class="text-label-spec font-label-spec text-tertiary flex items-center gap-1"><span class="material-symbols-outlined text-xs">verified</span> Verified Buyer Tag</span></div><h4 class="text-headline-sm font-headline-sm uppercase text-on-surface mb-2">[Review Headline Placeholder]</h4><p class="text-body-sm font-body-sm text-on-surface-variant italic">"Placeholder quotation space for verified buyer sensory and recovery feedback regarding Mawa Kulfi taste authentic notes and stomach digestion comfort."</p></div><div class="pt-6 border-t border-surface-container-highest mt-6 flex items-center justify-between text-label-spec font-label-spec"><div class="flex items-center gap-2"><span class="w-7 h-7 rounded-full bg-surface-container-highest flex items-center justify-center font-bold text-primary text-xs">RD</span><span class="text-on-surface font-semibold">R. D. • Mumbai</span></div><span class="text-on-surface-variant">Aura Mawa Kulfi (1kg)</span></div></div><div class="bg-surface-container p-6 rounded-xl flex flex-col justify-between border border-surface-container-highest/40"><div><div class="flex items-center justify-between mb-4"><div class="flex text-primary"><span class="material-symbols-outlined text-sm fill-current" style="font-variation-settings: 'FILL' 1;">star</span><span class="material-symbols-outlined text-sm fill-current" style="font-variation-settings: 'FILL' 1;">star</span><span class="material-symbols-outlined text-sm fill-current" style="font-variation-settings: 'FILL' 1;">star</span><span class="material-symbols-outlined text-sm fill-current" style="font-variation-settings: 'FILL' 1;">star</span><span class="material-symbols-outlined text-sm fill-current" style="font-variation-settings: 'FILL' 1;">star</span></div><span class="text-label-spec font-label-spec text-tertiary flex items-center gap-1"><span class="material-symbols-outlined text-xs">verified</span> Verified Buyer Tag</span></div><h4 class="text-headline-sm font-headline-sm uppercase text-on-surface mb-2">[Review Headline Placeholder]</h4><p class="text-body-sm font-body-sm text-on-surface-variant italic">"Placeholder quotation space for verified buyer mixability rating, absence of clumps in cold water, and FSSAI license confirmation feedback."</p></div><div class="pt-6 border-t border-surface-container-highest mt-6 flex items-center justify-between text-label-spec font-label-spec"><div class="flex items-center gap-2"><span class="w-7 h-7 rounded-full bg-surface-container-highest flex items-center justify-center font-bold text-primary text-xs">AP</span><span class="text-on-surface font-semibold">A. P. • Surat</span></div><span class="text-on-surface-variant">Rich Chocolate (1kg)</span></div></div><div class="bg-surface-container p-6 rounded-xl flex flex-col justify-between border border-surface-container-highest/40"><div><div class="flex items-center justify-between mb-4"><div class="flex text-primary"><span class="material-symbols-outlined text-sm fill-current" style="font-variation-settings: 'FILL' 1;">star</span><span class="material-symbols-outlined text-sm fill-current" style="font-variation-settings: 'FILL' 1;">star</span><span class="material-symbols-outlined text-sm fill-current" style="font-variation-settings: 'FILL' 1;">star</span><span class="material-symbols-outlined text-sm fill-current" style="font-variation-settings: 'FILL' 1;">star</span><span class="material-symbols-outlined text-sm fill-current" style="font-variation-settings: 'FILL' 1;">star</span></div><span class="text-label-spec font-label-spec text-tertiary flex items-center gap-1"><span class="material-symbols-outlined text-xs">verified</span> Verified Buyer Tag</span></div><h4 class="text-headline-sm font-headline-sm uppercase text-on-surface mb-2">[Review Headline Placeholder]</h4><p class="text-body-sm font-body-sm text-on-surface-variant italic">"Placeholder quotation space for combo deal value-for-money evaluation and prompt nationwide express delivery satisfaction."</p></div><div class="pt-6 border-t border-surface-container-highest mt-6 flex items-center justify-between text-label-spec font-label-spec"><div class="flex items-center gap-2"><span class="w-7 h-7 rounded-full bg-surface-container-highest flex items-center justify-center font-bold text-primary text-xs">VS</span><span class="text-on-surface font-semibold">V. S. • Chandigarh</span></div><span class="text-on-surface-variant">Double Flavour Pack</span></div></div></div></div></section>
+<!-- BRAND STORY & PHILOSOPHY (#about) -->
+<section class="w-full bg-surface-container-lowest py-24 relative overflow-hidden" id="about">
+<div class="max-w-[1280px] mx-auto px-gutter-mobile lg:px-gutter-desktop">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+<div class="lg:col-span-6 space-y-6">
+<span class="text-label-caps font-label-caps text-primary uppercase tracking-widest">PHILOSOPHY &amp; ORIGIN</span>
+<h2 class="text-headline-lg font-headline-lg text-on-surface uppercase tracking-tight">
+            BUILT ON DISCIPLINE, <br><span class="text-primary">DRIVEN BY AUTHENTICITY</span>
+</h2>
+<p class="text-body-md font-body-md text-on-surface-variant leading-relaxed">
+            Aura Whey was founded on a simple realization: Indian athletes and gym-goers shouldn't have to choose between exorbitant imported tubs with counterfeit risks or cheap domestic powders spiked with fillers.
+          </p>
+<p class="text-body-md font-body-md text-on-surface-variant leading-relaxed">
+            Every formula is backed by Gomzi Life Science LLP's pharmaceutical infrastructure in Gujarat. We formulate for the dedicated lifter who clocks in at 6:00 AM, measures their macros, and demands genuine biological recovery without digestive compromise.
+          </p>
+<div class="pt-4 flex items-center gap-8">
+<div>
+<div class="text-headline-md font-headline-md text-primary">0g</div>
+<div class="text-label-caps font-label-caps text-on-surface-variant uppercase">Added Sugar</div>
+</div>
+<div class="w-px h-10 bg-surface-container-highest"></div>
+<div>
+<div class="text-headline-md font-headline-md text-primary">Zero</div>
+<div class="text-label-caps font-label-caps text-on-surface-variant uppercase">Amino Spiking</div>
+</div>
+<div class="w-px h-10 bg-surface-container-highest"></div>
+<div>
+<div class="text-headline-md font-headline-md text-primary">100%</div>
+<div class="text-label-caps font-label-caps text-on-surface-variant uppercase">Traceable Sourcing</div>
+</div>
+</div>
+</div>
+<div class="lg:col-span-6">
+<div class="bg-surface-container p-8 rounded-3xl relative overflow-hidden">
+<div class="space-y-6">
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined text-primary text-2xl mt-1">verified</span>
+<div>
+<h4 class="text-headline-sm font-headline-sm uppercase text-on-surface mb-1">Direct From GMP Manufacturing</h4>
+<p class="text-body-sm font-body-sm text-on-surface-variant">No middle distributors or warehouse adulteration. Every tub leaves directly from Gomzi Life Science LLP in Surat.</p>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined text-primary text-2xl mt-1">security</span>
+<div>
+<h4 class="text-headline-sm font-headline-sm uppercase text-on-surface mb-1">Authenticity Code On Every Jar</h4>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Each container carries an individual verification batch seal to instantly confirm genuineness via SMS or web.</p>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined text-primary text-2xl mt-1">support_agent</span>
+<div>
+<h4 class="text-headline-sm font-headline-sm uppercase text-on-surface mb-1">Direct Indian Support Desk</h4>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Reach out directly to our founders and nutrition specialists on WhatsApp and voice hotline +91 9665933851.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- FAQS SECTION (#faqs) -->
+<section class="w-full bg-background py-20" id="faqs"><div class="max-w-[900px] mx-auto px-gutter-mobile lg:px-gutter-desktop"><div class="text-center mb-14"><span class="text-label-caps font-label-caps text-primary uppercase tracking-widest flex items-center justify-center gap-2 mb-2"><span class="material-symbols-outlined text-base">help</span> CLARITY &amp; ANSWERS</span><h2 class="text-headline-lg font-headline-lg text-on-surface uppercase tracking-tight">FREQUENTLY ASKED <span class="text-primary">QUESTIONS</span></h2></div><div class="space-y-4" id="faq-accordion"><div class="bg-surface-container rounded-xl overflow-hidden border border-surface-container-highest/40"><button class="w-full p-5 text-left flex items-center justify-between font-headline-sm text-headline-sm text-on-surface uppercase hover:text-primary transition-colors focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none" onclick="this.nextElementSibling.classList.toggle('hidden');" type="button" aria-expanded="true" aria-controls="faq-panel-0" id="faq-btn-0"><span class="">1. Who is Aura Whey formulated for?</span><span class="material-symbols-outlined text-primary">expand_more</span></button><div class="px-5 pb-5 text-body-sm font-body-sm text-on-surface-variant" id="faq-panel-0" role="region" aria-labelledby="faq-btn-0">Aura Whey is specifically engineered for Indian fitness enthusiasts, active gym-goers, competitive lifters, and athletes looking to meet daily protein requirements with pure, unspiked dairy whey concentrate and zero digestive distress.</div></div><div class="bg-surface-container rounded-xl overflow-hidden border border-surface-container-highest/40"><button class="w-full p-5 text-left flex items-center justify-between font-headline-sm text-headline-sm text-on-surface uppercase hover:text-primary transition-colors focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none" onclick="this.nextElementSibling.classList.toggle('hidden');" type="button" aria-expanded="false" aria-controls="faq-panel-1" id="faq-btn-1"><span class="">2. How do I use Aura Whey for best results?</span><span class="material-symbols-outlined text-primary">expand_more</span></button><div class="px-5 pb-5 text-body-sm font-body-sm text-on-surface-variant hidden" id="faq-panel-1" role="region" aria-labelledby="faq-btn-1">Add 1 level scoop (35g) to 220ml - 250ml of cold water, chilled skimmed milk, or almond milk. Shake briskly for 20-30 seconds. Consume within 30 minutes post-workout or first thing in the morning.</div></div><div class="bg-surface-container rounded-xl overflow-hidden border border-surface-container-highest/40"><button class="w-full p-5 text-left flex items-center justify-between font-headline-sm text-headline-sm text-on-surface uppercase hover:text-primary transition-colors focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none" onclick="this.nextElementSibling.classList.toggle('hidden');" type="button" aria-expanded="false" aria-controls="faq-panel-2" id="faq-btn-2"><span class="">3. What flavours are currently available?</span><span class="material-symbols-outlined text-primary">expand_more</span></button><div class="px-5 pb-5 text-body-sm font-body-sm text-on-surface-variant hidden" id="faq-panel-2" role="region" aria-labelledby="faq-btn-2">Aura Whey is currently available in two flagship signature flavours: Rich Chocolate (formulated with Dutch cocoa powder) and Mawa Kulfi (inspired by authentic Indian reduced-milk desserts with cardamom notes). Both share the identical 24g pure protein macro base.</div></div><div class="bg-surface-container rounded-xl overflow-hidden border border-surface-container-highest/40"><button class="w-full p-5 text-left flex items-center justify-between font-headline-sm text-headline-sm text-on-surface uppercase hover:text-primary transition-colors focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none" onclick="this.nextElementSibling.classList.toggle('hidden');" type="button" aria-expanded="false" aria-controls="faq-panel-3" id="faq-btn-3"><span class="">4. What are the delivery times and shipping zones?</span><span class="material-symbols-outlined text-primary">expand_more</span></button><div class="px-5 pb-5 text-body-sm font-body-sm text-on-surface-variant hidden" id="faq-panel-3" role="region" aria-labelledby="faq-btn-3">We ship nationwide across all serviceable Indian pincodes within 24 hours of order placement. Metro cities typically receive delivery within 2-3 business days, while Tier-2 and Tier-3 zones arrive within 4-5 business days via tier-1 logistics partners.</div></div><div class="bg-surface-container rounded-xl overflow-hidden border border-surface-container-highest/40"><button class="w-full p-5 text-left flex items-center justify-between font-headline-sm text-headline-sm text-on-surface uppercase hover:text-primary transition-colors focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none" onclick="this.nextElementSibling.classList.toggle('hidden');" type="button" aria-expanded="false" aria-controls="faq-panel-4" id="faq-btn-4"><span class="">5. Is Cash on Delivery (COD) available?</span><span class="material-symbols-outlined text-primary">expand_more</span></button><div class="px-5 pb-5 text-body-sm font-body-sm text-on-surface-variant hidden" id="faq-panel-4" role="region" aria-labelledby="faq-btn-4">Yes, Cash on Delivery is available across most serviceable pincodes in India. You may also complete your purchase via instant UPI, credit/debit cards, NetBanking, or EMI during Shopify checkout.</div></div><div class="bg-surface-container rounded-xl overflow-hidden border border-surface-container-highest/40"><button class="w-full p-5 text-left flex items-center justify-between font-headline-sm text-headline-sm text-on-surface uppercase hover:text-primary transition-colors focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none" onclick="this.nextElementSibling.classList.toggle('hidden');" type="button" aria-expanded="false" aria-controls="faq-panel-5" id="faq-btn-5"><span class="">6. What is the return and replacement policy?</span><span class="material-symbols-outlined text-primary">expand_more</span></button><div class="px-5 pb-5 text-body-sm font-body-sm text-on-surface-variant hidden" id="faq-panel-5" role="region" aria-labelledby="faq-btn-5">Due to the consumable nature of sports nutrition products, returns are accepted within 7 days of delivery only for sealed, unopened containers or orders received damaged in transit. Contact aurawhey@gmail.com with unboxing photos for swift resolution.</div></div><div class="bg-surface-container rounded-xl overflow-hidden border border-surface-container-highest/40"><button class="w-full p-5 text-left flex items-center justify-between font-headline-sm text-headline-sm text-on-surface uppercase hover:text-primary transition-colors focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none" onclick="this.nextElementSibling.classList.toggle('hidden');" type="button" aria-expanded="false" aria-controls="faq-panel-6" id="faq-btn-6"><span class="">7. How can I verify the authenticity of my container?</span><span class="material-symbols-outlined text-primary">expand_more</span></button><div class="px-5 pb-5 text-body-sm font-body-sm text-on-surface-variant hidden" id="faq-panel-6" role="region" aria-labelledby="faq-btn-6">Every container is sealed with a holographic batch seal and QR authenticity code on the cap. Scan the code with your smartphone to immediately verify batch manufacturing records, FSSAI compliance, and expiry dates straight from Gomzi Life Science LLP.</div></div><div class="bg-surface-container rounded-xl overflow-hidden border border-surface-container-highest/40"><button class="w-full p-5 text-left flex items-center justify-between font-headline-sm text-headline-sm text-on-surface uppercase hover:text-primary transition-colors focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none" onclick="this.nextElementSibling.classList.toggle('hidden');" type="button" aria-expanded="false" aria-controls="faq-panel-7" id="faq-btn-7"><span class="">8. Where can I view or download the third-party lab reports?</span><span class="material-symbols-outlined text-primary">expand_more</span></button><div class="px-5 pb-5 text-body-sm font-body-sm text-on-surface-variant hidden" id="faq-panel-7" role="region" aria-labelledby="faq-btn-7">Batch lab certificates (Certificates of Analysis) are accessible right in our Quality &amp; Testing section or by entering your batch number on our verification portal to download verified PDF analysis reports.</div></div><div class="bg-surface-container rounded-xl overflow-hidden border border-surface-container-highest/40"><button class="w-full p-5 text-left flex items-center justify-between font-headline-sm text-headline-sm text-on-surface uppercase hover:text-primary transition-colors focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none" onclick="this.nextElementSibling.classList.toggle('hidden');" type="button" aria-expanded="false" aria-controls="faq-panel-8" id="faq-btn-8"><span class="">9. Does Aura Whey contain common allergens?</span><span class="material-symbols-outlined text-primary">expand_more</span></button><div class="px-5 pb-5 text-body-sm font-body-sm text-on-surface-variant hidden" id="faq-panel-8" role="region" aria-labelledby="faq-btn-8">Aura Whey contains dairy milk solids and soy lecithin (as an emulsifier). It is gluten-free and manufactured in a certified facility that also processes tree nuts. It is not recommended for individuals diagnosed with lactose intolerance.</div></div></div></div></section>
+<!-- VIP WHATSAPP & COMMUNITY SIGNUP -->
+<section class="w-full bg-surface-container-lowest py-16 border-t border-surface-container-high">
+<div class="max-w-[1280px] mx-auto px-gutter-mobile lg:px-gutter-desktop">
+<div class="bg-gradient-to-r from-surface-container via-surface-container-high to-surface-container-lowest p-8 md:p-12 rounded-3xl flex flex-col lg:flex-row items-center justify-between gap-8">
+<div class="space-y-2 max-w-xl">
+<span class="text-label-caps font-label-caps text-primary uppercase">JOIN THE AURA ATHLETE CLUB</span>
+<h3 class="text-headline-md font-headline-md uppercase text-on-surface">Get 10% Off Your First Shopify Order</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+            Subscribe to receive direct WhatsApp restock pings, verified workout plans, and instant discount vouchers.
+          </p>
+</div>
+<form class="w-full max-w-md flex flex-col sm:flex-row gap-3" onsubmit="event.preventDefault(); alert('Welcome to Aura Whey Club! Your code is AURA10.');">
+<input class="flex-1 px-4 py-3 rounded-lg bg-surface-container-lowest text-on-surface placeholder:text-outline text-body-sm focus:outline-none focus:ring-1 focus:ring-primary" placeholder="Enter WhatsApp or Email" required="" type="text">
+<button class="px-6 py-3 rounded-lg bg-primary-container hover:bg-secondary-container text-on-primary font-headline-sm text-label-caps uppercase transition-all whitespace-nowrap" type="submit">
+            Claim 10% Off
+          </button>
+</form>
+</div>
+</div>
+</section>
+</div></main><footer class="w-full bg-surface-container-lowest text-on-surface-variant pt-2xl pb-xl shadow-[0_-8px_32px_rgba(0,0,0,0.5)] border-t border-surface-container-high"><div class="max-w-[1280px] mx-auto px-gutter-mobile lg:px-gutter-desktop grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-xl mb-2xl"><div><div class="mb-md"><div class="flex items-center gap-3"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgYwIvfsUsMsWtQToDEW1ksmOp2Sfq1aFFYU5aCZEEiLamdTX9OKHg1Ys2DdAgFSJp3mqBA3YMXrFQCfSeoonguxhdOk0LUsF3BcER89aKTUYzaD_E2R3VJ815AZc1ww0CQYzrhKtT5e4E7Zu_lhoznNEvuxCFksYClcZ-E3yiQnYX7udr-Y_9t2VWh5SMFNU5vPh6K_6NbPn8P3u73CoLtYVqJxNQ1ykDCiathvCiqT_hOqHPJeoLCErob_yCDfq2jg" alt="Aura Whey Official Brand Logo" class="h-11 w-11 object-contain rounded-md"><div class="flex flex-col"><span class="text-headline-sm font-headline-sm uppercase tracking-wider text-primary font-bold">AURA WHEY</span><p class="text-label-caps font-label-caps text-on-surface-variant uppercase text-[10px] tracking-widest mt-0.5">FUEL YOUR AURA</p></div></div></div><p class="text-body-sm font-body-sm text-on-surface-variant mb-md">Ultra-filtered sports nutrition formulated for high-output discipline and authentic macro transparency. Distributed directly from Gomzi Life Science LLP, Surat.</p><div class="flex items-center gap-sm"><a class="h-9 w-9 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-all" href="#"><span class="material-symbols-outlined text-sm">public</span></a><a class="h-9 w-9 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-all" href="https://wa.me/919665933851"><span class="material-symbols-outlined text-sm">chat</span></a><a class="h-9 w-9 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-all" href="#"><span class="material-symbols-outlined text-sm">share</span></a></div></div><div><h4 class="text-headline-sm font-headline-sm uppercase tracking-wider text-on-surface mb-md">Customer Support</h4><div class="flex flex-col gap-sm text-body-sm font-body-sm"><a class="flex items-center gap-xs text-on-surface-variant hover:text-primary transition-colors" href="mailto:aurawhey@gmail.com"><span class="material-symbols-outlined text-sm text-primary">mail</span>aurawhey@gmail.com</a><a class="flex items-center gap-xs text-on-surface-variant hover:text-primary transition-colors" href="tel:9665933851"><span class="material-symbols-outlined text-sm text-primary">call</span>+91 9665933851 / 9425559821</a><div class="flex items-start gap-xs text-on-surface-variant mt-xs"><span class="material-symbols-outlined text-sm text-primary mt-0.5">schedule</span><span class="">Mon - Sat: 10:00 AM - 7:00 PM IST</span></div></div></div><div><h4 class="text-headline-sm font-headline-sm uppercase tracking-wider text-on-surface mb-md">Quick Navigation</h4><div class="flex flex-col gap-2 text-body-sm font-body-sm"><a class="hover:text-primary transition-colors" href="#shop">Shop Products</a><a class="hover:text-primary transition-colors" href="#why-aura-whey">Why Aura Whey</a><a class="hover:text-primary transition-colors" href="#ingredients">Ingredients &amp; Nutrition</a><a class="hover:text-primary transition-colors" href="#quality">Quality &amp; Testing</a><a class="hover:text-primary transition-colors" href="#flavours">Flavour Profiles</a><a class="hover:text-primary transition-colors" href="#about">Brand Philosophy</a><a class="hover:text-primary transition-colors" href="#faqs">FAQs &amp; Shipping</a></div></div><div><h4 class="text-headline-sm font-headline-sm uppercase tracking-wider text-on-surface mb-md">Safe &amp; Authenticated</h4><div class="bg-surface-container p-md rounded-xl mb-md border border-surface-container-highest/40"><div class="flex items-center gap-xs text-primary mb-1"><span class="material-symbols-outlined text-sm">lock</span><span class="text-label-caps font-label-caps uppercase">Shopify Secure Checkout</span></div><p class="text-label-spec font-label-spec text-on-surface-variant">256-bit encrypted transactions powered by Shopify Payments.</p></div><div class="flex flex-wrap gap-2"><span class="px-2.5 py-1 rounded bg-surface-container-high text-label-caps font-label-caps text-on-surface uppercase">UPI</span><span class="px-2.5 py-1 rounded bg-surface-container-high text-label-caps font-label-caps text-on-surface uppercase">RuPay</span><span class="px-2.5 py-1 rounded bg-surface-container-high text-label-caps font-label-caps text-on-surface uppercase">Visa</span><span class="px-2.5 py-1 rounded bg-surface-container-high text-label-caps font-label-caps text-on-surface uppercase">Mastercard</span><span class="px-2.5 py-1 rounded bg-surface-container-high text-label-caps font-label-caps text-on-surface uppercase">NetBanking</span></div></div></div><div class="max-w-[1280px] mx-auto px-gutter-mobile lg:px-gutter-desktop pt-lg border-t border-surface-container-highest/40 flex flex-col gap-4 text-label-spec font-label-spec text-on-surface-variant"><div class="p-3 rounded-lg bg-surface-container text-center text-primary/90 font-bold border border-surface-container-highest/40">Nutraceuticals For Adults — Not for Medicinal Use</div><div class="flex flex-col md:flex-row items-center justify-between gap-md"><p class="">© 2025 Aura Whey. Formulated &amp; Distributed by Gomzi Life Science LLP (FSSAI Lic. 10724997000182). All Rights Reserved.</p><div class="flex items-center gap-md"><a class="hover:text-primary transition-colors" href="#">Shipping Policy</a><a class="hover:text-primary transition-colors" href="#">Return Policy</a><a class="hover:text-primary transition-colors" href="#">Privacy Policy</a><a class="hover:text-primary transition-colors" href="#">Terms of Service</a></div></div></div></footer>
+<script>
+  (function initHeroSlider() {
+    const slides = document.querySelectorAll('.hero-slide');
+    const dots = document.querySelectorAll('.hero-dot');
+    const prevBtn = document.getElementById('hero-prev-btn');
+    const nextBtn = document.getElementById('hero-next-btn');
+    const container = document.getElementById('hero-slider-container');
+    if (!slides.length) return;
+
+    let currentSlide = 0;
+    const totalSlides = slides.length;
+    let autoplayTimer = null;
+
+    function showSlide(index) {
+      currentSlide = (index + totalSlides) % totalSlides;
+      slides.forEach((slide, idx) => {
+        if (idx === currentSlide) {
+          slide.classList.remove('opacity-0', 'pointer-events-none', 'z-0');
+          slide.classList.add('opacity-100', 'z-10');
+        } else {
+          slide.classList.remove('opacity-100', 'z-10');
+          slide.classList.add('opacity-0', 'pointer-events-none', 'z-0');
+        }
+      });
+      dots.forEach((dot, idx) => {
+        if (idx === currentSlide) {
+          dot.classList.remove('bg-white/40', 'w-2', 'h-2');
+          dot.classList.add('bg-primary-container', 'w-2.5', 'h-2.5');
+        } else {
+          dot.classList.remove('bg-primary-container', 'w-2.5', 'h-2.5');
+          dot.classList.add('bg-white/40', 'w-2', 'h-2');
+        }
+      });
+    }
+
+    function startAutoplay() {
+      stopAutoplay();
+      autoplayTimer = setInterval(() => {
+        showSlide(currentSlide + 1);
+      }, 5500);
+    }
+
+    function stopAutoplay() {
+      if (autoplayTimer) {
+        clearInterval(autoplayTimer);
+        autoplayTimer = null;
+      }
+    }
+
+    if (prevBtn) {
+      prevBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        stopAutoplay();
+        showSlide(currentSlide - 1);
+      });
+    }
+
+    if (nextBtn) {
+      nextBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        stopAutoplay();
+        showSlide(currentSlide + 1);
+      });
+    }
+
+    dots.forEach((dot) => {
+      dot.addEventListener('click', (e) => {
+        e.preventDefault();
+        stopAutoplay();
+        const target = parseInt(dot.getAttribute('data-slide-index'), 10);
+        showSlide(target);
+      });
+    });
+
+    if (container) {
+      container.addEventListener('mouseenter', stopAutoplay);
+      container.addEventListener('mouseleave', startAutoplay);
+
+      // Touch swipe gestures
+      let touchStartX = 0;
+      let touchEndX = 0;
+
+      container.addEventListener('touchstart', (e) => {
+        stopAutoplay();
+        touchStartX = e.changedTouches[0].screenX;
+      }, { passive: true });
+
+      container.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        const diff = touchStartX - touchEndX;
+        if (Math.abs(diff) > 40) {
+          if (diff > 0) {
+            showSlide(currentSlide + 1);
+          } else {
+            showSlide(currentSlide - 1);
+          }
+        }
+      }, { passive: true });
+    }
+
+    startAutoplay();
+  })();
+</script>
+
+
+<div id="mobile-sticky-bar" class="fixed bottom-0 left-0 right-0 z-40 bg-surface-container-high/95 backdrop-blur-xl border-t border-surface-container-highest p-3 px-4 shadow-[0_-8px_30px_rgba(0,0,0,0.6)] transition-all duration-300 ease-in-out md:hidden translate-y-0 opacity-100 pointer-events-auto"><div class="flex items-center justify-between gap-3 max-w-md mx-auto"><div class="flex items-center gap-2.5 min-w-0 flex-1"><img id="sticky-thumb" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCDvkI5Hz6qZ2gxxTbOG_XMqbXlZyODb5GyA1vyvvkMPPQlKpMbOgzSWcUFKY8AbIyNEiRa0C5_EN_aScEA3IpGNTdLf3v6gq6BEXGe7zH2l1QBHk4iv7qUMnZK7jrHmdFf1p8pO8r1r9YPpKmWkjfv9QQVDH6-UbMSmvE7awfKrCnWZPSLpRyYQp1cHvLF4NJifpuRCAfhyMz6su21hu6pgblMw4FunQYHo8jDdNdx62osGNQx9aV_nL2rXA45LpBQzg" alt="Active Whey Flavour" class="w-10 h-10 rounded-lg object-contain bg-surface-container-lowest p-1 shrink-0 border border-surface-container-highest/40"><div class="min-w-0 flex-1"><div id="sticky-title" class="text-label-spec font-bold text-on-surface truncate">Mawa Kulfi (1kg)</div><div class="flex items-center gap-1.5"><span id="sticky-price" class="text-body-sm font-bold text-primary">₹2,499</span><span class="text-[10px] text-tertiary-fixed font-semibold">• In Stock</span></div></div></div><button id="sticky-add-btn" type="button" class="px-4 py-2.5 rounded-lg bg-primary-container hover:bg-secondary-container text-on-primary font-headline-sm text-xs uppercase tracking-wider transition-all shadow-md font-bold shrink-0 flex items-center gap-1.5 focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"><span class="material-symbols-outlined text-sm">shopping_cart</span><span class="">Add to Cart</span></button></div></div><div id="cart-backdrop" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 opacity-0 pointer-events-none transition-opacity duration-300" aria-hidden="true"></div><aside id="cart-drawer" class="fixed top-0 right-0 bottom-0 w-full max-w-md bg-surface-container-low border-l border-surface-container-highest z-50 transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col shadow-2xl" aria-labelledby="cart-heading" role="dialog" aria-modal="true"><div class="p-4 sm:p-5 border-b border-surface-container-highest flex items-center justify-between bg-surface-container"><div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-xl">shopping_bag</span><h2 id="cart-heading" class="text-headline-sm font-bold uppercase text-on-surface tracking-wider">Your Cart</h2><span id="drawer-cart-count" class="text-label-caps px-2 py-0.5 rounded-full bg-primary-container text-on-primary font-bold">0</span></div><button id="cart-close-btn" type="button" class="p-2 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest rounded-lg transition-colors focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none" aria-label="Close Cart"><span class="material-symbols-outlined text-xl">close</span></button></div><div id="cart-empty-view" class="flex-1 flex flex-col items-center justify-center p-6 text-center"><div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant mb-4 border border-surface-container-highest"><span class="material-symbols-outlined text-3xl">remove_shopping_cart</span></div><h3 class="text-headline-sm font-bold uppercase text-on-surface mb-2">Your Cart is Empty</h3><p class="text-body-sm text-on-surface-variant max-w-xs mb-6">Fuel your aura with 24g pure whey concentrate in Rich Chocolate or authentic Mawa Kulfi.</p><button type="button" onclick="closeCartDrawer(); location.href='#shop';" class="px-5 py-2.5 rounded-lg bg-primary-container hover:bg-secondary-container text-on-primary font-label-caps uppercase font-bold transition-all shadow-md focus-visible:ring-2 focus-visible:ring-primary">Shop Flavours</button></div><div id="cart-filled-view" class="flex-1 overflow-y-auto p-4 space-y-4 hidden"><div id="cart-items-list" class="space-y-3"></div><div class="p-3 rounded-lg bg-surface-container border border-surface-container-highest/60 text-xs text-on-surface-variant flex items-center gap-2"><span class="material-symbols-outlined text-tertiary text-base">verified</span><span class="">Eligible for Free Nationwide Express Delivery</span></div></div><div id="cart-footer-view" class="p-4 sm:p-5 border-t border-surface-container-highest bg-surface-container space-y-3 hidden"><div class="space-y-1.5 text-body-sm"><div class="flex justify-between text-on-surface-variant"><span class="">Subtotal</span><span id="cart-subtotal" class="text-on-surface font-bold">₹0</span></div><div class="flex justify-between text-on-surface-variant"><span class="">Estimated Shipping</span><span class="text-tertiary font-bold">FREE</span></div><div class="flex justify-between text-base font-bold text-on-surface pt-2 border-t border-surface-container-highest"><span class="">Total</span><span id="cart-total" class="text-primary">₹0</span></div></div><button id="checkout-btn" type="button" class="w-full py-3.5 px-4 rounded-lg bg-primary-container hover:bg-secondary-container text-on-primary font-headline-sm text-sm uppercase tracking-wider font-bold transition-all shadow-lg flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-primary"><span class="material-symbols-outlined text-base">lock</span><span class="">Checkout with Shopify</span></button><div class="flex items-center justify-center gap-2 text-[11px] text-on-surface-variant"><span class="material-symbols-outlined text-xs text-primary">security</span><span class="">100% Genuine Direct from Surat • SSL 256-Bit Encrypted</span></div></div></aside><div id="toast-notification" class="fixed bottom-20 sm:bottom-6 left-1/2 -translate-x-1/2 z-50 bg-surface-container-highest/95 backdrop-blur-md text-on-surface px-4 py-2.5 rounded-xl border border-primary/40 shadow-xl flex items-center gap-2.5 text-body-sm font-semibold transition-all duration-300 opacity-0 pointer-events-none translate-y-3"><span class="material-symbols-outlined text-tertiary text-base">check_circle</span><span id="toast-message" class="">Added to cart!</span></div><div id="shopify-handoff-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-300" role="dialog" aria-modal="true" aria-labelledby="handoff-title"><div class="bg-surface-container border border-primary/40 rounded-2xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-5 relative"><div class="flex items-start justify-between"><div class="flex items-center gap-3"><div class="w-12 h-12 rounded-xl bg-primary-container text-on-primary flex items-center justify-center font-bold shadow-md"><span class="material-symbols-outlined text-2xl">lock</span></div><div><h3 id="handoff-title" class="text-headline-sm font-headline-sm uppercase text-on-surface">Shopify Secure Checkout</h3><p class="text-label-spec font-label-spec text-on-surface-variant">256-Bit SSL Encrypted Protocol</p></div></div><button type="button" id="close-handoff-btn" class="p-2 text-on-surface-variant hover:text-on-surface rounded-lg transition-colors" aria-label="Close modal"><span class="material-symbols-outlined text-xl">close</span></button></div><div class="p-4 rounded-xl bg-surface-container-lowest border border-surface-container-highest/60 space-y-2 text-body-sm"><div class="flex justify-between text-on-surface font-semibold"><span id="modal-item-summary" class="">Selected Aura Whey Items</span><span id="modal-total-price" class="text-primary font-bold">₹2,499</span></div><div class="text-label-spec font-label-spec text-tertiary flex items-center gap-1.5"><span class="material-symbols-outlined text-xs">local_shipping</span><span class="">Free Express Dispatch Included (Dispatched from Surat in 24h)</span></div><div class="text-label-spec font-label-spec text-on-surface-variant flex items-center gap-1.5"><span class="material-symbols-outlined text-xs">verified</span><span class="">Authenticity Guarantee &amp; FSSAI Lic. 10724997000182</span></div></div><div class="text-body-sm text-on-surface-variant leading-relaxed"><p class="">You are seamlessly handing off to the official Aura Whey Shopify checkout environment. All domestic payment options are supported:</p><div class="grid grid-cols-3 gap-2 mt-3 text-center text-label-caps font-bold"><span class="bg-surface-container-high py-2 rounded text-on-surface">UPI / GPay / PhonePe</span><span class="bg-surface-container-high py-2 rounded text-on-surface">Debit / Credit Cards</span><span class="bg-surface-container-high py-2 rounded text-on-surface">Cash on Delivery (COD)</span></div></div><div class="space-y-2 pt-2"><button type="button" id="modal-proceed-btn" class="w-full py-3.5 px-4 rounded-lg bg-primary-container hover:bg-secondary-container text-on-primary font-headline-sm text-sm uppercase tracking-wider font-bold transition-all shadow-lg flex items-center justify-center gap-2"><span class="material-symbols-outlined text-base">shopping_cart_checkout</span><span class="">Continue to Shopify Checkout</span></button><button type="button" id="modal-cancel-btn" class="w-full py-2.5 px-4 rounded-lg bg-transparent hover:bg-surface-container-high text-on-surface-variant text-label-spec font-label-spec uppercase transition-colors text-center">Return to Cart</button></div></div></div><script>(function initMobileEcommerce() {
+  const cartState = {
+    items: []
+  };
+
+  let activeProduct = {
+    id: 'rich-chocolate',
+    title: 'Aura Whey • Rich Chocolate',
+    flavour: 'Rich Chocolate',
+    price: 2499,
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuA_DY2PofQg01RBbNaeEMLXibRa5kugV_qF0LRHzYir7QMxZUg3OlDu0a43Qpb9b0Jkv2ECrQnzfcJgCHOmoil3NqqOFR1UjlTzAxO63lqT6Bh-nw5DC7MRpPlK9MD1j6EdspYO_WP5xzhbp9-rGWch6tf_bMfBaLeUxaDBdm7URhcYnYWTXk9eAjdTc5cp8EgjeEijM4egqk9z8jfuyXU_XPeMuQi-YkkUXdB7Su_3DXRsYCj0eLPTq23q3NEt3YpBFw'
+  };
+
+  const stickyBar = document.getElementById('mobile-sticky-bar');
+  const stickyThumb = document.getElementById('sticky-thumb');
+  const stickyTitle = document.getElementById('sticky-title');
+  const stickyPrice = document.getElementById('sticky-price');
+  const stickyAddBtn = document.getElementById('sticky-add-btn');
+
+  const cartBackdrop = document.getElementById('cart-backdrop');
+  const cartDrawer = document.getElementById('cart-drawer');
+  const cartCloseBtn = document.getElementById('cart-close-btn');
+  const emptyView = document.getElementById('cart-empty-view');
+  const filledView = document.getElementById('cart-filled-view');
+  const footerView = document.getElementById('cart-footer-view');
+  const cartItemsList = document.getElementById('cart-items-list');
+  const cartSubtotalEl = document.getElementById('cart-subtotal');
+  const cartTotalEl = document.getElementById('cart-total');
+  const drawerCartCount = document.getElementById('drawer-cart-count');
+  const headerCartCountSm = document.querySelector('header button[aria-label="Cart Preview"] span.sm\\:hidden');
+  const headerCartCountLg = document.querySelector('header button[aria-label="Cart Preview"] span.hidden.sm\\:inline');
+
+  function updateActiveProduct(productData) {
+    if (!productData) return;
+    activeProduct = Object.assign({}, activeProduct, productData);
+    if (stickyThumb) stickyThumb.src = activeProduct.image;
+    if (stickyTitle) stickyTitle.textContent = activeProduct.flavour + ' (1kg)';
+    if (stickyPrice) stickyPrice.textContent = '₹' + activeProduct.price.toLocaleString('en-IN');
+  }
+
+  // Show/hide sticky bar based on scroll and product card visibility
+  const productCards = document.querySelectorAll('.product-card');
+  let isProductInView = false;
+
+  if ('IntersectionObserver' in window && productCards.length) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          isProductInView = true;
+          const cardId = entry.target.id;
+          const btn = entry.target.querySelector('.btn-add-cart');
+          if (btn) {
+            updateActiveProduct({
+              id: btn.getAttribute('data-product-id'),
+              title: btn.getAttribute('data-title'),
+              flavour: btn.getAttribute('data-flavour'),
+              price: parseInt(btn.getAttribute('data-price') || '2499', 10),
+              image: btn.getAttribute('data-image')
+            });
+          }
+        }
+      });
+
+      if (isProductInView && stickyBar) {
+        stickyBar.classList.remove('translate-y-full', 'opacity-0', 'pointer-events-none');
+        stickyBar.classList.add('translate-y-0', 'opacity-100', 'pointer-events-auto');
+      }
+    }, { threshold: 0.15 });
+
+    productCards.forEach(card => observer.observe(card));
+  }
+
+  // Also allow clicking cards to switch active product
+  productCards.forEach(card => {
+    card.addEventListener('click', () => {
+      const btn = card.querySelector('.btn-add-cart');
+      if (btn) {
+        updateActiveProduct({
+          id: btn.getAttribute('data-product-id'),
+          title: btn.getAttribute('data-title'),
+          flavour: btn.getAttribute('data-flavour'),
+          price: parseInt(btn.getAttribute('data-price') || '2499', 10),
+          image: btn.getAttribute('data-image')
+        });
+        if (stickyBar) {
+          stickyBar.classList.remove('translate-y-full', 'opacity-0', 'pointer-events-none');
+          stickyBar.classList.add('translate-y-0', 'opacity-100', 'pointer-events-auto');
+        }
+      }
+    });
+  });
+
+  // Toast Notification
+  function showToast(msg) {
+    const toast = document.getElementById('toast-notification');
+    const toastMsg = document.getElementById('toast-message');
+    if (!toast || !toastMsg) return;
+    toastMsg.textContent = msg;
+    toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-3');
+    toast.classList.add('opacity-100', 'pointer-events-auto', 'translate-y-0');
+    setTimeout(() => {
+      toast.classList.remove('opacity-100', 'pointer-events-auto', 'translate-y-0');
+      toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-3');
+    }, 2800);
+  }
+
+  // Drawer controls
+  window.openCartDrawer = function() {
+    if (cartBackdrop && cartDrawer) {
+      cartBackdrop.classList.remove('opacity-0', 'pointer-events-none');
+      cartBackdrop.classList.add('opacity-100', 'pointer-events-auto');
+      cartDrawer.classList.remove('translate-x-full');
+      cartDrawer.classList.add('translate-x-0');
+      document.body.style.overflow = 'hidden';
+    }
+  };
+
+  window.closeCartDrawer = function() {
+    if (cartBackdrop && cartDrawer) {
+      cartBackdrop.classList.remove('opacity-100', 'pointer-events-auto');
+      cartBackdrop.classList.add('opacity-0', 'pointer-events-none');
+      cartDrawer.classList.remove('translate-x-0');
+      cartDrawer.classList.add('translate-x-full');
+      document.body.style.overflow = '';
+    }
+  };
+
+  if (cartBackdrop) cartBackdrop.addEventListener('click', window.closeCartDrawer);
+  if (cartCloseBtn) cartCloseBtn.addEventListener('click', window.closeCartDrawer);
+
+  // Header cart button opens drawer
+  const headerCartBtn = document.querySelector('header button[aria-label="Cart Preview"]');
+  if (headerCartBtn) {
+    headerCartBtn.addEventListener('click', window.openCartDrawer);
+  }
+
+  function renderCart() {
+    const totalCount = cartState.items.reduce((sum, item) => sum + item.quantity, 0);
+    const totalPrice = cartState.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+    if (drawerCartCount) drawerCartCount.textContent = totalCount;
+    if (headerCartCountSm) headerCartCountSm.textContent = totalCount;
+    if (headerCartCountLg) headerCartCountLg.textContent = totalCount + ' items • ₹' + totalPrice.toLocaleString('en-IN');
+
+    if (cartState.items.length === 0) {
+      if (emptyView) emptyView.classList.remove('hidden');
+      if (filledView) filledView.classList.add('hidden');
+      if (footerView) footerView.classList.add('hidden');
+      return;
+    }
+
+    if (emptyView) emptyView.classList.add('hidden');
+    if (filledView) filledView.classList.remove('hidden');
+    if (footerView) footerView.classList.remove('hidden');
+
+    if (cartSubtotalEl) cartSubtotalEl.textContent = '₹' + totalPrice.toLocaleString('en-IN');
+    if (cartTotalEl) cartTotalEl.textContent = '₹' + totalPrice.toLocaleString('en-IN');
+
+    if (cartItemsList) {
+      cartItemsList.innerHTML = cartState.items.map((item, idx) => `
+        <div class="p-3.5 rounded-xl bg-surface-container flex items-center justify-between gap-3 border border-surface-container-highest/50">
+          <img src="${item.image}" alt="${item.title}" class="w-12 h-12 rounded-lg object-contain bg-surface-container-lowest p-1 shrink-0 border border-surface-container-highest/40"/>
+          <div class="flex-1 min-w-0">
+            <div class="text-body-sm font-bold text-on-surface truncate">${item.title}</div>
+            <div class="text-xs text-primary font-semibold">₹${item.price.toLocaleString('en-IN')}</div>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="flex items-center bg-surface-container-lowest rounded-lg border border-surface-container-highest/60 p-0.5">
+              <button type="button" class="w-7 h-7 flex items-center justify-center text-on-surface hover:text-primary transition-colors cart-qty-dec" data-index="${idx}">-</button>
+              <span class="w-6 text-center text-xs font-bold text-on-surface">${item.quantity}</span>
+              <button type="button" class="w-7 h-7 flex items-center justify-center text-on-surface hover:text-primary transition-colors cart-qty-inc" data-index="${idx}">+</button>
+            </div>
+            <button type="button" class="p-1.5 text-on-surface-variant hover:text-error transition-colors cart-item-remove" data-index="${idx}" aria-label="Remove item">
+              <span class="material-symbols-outlined text-base">delete</span>
+            </button>
+          </div>
+        </div>
+      `).join('');
+
+      // Attach quantity handlers
+      cartItemsList.querySelectorAll('.cart-qty-dec').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const idx = parseInt(e.currentTarget.getAttribute('data-index'), 10);
+          if (cartState.items[idx].quantity > 1) {
+            cartState.items[idx].quantity -= 1;
+          } else {
+            cartState.items.splice(idx, 1);
+          }
+          renderCart();
+        });
+      });
+
+      cartItemsList.querySelectorAll('.cart-qty-inc').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const idx = parseInt(e.currentTarget.getAttribute('data-index'), 10);
+          cartState.items[idx].quantity += 1;
+          renderCart();
+        });
+      });
+
+      cartItemsList.querySelectorAll('.cart-item-remove').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const idx = parseInt(e.currentTarget.getAttribute('data-index'), 10);
+          cartState.items.splice(idx, 1);
+          renderCart();
+        });
+      });
+    }
+  }
+
+  function addToCart(product, qty) {
+    const quantity = qty || 1;
+    const existing = cartState.items.find(item => item.id === product.id);
+    if (existing) {
+      existing.quantity += quantity;
+    } else {
+      cartState.items.push({
+        id: product.id,
+        title: product.title,
+        flavour: product.flavour,
+        price: product.price,
+        image: product.image,
+        quantity: quantity
+      });
+    }
+    renderCart();
+    showToast(product.flavour + ' added to cart!');
+    setTimeout(window.openCartDrawer, 350);
+  }
+
+  // Add to cart buttons with loading spinner
+  document.querySelectorAll('.btn-add-cart').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      const card = this.closest('.product-card');
+      const qtyInput = card ? card.querySelector('input[type="text"]') : null;
+      const qty = qtyInput ? parseInt(qtyInput.value, 10) || 1 : 1;
+
+      const product = {
+        id: this.getAttribute('data-product-id'),
+        title: this.getAttribute('data-title'),
+        flavour: this.getAttribute('data-flavour'),
+        price: parseInt(this.getAttribute('data-price') || '2499', 10),
+        image: this.getAttribute('data-image')
+      };
+
+      const originalContent = this.innerHTML;
+      this.disabled = true;
+      this.innerHTML = '<span class="material-symbols-outlined text-base animate-spin">sync</span><span>Adding...</span>';
+
+      setTimeout(() => {
+        this.disabled = false;
+        this.innerHTML = '<span class="material-symbols-outlined text-base">check</span><span>Added!</span>';
+        addToCart(product, qty);
+        setTimeout(() => {
+          this.innerHTML = originalContent;
+        }, 1200);
+      }, 500);
+    });
+  });
+
+  // Sticky bar add button
+  if (stickyAddBtn) {
+    stickyAddBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      const originalContent = this.innerHTML;
+      this.disabled = true;
+      this.innerHTML = '<span class="material-symbols-outlined text-xs animate-spin">sync</span><span>Adding...</span>';
+
+      setTimeout(() => {
+        this.disabled = false;
+        this.innerHTML = '<span class="material-symbols-outlined text-xs">check</span><span>Added</span>';
+        addToCart(activeProduct, 1);
+        setTimeout(() => {
+          this.innerHTML = originalContent;
+        }, 1200);
+      }, 400);
+    });
+  }
+
+  // FAQ Accordion Keyboard & ARIA binding
+  const faqButtons = document.querySelectorAll('#faq-accordion button');
+  faqButtons.forEach((btn, idx) => {
+    const panel = btn.nextElementSibling;
+    const isInitiallyExpanded = panel && !panel.classList.contains('hidden');
+    btn.setAttribute('aria-expanded', isInitiallyExpanded ? 'true' : 'false');
+    btn.setAttribute('aria-controls', 'faq-panel-' + idx);
+    btn.setAttribute('id', 'faq-btn-' + idx);
+    btn.classList.add('focus-visible:ring-2', 'focus-visible:ring-primary', 'focus-visible:outline-none');
+    if (panel) {
+      panel.setAttribute('id', 'faq-panel-' + idx);
+      panel.setAttribute('role', 'region');
+      panel.setAttribute('aria-labelledby', 'faq-btn-' + idx);
+    }
+
+    btn.onclick = null; // Clean legacy inline handler
+    function toggleFaq() {
+      const isExpanded = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', isExpanded ? 'false' : 'true');
+      if (panel) {
+        panel.classList.toggle('hidden');
+      }
+      const icon = btn.querySelector('.material-symbols-outlined');
+      if (icon) {
+        icon.textContent = isExpanded ? 'expand_more' : 'expand_less';
+      }
+    }
+
+    btn.addEventListener('click', toggleFaq);
+    btn.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggleFaq();
+      }
+    });
+  });
+
+  // Checkout button simulation
+  const checkoutBtn = document.getElementById('checkout-btn');
+  if (checkoutBtn) {
+    checkoutBtn.addEventListener('click', () => {
+      alert('Redirecting to Shopify 256-Bit Encrypted Secure Checkout...');
+    });
+  }
+})();</script>
+
+</body></html>
