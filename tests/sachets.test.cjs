@@ -107,8 +107,10 @@ test('homepage CTA promotes Sachets with the centralized front asset and both sh
   assert.match(markup, /href="\/shop\/sachets"[^>]*>Shop Sachets/);
   assert.match(markup, /href="\/shop"[^>]*>Shop 1 KG Whey/);
   assert.doesNotMatch(markup, /Compare flavours|Rewards|Free Gift/i);
-  assert.match(css, /\.shop-invitation-media\s*\{[^}]*overflow:\s*hidden/);
-  assert.match(css, /\.shop-invitation-media img\s*\{[^}]*width:\s*auto[^}]*max-height:\s*100%/);
+  assert.match(css, /\.shop-invitation-media\s*\{[^}]*padding:\s*1rem[^}]*box-sizing:\s*border-box/);
+  assert.match(css, /\.shop-invitation-media img\s*\{[^}]*width:\s*auto[^}]*height:\s*auto[^}]*object-fit:\s*contain/);
+  assert.match(css, /@media \(max-width:\s*520px\)[\s\S]*?\.shop-invitation-media img\s*\{[^}]*width:\s*min\(70%,\s*15rem\)/);
+  assert.doesNotMatch(css, /\.shop-invitation-media\s*\{[^}]*overflow:\s*hidden/);
 });
 
 test('mobile floating cart action keeps rounded corners', () => {

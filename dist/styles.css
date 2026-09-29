@@ -564,8 +564,8 @@ main { width: 100%; padding-top: calc(var(--banner-h) + var(--header-h)); overfl
 .shop-invitation-copy h2 { margin: .35rem 0 .5rem; }
 .shop-invitation-copy p:not(.hero-overline) { max-width: 48ch; margin: 0; color: var(--muted); }
 .shop-invitation-copy small { display: block; margin-top: .55rem; color: var(--gold); font-size: .72rem; font-weight: 700; }
-.shop-invitation-media { height: 11.5rem; min-height: 0; display: grid; place-items: center; overflow: hidden; }
-.shop-invitation-media img { width: auto; max-width: 100%; height: 100%; max-height: 100%; object-fit: contain; object-position: center; filter: drop-shadow(0 16px 18px #0007); }
+.shop-invitation-media { min-height: 11.5rem; display: grid; place-items: center; padding: 1rem; box-sizing: border-box; }
+.shop-invitation-media img { width: auto; max-width: 100%; height: auto; max-height: 11.5rem; object-fit: contain; object-position: center; filter: drop-shadow(0 16px 18px #0007); }
 .shop-invitation-actions { display: grid; gap: .65rem; }
 .shop-invitation-actions .button-link { width: 100%; box-sizing: border-box; white-space: nowrap; }
 .faq-sources { margin-top: 1.5rem; font-size: .75rem; }
@@ -1047,14 +1047,15 @@ body.cart-open { overflow: hidden; }
   .sachet-grid { grid-template-columns: 1fr; max-width: 34rem; margin-inline: auto; }
   .sachet-facts .section-inner { grid-template-columns: repeat(2, 1fr); }
   .shop-invitation .section-inner { min-height: 0; grid-template-columns: minmax(0, 1fr) 9rem; }
-  .shop-invitation-media { height: 10rem; }
+  .shop-invitation-media { min-height: 10rem; }
   .shop-invitation-actions { grid-column: 1 / -1; grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 520px) {
   .shop-invitation.section { padding-block: 2.25rem; }
   .shop-invitation .section-inner { grid-template-columns: minmax(0, 1fr); gap: 1.25rem; text-align: center; }
   .shop-invitation-copy p:not(.hero-overline) { margin-inline: auto; }
-  .shop-invitation-media { height: 9.5rem; }
+  .shop-invitation-media { min-height: 0; padding: 1.25rem clamp(1rem, 6vw, 1.5rem); }
+  .shop-invitation-media img { width: min(70%, 15rem); max-width: 15rem; max-height: none; }
   .shop-invitation-actions { grid-column: auto; grid-template-columns: minmax(0, 1fr); width: 100%; }
 }
 @media (max-width: 900px) {
