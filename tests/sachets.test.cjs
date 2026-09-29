@@ -99,6 +99,7 @@ test('Storefront query requests compare-at prices and no Rewards system is intro
 test('homepage CTA promotes Sachets with the centralized front asset and both shopping routes', () => {
   const { run } = storefront();
   const markup = run('shopInvitation()');
+  const css = fs.readFileSync(path.join(root, 'styles.css'), 'utf8');
   assert.match(markup, /Protein\. Anywhere/);
   assert.match(markup, /Fuel your Aura on the go/);
   assert.match(markup, /24g protein\. 5\.7g BCAAs/);
@@ -106,6 +107,8 @@ test('homepage CTA promotes Sachets with the centralized front asset and both sh
   assert.match(markup, /href="\/shop\/sachets"[^>]*>Shop Sachets/);
   assert.match(markup, /href="\/shop"[^>]*>Shop 1 KG Whey/);
   assert.doesNotMatch(markup, /Compare flavours|Rewards|Free Gift/i);
+  assert.match(css, /\.shop-invitation-media\s*\{[^}]*overflow:\s*hidden/);
+  assert.match(css, /\.shop-invitation-media img\s*\{[^}]*width:\s*auto[^}]*max-height:\s*100%/);
 });
 
 test('mobile floating cart action keeps rounded corners', () => {
