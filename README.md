@@ -51,6 +51,20 @@ The main storefront files live at the repository root: `index.html`, `styles.css
 
 The repository includes `vercel.json` for static asset caching and client-side route rewrites. Run `npm run build` before deploying the generated `dist/` directory, and configure required environment variables in the deployment provider rather than in client-side files.
 
+## Development workflow
+
+The storefront is intentionally kept framework-free so the public shopping
+surface stays small and easy to deploy. When changing a product flow, verify
+both the direct page route and the homepage experience, then test the same
+interaction at a narrow mobile width. Keep generated files in `dist/` aligned
+with the source build when the deployment workflow requires committed output.
+
+Before opening a pull request:
+
+1. Run `npm run check`.
+2. Run `npm run build` for changes that affect the storefront or assets.
+3. Describe any required environment variables and manual browser checks.
+
 ## Additional documentation
 
 - [Frontend structure](docs/FRONTEND_STRUCTURE.md)
