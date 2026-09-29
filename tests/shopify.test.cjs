@@ -121,7 +121,8 @@ test('API client sends handle variables, public header and pinned version; missi
   const products = await run("createShopifyClient({ ...SHOPIFY_CONFIG, publicAccessToken: 'public-test-token' }, requestFixture).products()");
   assert.equal(products['Rich Chocolate'].handle, 'aura-whey-rich-chocolate-1-kg');
   assert.equal(products['Mawa Kulfi'].handle, 'aura-whey-mawa-kulfi-1-kg');
-  assert.equal(requests.length, 2);
+  assert.equal(products.Sachets.handle, 'aura-whey-protein-sachets-35g');
+  assert.equal(requests.length, 3);
   assert.match(requests[0].url, /\/api\/2026-07\/graphql.json$/);
   assert.equal(requests[0].options.headers['X-Shopify-Storefront-Access-Token'], 'public-test-token');
   assert.equal(JSON.parse(requests[0].options.body).variables.country, 'IN');

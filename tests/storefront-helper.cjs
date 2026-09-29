@@ -31,6 +31,18 @@ function storefront() {
         selectedVariantId: id, variants: { nodes: [{ id, title: 'Default Title', availableForSale: true,
           price: { amount: flavour === 'Mawa Kulfi' ? '4199.00' : '4499.00', currencyCode: 'INR' } }] } };
     }
+    commerce.products.Sachets = { title: 'Aura Whey \u2013 Protein Sachets \u2013 35g', description: 'Portable protein sachets',
+      selectedVariantId: 'variant-sachet-single-chocolate', variants: { nodes: [
+        ['variant-sachet-single-chocolate', 'Single Sachet', 'Chocolate', '149.00', '199.00'],
+        ['variant-sachet-single-mawa', 'Single Sachet', 'Mawa Kulfi', '149.00', '199.00'],
+        ['variant-sachet-duo-chocolate', 'Duo Pack', 'Chocolate', '270.00', '398.00'],
+        ['variant-sachet-duo-mawa', 'Duo Pack', 'Mawa Kulfi', '270.00', '398.00'],
+        ['variant-sachet-travel-chocolate', 'Travel Pack (7 Sachets)', 'Chocolate', '875.00', '1393.00'],
+        ['variant-sachet-travel-mawa', 'Travel Pack (7 Sachets)', 'Mawa Kulfi', '875.00', '1393.00']
+      ].map(([id, pack, flavour, price, compare]) => ({ id, title: pack + ' / ' + flavour, availableForSale: true,
+        selectedOptions: [{ name: 'Pack', value: pack }, { name: 'Flavor', value: flavour }],
+        price: { amount: price, currencyCode: 'INR' }, compareAtPrice: { amount: compare, currencyCode: 'INR' },
+        image: { url: 'http://localhost/assets/Sachets/aura%20sachet.jpeg', altText: 'Aura Whey Sachet' } })) } };
     let fixtureCart = { id: 'gid://shopify/Cart/test?key=secret', checkoutUrl: 'https://cay9kn-xc.myshopify.com/checkouts/test',
       totalQuantity: 0, discountCodes: [], lines: { nodes: [], pageInfo: { hasNextPage: false } }, cost: {} };
     function recalculate() {
@@ -50,10 +62,11 @@ function storefront() {
         const found = fixtureCart.lines.nodes.find(line => line.merchandise.id === input.merchandiseId);
         if (found) found.quantity += input.quantity;
         else {
-          const flavour = Object.keys(commerce.products).find(name => commerce.products[name].selectedVariantId === input.merchandiseId);
+          const flavour = Object.keys(commerce.products).find(name => commerce.products[name].variants.nodes.some(variant => variant.id === input.merchandiseId));
           const product = commerce.products[flavour];
+          const variant = product.variants.nodes.find(item => item.id === input.merchandiseId);
           fixtureCart.lines.nodes.push({ id: 'line-' + input.merchandiseId, quantity: input.quantity,
-            merchandise: { ...product.variants.nodes[0], product: { title: product.title, handle: SHOPIFY_CONFIG.products[flavour] } } });
+            merchandise: { ...variant, product: { title: product.title, handle: SHOPIFY_CONFIG.products[flavour] } } });
         }
       }
       return recalculate();

@@ -9,6 +9,16 @@ window.fetch = async (_url, options) => {
       images: { nodes: [image] }, featuredImage: image,
       variants: { nodes: [{ id: 'variant-' + index, title: 'Default Title', price: amount(index ? 4199 : 4499), availableForSale: true, image }], pageInfo: { hasNextPage: false } } };
   });
+  const sachetImage = { url: location.origin + '/assets/Sachets/aura%20sachet.jpeg', altText: 'Aura Whey Sachet' };
+  products.push({ id: 'product-sachets', handle: 'aura-whey-protein-sachets-35g', title: 'Aura Whey \u2013 Protein Sachets \u2013 35g', description: 'Portable protein sachets.', availableForSale: true,
+    images: { nodes: [sachetImage] }, featuredImage: sachetImage,
+    variants: { nodes: [
+      ['single-chocolate', 'Single Sachet', 'Chocolate', 149, 199], ['single-mawa', 'Single Sachet', 'Mawa Kulfi', 149, 199],
+      ['duo-chocolate', 'Duo Pack', 'Chocolate', 270, 398], ['duo-mawa', 'Duo Pack', 'Mawa Kulfi', 270, 398],
+      ['travel-chocolate', 'Travel Pack (7 Sachets)', 'Chocolate', 875, 1393], ['travel-mawa', 'Travel Pack (7 Sachets)', 'Mawa Kulfi', 875, 1393]
+    ].map(([id, pack, flavour, price, compare]) => ({ id: 'variant-' + id, title: pack + ' / ' + flavour, availableForSale: true,
+      selectedOptions: [{ name: 'Pack', value: pack }, { name: 'Flavor', value: flavour }], price: amount(price), compareAtPrice: amount(compare), image: sachetImage })), pageInfo: { hasNextPage: false } }
+  });
   let cart = JSON.parse(sessionStorage.getItem('fixture-cart') || 'null');
   let data;
   if (query.includes('query Product')) data = { product: products.find(product => product.handle === variables.handle) };
@@ -22,8 +32,9 @@ window.fetch = async (_url, options) => {
         const existing = cart.lines.nodes.find(item => item.merchandise.id === line.merchandiseId);
         if (existing) existing.quantity += line.quantity;
         else {
-          const product = products.find(product => product.variants.nodes[0].id === line.merchandiseId);
-          cart.lines.nodes.push({ id: 'line-' + line.merchandiseId, quantity: line.quantity, merchandise: { ...product.variants.nodes[0], product: { title: product.title, handle: product.handle } } });
+          const product = products.find(product => product.variants.nodes.some(variant => variant.id === line.merchandiseId));
+          const variant = product.variants.nodes.find(item => item.id === line.merchandiseId);
+          cart.lines.nodes.push({ id: 'line-' + line.merchandiseId, quantity: line.quantity, merchandise: { ...variant, product: { title: product.title, handle: product.handle } } });
         }
       }
     }

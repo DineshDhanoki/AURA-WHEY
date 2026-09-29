@@ -6,7 +6,8 @@ const SHOPIFY_CONFIG = Object.freeze({
   country: 'IN',
   products: {
     'Rich Chocolate': 'aura-whey-rich-chocolate-1-kg',
-    'Mawa Kulfi': 'aura-whey-mawa-kulfi-1-kg'
+    'Mawa Kulfi': 'aura-whey-mawa-kulfi-1-kg',
+    'Sachets': 'aura-whey-protein-sachets-35g'
   },
   blogHandle: 'journal'
 });
@@ -47,7 +48,7 @@ function createShopifyClient(config, request = fetch) {
         product(handle: $handle) { id handle title description availableForSale
           featuredImage { url altText }
           variants(first: 100) { nodes { id title availableForSale selectedOptions { name value }
-            price { ${money} } image { url altText }
+            price { ${money} } compareAtPrice { ${money} } image { url altText }
           } pageInfo { hasNextPage } }
         }
       }`, { handle, country: config.country });

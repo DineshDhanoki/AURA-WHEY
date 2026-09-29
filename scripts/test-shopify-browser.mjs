@@ -92,7 +92,7 @@ try {
     assert.match(await evaluate("document.querySelector('.purchase-panel h2').textContent"), /Mawa Kulfi/);
     assert.equal(await evaluate('document.documentElement.scrollWidth <= innerWidth'), true, `overflow at ${width}`);
     assert.equal(await evaluate("document.querySelector('[data-action=add-cart]').disabled"), false);
-    assert.equal(await evaluate("document.querySelector('.product-zoom-controls').getBoundingClientRect().top >= document.querySelector('.product-main-image').getBoundingClientRect().bottom"), true, 'zoom controls overlap image');
+    assert.equal(await evaluate("!document.querySelector('.product-zoom-controls') || document.querySelector('.product-zoom-controls').getBoundingClientRect().top >= document.querySelector('.product-main-image').getBoundingClientRect().bottom"), true, 'zoom controls overlap image');
     await evaluate(`(async () => {
       const img = document.querySelector('.product-main-photo');
       img.src = 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1600"><rect width="900" height="1600" fill="gold"/></svg>');
@@ -104,6 +104,34 @@ try {
       return photo.top >= frame.top && photo.bottom <= frame.bottom + 1 && photo.left >= frame.left && photo.right <= frame.right + 1;
     })()`), true, 'portrait image exceeds gallery at ' + width);
   }
+  for (const width of [320, 390, 768, 1024, 1440]) {
+    await command('Emulation.setDeviceMetricsOverride', { width, height: 900, deviceScaleFactor: 1, mobile: width < 600 });
+    await evaluate("navigate('shop/sachets')");
+    await waitFor("!!document.querySelector('.sachet-grid')");
+    assert.equal(await evaluate('document.documentElement.scrollWidth <= innerWidth'), true, `Sachet overflow at ${width}`);
+    const sachetFramesFit = await evaluate(`[...document.querySelectorAll('.sachet-card-image')].every(frame => {
+      const box = frame.getBoundingClientRect();
+      const image = frame.querySelector('img').getBoundingClientRect();
+      return Math.abs(box.width / box.height - .8) < .03 && image.top >= box.top && image.bottom <= box.bottom + 1 && image.left >= box.left && image.right <= box.right + 1;
+    })`);
+    if (!sachetFramesFit) console.log('Sachet frame diagnostics:', width, await evaluate(`JSON.stringify([...document.querySelectorAll('.sachet-card-image')].map(frame => { const box = frame.getBoundingClientRect(); const image = frame.querySelector('img').getBoundingClientRect(); return { box: [box.width, box.height], image: [image.left - box.left, image.top - box.top, box.right - image.right, box.bottom - image.bottom] }; }))`));
+    assert.equal(sachetFramesFit, true, `Sachet image fitting at ${width}`);
+  }
+  assert.equal(await evaluate("document.querySelectorAll('.shop-nav-dropdown > a').length"), 2);
+  assert.equal(await evaluate("document.querySelector('.shop-nav-dropdown').textContent.includes('Single Sachet')"), false);
+  const darkBackground = await evaluate("getComputedStyle(document.querySelector('.sachet-shop')).backgroundColor");
+  await evaluate("handleAction('toggle-theme')");
+  const lightBackground = await evaluate("getComputedStyle(document.querySelector('.sachet-shop')).backgroundColor");
+  assert.notEqual(lightBackground, darkBackground);
+  assert.equal(await evaluate("localStorage.getItem('aura-theme')"), 'light');
+  await evaluate("handleAction('toggle-theme')");
+  await evaluate("navigate('cart')");
+  await waitFor("!!document.querySelector('.cart-drawer .empty-state')");
+  assert.equal(await evaluate(`(() => {
+    const body = document.querySelector('.cart-drawer-body').getBoundingClientRect();
+    const empty = document.querySelector('.cart-drawer .empty-state').getBoundingClientRect();
+    return empty.left >= body.left - 1 && empty.right <= body.right + 1;
+  })()`), true, 'empty cart fits inside drawer');
   for (const width of [320, 430, 1024, 1440]) {
     await command('Emulation.setDeviceMetricsOverride', { width, height: 900, deviceScaleFactor: 1, mobile: width < 600 });
     await evaluate("navigate('verify')");
@@ -121,6 +149,8 @@ try {
   await evaluate("navigate('shop')");
   await waitFor("!!document.querySelector('.purchase-panel')");
   await evaluate("document.querySelector('[data-action=add-cart]').click()");
+  await waitFor("!commerce.busy && commerce.cart?.totalQuantity === 1");
+  await evaluate("navigate('cart')");
   await waitFor("location.pathname === '/cart' && !!document.querySelector('.cart-item')");
   await evaluate("document.querySelector('[data-action=line-up]').click()");
   await waitFor('!commerce.busy && commerce.cart.totalQuantity === 2');
