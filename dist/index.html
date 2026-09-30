@@ -20,17 +20,26 @@
           ? 'assets/Hero%20section/mobile%20hero%20page%20images/ChatGPT%20Image%20Sep%2012%2C%202026%2C%2003_42_35%20AM.jpg'
           : 'assets/Hero%20section/desktop/ChatGPT%20Image%20Sep%209%2C%202026%2C%2002_08_34%20AM(1).jpg';
         document.head.append(preload);
+      } else if (location.pathname.startsWith('/shop/sachets')) {
+        const preload = document.createElement('link');
+        preload.rel = 'preload';
+        preload.as = 'image';
+        preload.fetchPriority = 'high';
+        preload.href = 'assets/optimized/sachets/sachet-product-info-960.webp';
+        preload.imageSrcset = 'assets/optimized/sachets/sachet-product-info-480.webp 480w, assets/optimized/sachets/sachet-product-info-960.webp 960w';
+        preload.imageSizes = '(max-width: 860px) calc(100vw - 2rem), 544px';
+        document.head.append(preload);
       }
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="static/styles.74c3038f42b7.css" />
+    <link rel="stylesheet" href="static/styles.178497afad08.css" />
   </head>
   <body>
     <a class="skip-link" href="#app">Skip to content</a>
     <div id="app"></div>
-    <script defer src="static/shopify.a0715d717669.js"></script>
+    <script defer src="static/shopify.12347bf009f2.js"></script>
     <script defer src="static/batch-reports.e42bc24db289.js"></script>
-    <script defer src="static/app.8a761d79fa33.js"></script>
-    <script defer src="static/product-viewer.910a731082db.js"></script>
+    <script defer src="static/app.20e6a3cc3193.js"></script>
+    <script defer src="static/product-viewer.67a090d874a4.js"></script>
   </body>
 </html>

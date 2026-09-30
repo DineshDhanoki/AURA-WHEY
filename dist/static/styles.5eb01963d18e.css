@@ -490,7 +490,7 @@ main { width: 100%; padding-top: calc(var(--banner-h) + var(--header-h)); overfl
 .product-card .button:hover { background: var(--flavour-hover); border-color: var(--flavour-hover); color: #fffaf4; box-shadow: none; transform: none; }
 .product-card :focus-visible { outline: 3px solid var(--flavour-ink); outline-offset: -4px; }
 .sachet-route, .sachet-shop { background: var(--bg); color: var(--text); }
-.sachet-hero { width: min(100%, var(--container)); min-height: 31rem; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(22rem, .95fr); align-items: center; gap: clamp(2rem, 5vw, 5rem); margin: 0 auto; padding: clamp(3rem, 7vw, 7rem) clamp(1rem, 4vw, 3rem); }
+.sachet-hero { max-width: var(--container); min-height: 31rem; display: grid; grid-template-columns: minmax(0, 1fr) minmax(18rem, .8fr); align-items: center; gap: clamp(2rem, 6vw, 6rem); margin: 0 auto; padding: clamp(3rem, 7vw, 7rem) max(1rem, calc((100% - var(--container)) / 2)); }
 .sachet-hero h1 { max-width: 12ch; margin: .3rem 0 1rem; font-size: clamp(2.8rem, 7vw, 6.5rem); line-height: .92; }
 .sachet-hero p:not(.hero-overline) { max-width: 40rem; color: var(--muted); font-size: clamp(1rem, 2vw, 1.25rem); }
 .sachet-hero-visual { position: relative; min-height: 27rem; display: grid; place-items: center; isolation: isolate; }
@@ -510,11 +510,10 @@ main { width: 100%; padding-top: calc(var(--banner-h) + var(--header-h)); overfl
 .sachet-card-image .sachet-duo-media img { position: relative; inset: auto; width: 61%; height: 88%; max-width: none; object-fit: contain; }
 .sachet-card-image .sachet-duo-media img:first-child { margin-right: -24%; transform: translateX(-7%) rotate(-5deg); }
 .sachet-card-image .sachet-duo-media img:last-child { transform: translateX(7%) rotate(5deg); }
-.sachet-slider-control { position: absolute; top: 50%; z-index: 2; width: 2.35rem; height: 2.35rem; display: grid; place-items: center; padding: 0; border: 1px solid rgba(255, 255, 255, .32); border-radius: 50%; background: linear-gradient(135deg, rgba(255, 255, 255, .2), rgba(255, 255, 255, .06)); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .28), 0 8px 18px rgba(0, 0, 0, .28); color: #fff8e7; cursor: pointer; transform: translateY(-50%); backdrop-filter: blur(14px) saturate(1.25); -webkit-backdrop-filter: blur(14px) saturate(1.25); }
-.sachet-slider-control .icon { width: 1rem; height: 1rem; }
+.sachet-slider-control { position: absolute; top: 50%; z-index: 2; width: 2.25rem; height: 2.25rem; display: grid; place-items: center; padding: 0; border: 1px solid color-mix(in srgb, var(--gold) 55%, transparent); border-radius: 50%; background: color-mix(in srgb, var(--surface) 82%, transparent); color: var(--gold); font-size: 1.5rem; line-height: 1; cursor: pointer; transform: translateY(-50%); backdrop-filter: blur(8px); }
 .sachet-slider-prev { left: .65rem; }
 .sachet-slider-next { right: .65rem; }
-.sachet-slider-control:hover, .sachet-slider-control:focus-visible { border-color: var(--gold); background: linear-gradient(135deg, rgba(251, 191, 36, .32), rgba(255, 255, 255, .1)); color: var(--gold-pale); }
+.sachet-slider-control:hover, .sachet-slider-control:focus-visible { border-color: var(--gold); background: var(--surface); }
 .sachet-slider-dots { position: absolute; left: 50%; bottom: .7rem; z-index: 2; display: flex; gap: .4rem; transform: translateX(-50%); }
 .sachet-slider-dots button { width: .5rem; height: .5rem; padding: 0; border: 1px solid var(--gold); border-radius: 50%; background: transparent; cursor: pointer; }
 .sachet-slider-dots button.active { background: var(--gold); }
@@ -525,7 +524,7 @@ main { width: 100%; padding-top: calc(var(--banner-h) + var(--header-h)); overfl
 .sachet-card-facts span { padding: .3rem .45rem; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); font-size: .67rem; font-weight: 700; }
 .sachet-flavours { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; margin: .6rem 0; }
 .sachet-flavours .flavour { min-width: 0; padding-inline: .5rem; }
-.sachet-combination { display: flex; align-items: center; min-height: 3.25rem; margin: .6rem 0; padding: .7rem .85rem; border: 1px solid color-mix(in srgb, var(--gold) 32%, var(--line)); border-radius: 8px; background: linear-gradient(110deg, color-mix(in srgb, var(--gold) 10%, transparent), transparent 75%); color: var(--gold-pale); font: 700 .95rem/1.35 "Plus Jakarta Sans", Arial, sans-serif; letter-spacing: .01em; text-transform: none; box-shadow: inset 0 1px 0 rgba(255, 255, 255, .05); }
+.sachet-combination { display: flex; align-items: center; min-height: 3.25rem; margin: .6rem 0; padding: .7rem; border: 1px solid var(--line); border-radius: 8px; color: var(--gold); font-weight: 800; }
 .sachet-price { display: flex; align-items: baseline; gap: .65rem; margin-top: .7rem; }
 .sachet-price strong { color: var(--gold); font: 900 1.55rem/1 Montserrat, Arial, sans-serif; }
 .sachet-compare { color: var(--soft); font-size: .75rem; }
@@ -1097,7 +1096,7 @@ body.cart-open { overflow: hidden; }
   .sachet-card-image { aspect-ratio: 1 / 1; }
   .sachet-card-image .sachet-card-primary, .sachet-card-image .sachet-card-back { width: 76%; height: 86%; max-width: 76%; }
   .sachet-card-image .sachet-card-back { width: 70%; }
-  .sachet-slider-control { width: 2.75rem; height: 2.75rem; }
+  .sachet-slider-control { width: 2.75rem; height: 2.75rem; background: color-mix(in srgb, var(--surface) 94%, transparent); }
   .sachet-slider-prev { left: .5rem; }
   .sachet-slider-next { right: .5rem; }
   .sachet-slider-dots { bottom: .65rem; gap: .5rem; }

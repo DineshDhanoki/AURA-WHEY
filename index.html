@@ -20,9 +20,18 @@
           ? 'assets/Hero%20section/mobile%20hero%20page%20images/ChatGPT%20Image%20Sep%2012%2C%202026%2C%2003_42_35%20AM.jpg'
           : 'assets/Hero%20section/desktop/ChatGPT%20Image%20Sep%209%2C%202026%2C%2002_08_34%20AM(1).jpg';
         document.head.append(preload);
+      } else if (location.pathname.startsWith('/shop/sachets')) {
+        const preload = document.createElement('link');
+        preload.rel = 'preload';
+        preload.as = 'image';
+        preload.fetchPriority = 'high';
+        preload.href = 'assets/optimized/sachets/sachet-product-info-960.webp';
+        preload.imageSrcset = 'assets/optimized/sachets/sachet-product-info-480.webp 480w, assets/optimized/sachets/sachet-product-info-960.webp 960w';
+        preload.imageSizes = '(max-width: 860px) calc(100vw - 2rem), 544px';
+        document.head.append(preload);
       }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Fraunces:opsz,wght@9..144,600&family=Montserrat:wght@700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css?v=cart-cards-3" />
   </head>
   <body>

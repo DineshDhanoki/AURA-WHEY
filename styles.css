@@ -221,10 +221,12 @@ body:has(.floating-purchase.is-visible) .site-toast {
 .shop-nav-menu { position: relative; align-self: stretch; display: flex; align-items: center; }
 .shop-nav-menu > .nav-link { display: inline-flex; align-items: center; gap: .35rem; }
 .shop-nav-menu > .nav-link .icon { width: .9rem; height: .9rem; transition: transform .18s ease; }
-.shop-nav-dropdown { position: absolute; top: calc(100% - .15rem); left: 50%; z-index: 80; width: min(25rem, 88vw); display: grid; gap: .25rem; padding: .8rem; border: 1px solid var(--line-strong); border-top: 2px solid var(--gold); border-radius: 0 0 var(--radius-sm) var(--radius-sm); background: var(--surface); box-shadow: 0 20px 45px #0009; opacity: 0; visibility: hidden; transform: translate(-50%, .35rem); transition: opacity .18s ease, transform .18s ease, visibility .18s ease; }
-.shop-nav-menu:hover .shop-nav-dropdown, .shop-nav-menu:focus-within .shop-nav-dropdown { opacity: 1; visibility: visible; transform: translate(-50%, 0); }
+.shop-nav-dropdown { position: absolute; top: calc(100% - .15rem); left: 50%; z-index: 80; width: max-content; min-width: 0; max-width: calc(100vw - 2rem); display: grid; gap: .1rem; padding: .45rem; border: 1px solid rgba(255, 255, 255, .22); border-top: 2px solid var(--gold); border-radius: 0 0 var(--radius-sm) var(--radius-sm); background: linear-gradient(135deg, rgba(255, 255, 255, .16), rgba(255, 255, 255, .06)); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .18), 0 20px 45px rgba(0, 0, 0, .55); backdrop-filter: blur(18px) saturate(1.2); -webkit-backdrop-filter: blur(18px) saturate(1.2); opacity: 0; visibility: hidden; transform: translate(-50%, .35rem) scale(.96); filter: blur(6px); transform-origin: top center; transition: opacity .24s ease, transform .3s cubic-bezier(.22, .8, .25, 1), filter .3s ease, visibility .24s ease; }
+.shop-nav-menu:hover .shop-nav-dropdown, .shop-nav-menu:focus-within .shop-nav-dropdown { opacity: 1; visibility: visible; transform: translate(-50%, 0) scale(1); filter: blur(0); }
 .shop-nav-menu:hover > .nav-link .icon, .shop-nav-menu:focus-within > .nav-link .icon { transform: rotate(180deg); }
-.desktop-nav .shop-nav-dropdown a { padding: .65rem .75rem; border-radius: 7px; text-transform: none; letter-spacing: 0; }
+.desktop-nav .shop-nav-dropdown a { padding: .45rem .5rem; border-radius: 7px; white-space: nowrap; opacity: 0; transform: translateY(-5px); text-transform: none; letter-spacing: 0; transition: opacity .2s ease, transform .25s cubic-bezier(.22, .8, .25, 1), background .18s ease, color .18s ease; }
+.shop-nav-menu:hover .shop-nav-dropdown a, .shop-nav-menu:focus-within .shop-nav-dropdown a { opacity: 1; transform: translateY(0); }
+.shop-nav-menu:hover .shop-nav-dropdown a:nth-child(2), .shop-nav-menu:focus-within .shop-nav-dropdown a:nth-child(2) { transition-delay: .06s; }
 .desktop-nav .shop-nav-dropdown a::after { display: none; }
 .desktop-nav .shop-nav-dropdown a:hover, .desktop-nav .shop-nav-dropdown a:focus-visible { background: color-mix(in srgb, var(--gold) 10%, transparent); color: var(--gold); }
 .header-actions { display: flex; grid-column: 3; justify-self: end; align-items: center; gap: .45rem; }
@@ -490,9 +492,12 @@ main { width: 100%; padding-top: calc(var(--banner-h) + var(--header-h)); overfl
 .product-card .button:hover { background: var(--flavour-hover); border-color: var(--flavour-hover); color: #fffaf4; box-shadow: none; transform: none; }
 .product-card :focus-visible { outline: 3px solid var(--flavour-ink); outline-offset: -4px; }
 .sachet-route, .sachet-shop { background: var(--bg); color: var(--text); }
-.sachet-hero { max-width: var(--container); min-height: 31rem; display: grid; grid-template-columns: minmax(0, 1fr) minmax(18rem, .8fr); align-items: center; gap: clamp(2rem, 6vw, 6rem); margin: 0 auto; padding: clamp(3rem, 7vw, 7rem) var(--page-pad); }
+.sachet-hero { width: min(100%, var(--container)); min-height: 31rem; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(22rem, .95fr); align-items: center; gap: clamp(2rem, 5vw, 5rem); margin: 0 auto; padding: clamp(3rem, 7vw, 7rem) clamp(1rem, 4vw, 3rem); }
 .sachet-hero h1 { max-width: 12ch; margin: .3rem 0 1rem; font-size: clamp(2.8rem, 7vw, 6.5rem); line-height: .92; }
 .sachet-hero p:not(.hero-overline) { max-width: 40rem; color: var(--muted); font-size: clamp(1rem, 2vw, 1.25rem); }
+.sachet-hero > div:first-child > p:not(.hero-overline) { font-family: "Plus Jakarta Sans", Arial, sans-serif; font-weight: 600; }
+.sachet-products .section-head > p { display: none; }
+.sachet-products .section-head h2 { max-width: none; white-space: nowrap; }
 .sachet-hero-visual { position: relative; min-height: 27rem; display: grid; place-items: center; isolation: isolate; }
 .sachet-hero-visual::before { content: ""; position: absolute; z-index: -1; width: min(92%, 27rem); aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle, color-mix(in srgb, var(--gold) 28%, transparent), transparent 68%); filter: blur(8px); }
 .sachet-hero-image { display: block; width: min(100%, 34rem); height: auto; max-height: 27rem; object-fit: contain; object-position: center; border-radius: var(--radius-md); filter: drop-shadow(0 28px 30px #000a); }
@@ -510,26 +515,30 @@ main { width: 100%; padding-top: calc(var(--banner-h) + var(--header-h)); overfl
 .sachet-card-image .sachet-duo-media img { position: relative; inset: auto; width: 61%; height: 88%; max-width: none; object-fit: contain; }
 .sachet-card-image .sachet-duo-media img:first-child { margin-right: -24%; transform: translateX(-7%) rotate(-5deg); }
 .sachet-card-image .sachet-duo-media img:last-child { transform: translateX(7%) rotate(5deg); }
-.sachet-slider-control { position: absolute; top: 50%; z-index: 2; width: 2.25rem; height: 2.25rem; display: grid; place-items: center; padding: 0; border: 1px solid color-mix(in srgb, var(--gold) 55%, transparent); border-radius: 50%; background: color-mix(in srgb, var(--surface) 82%, transparent); color: var(--gold); font-size: 1.5rem; line-height: 1; cursor: pointer; transform: translateY(-50%); backdrop-filter: blur(8px); }
+.sachet-slider-control { position: absolute; top: 50%; z-index: 2; width: 2.35rem; height: 2.35rem; display: grid; place-items: center; padding: 0; border: 1px solid rgba(255, 255, 255, .32); border-radius: 50%; background: linear-gradient(135deg, rgba(255, 255, 255, .2), rgba(255, 255, 255, .06)); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .28), 0 8px 18px rgba(0, 0, 0, .28); color: #fff8e7; cursor: pointer; transform: translateY(-50%); backdrop-filter: blur(14px) saturate(1.25); -webkit-backdrop-filter: blur(14px) saturate(1.25); }
+.sachet-slider-control .icon { width: 1rem; height: 1rem; }
 .sachet-slider-prev { left: .65rem; }
 .sachet-slider-next { right: .65rem; }
-.sachet-slider-control:hover, .sachet-slider-control:focus-visible { border-color: var(--gold); background: var(--surface); }
+.sachet-slider-control:hover, .sachet-slider-control:focus-visible { border-color: var(--gold); background: linear-gradient(135deg, rgba(251, 191, 36, .32), rgba(255, 255, 255, .1)); color: var(--gold-pale); }
 .sachet-slider-dots { position: absolute; left: 50%; bottom: .7rem; z-index: 2; display: flex; gap: .4rem; transform: translateX(-50%); }
 .sachet-slider-dots button { width: .5rem; height: .5rem; padding: 0; border: 1px solid var(--gold); border-radius: 50%; background: transparent; cursor: pointer; }
 .sachet-slider-dots button.active { background: var(--gold); }
-.sachet-card-body { display: flex; flex-direction: column; align-items: stretch; padding: clamp(1rem, 2.5vw, 1.5rem); }
-.sachet-card-body h2 { margin: .15rem 0 .6rem; font-size: clamp(1.35rem, 2.2vw, 1.8rem); }
-.sachet-card-body > p:not(.hero-overline):not(.sachet-combination):not(.sachet-stock) { min-height: 3.3rem; color: var(--muted); }
-.sachet-card-facts { display: flex; flex-wrap: wrap; gap: .35rem; margin: .25rem 0 .55rem; }
+.sachet-card-body { display: grid; grid-template-rows: auto 4.1rem 3.7rem 2.4rem 3.8rem 2.2rem 1.5rem 6rem; row-gap: .4rem; align-items: start; padding: clamp(1rem, 2.5vw, 1.5rem); }
+.sachet-card-body > .hero-overline, .sachet-card-body h2, .sachet-card-body > p:not(.hero-overline):not(.sachet-combination):not(.sachet-stock), .sachet-card-facts, .sachet-flavours, .sachet-price, .sachet-stock { margin-top: 0; margin-bottom: 0; }
+.sachet-card-body h2 { font-size: clamp(1.35rem, 2.2vw, 1.8rem); }
+.sachet-card-body > p:not(.hero-overline):not(.sachet-combination):not(.sachet-stock) { min-height: 0; color: var(--muted); }
+.sachet-plus { display: inline-block; color: var(--gold); font-size: 1.3em; font-weight: 900; line-height: 0; }
+.sachet-card-facts { display: flex; flex-wrap: wrap; gap: .35rem; }
 .sachet-card-facts span { padding: .3rem .45rem; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); font-size: .67rem; font-weight: 700; }
-.sachet-flavours { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; margin: .6rem 0; }
+.sachet-flavours { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; }
 .sachet-flavours .flavour { min-width: 0; padding-inline: .5rem; }
-.sachet-combination { display: flex; align-items: center; min-height: 3.25rem; margin: .6rem 0; padding: .7rem; border: 1px solid var(--line); border-radius: 8px; color: var(--gold); font-weight: 800; }
-.sachet-price { display: flex; align-items: baseline; gap: .65rem; margin-top: .7rem; }
+.sachet-combination { display: flex; align-items: center; justify-content: center; align-self: center; width: 100%; max-width: none; height: 42px; min-height: 42px; margin: 0; padding: .5rem .75rem; border: 1px solid color-mix(in srgb, var(--gold) 32%, var(--line)); border-radius: 8px; background: linear-gradient(110deg, color-mix(in srgb, var(--gold) 10%, transparent), transparent 75%); color: var(--gold-pale); font: 700 .67rem/1.2 Montserrat, Arial, sans-serif; letter-spacing: .075em; text-transform: uppercase; box-shadow: inset 0 1px 0 rgba(255, 255, 255, .05); }
+.sachet-combination + .sachet-price, .sachet-combination + .sachet-price + .sachet-stock { margin-block: 0; }
+.sachet-price { display: flex; align-items: baseline; gap: .65rem; }
 .sachet-price strong { color: var(--gold); font: 900 1.55rem/1 Montserrat, Arial, sans-serif; }
 .sachet-compare { color: var(--soft); font-size: .75rem; }
 .sachet-price del { color: inherit; }
-.sachet-stock { margin: .65rem 0; color: var(--muted); font-size: .82rem; }
+.sachet-stock { color: var(--muted); font-size: .82rem; }
 .sachet-card-body > .button { width: 100%; }
 .sachet-facts .section-inner { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; padding: 0; overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--line); }
 .sachet-facts .section-inner div { display: grid; gap: .3rem; padding: clamp(1rem, 3vw, 2rem); background: var(--surface-low); text-align: center; }
@@ -892,8 +901,8 @@ body.search-open { overflow: hidden; }
 .footer-socials-after a:nth-child(4):hover, .footer-socials-after a:nth-child(4):focus-visible { box-shadow: 0 0 14px rgba(255,0,0,.65); }
 .footer-socials-after a:hover, .footer-socials-after a:focus-visible { background: color-mix(in srgb, currentColor 12%, var(--surface)); transform: translateY(-2px); }
 
-.mobile-panel { position: fixed; inset: 0 0 0 auto; z-index: 60; width: min(22rem, 91vw); display: flex; flex-direction: column; padding: 1.2rem; overflow-y: auto; border-left: 1px solid var(--line); background: var(--surface); box-shadow: -12px 0 40px rgba(0,0,0,.7); transform: translateX(100%); transition: transform .23s ease; }
-.mobile-panel.open { transform: translateX(0); }
+.mobile-panel { position: fixed; inset: 0 0 0 auto; z-index: 60; width: min(22rem, 91vw); display: flex; flex-direction: column; padding: 1.2rem; overflow-y: auto; border-left: 1px solid var(--line); background: var(--surface); box-shadow: -12px 0 40px rgba(0,0,0,.7); opacity: 0; transform: translateX(100%) scale(.985); transform-origin: right center; transition: opacity .22s ease, transform .38s cubic-bezier(.22, .8, .25, 1), visibility 0s linear .38s; }
+.mobile-panel.open { opacity: 1; transform: translateX(0) scale(1); visibility: visible; transition-delay: 0s; }
 .mobile-panel-top { display: flex; align-items: center; justify-content: space-between; }
 .mobile-panel-actions { display: flex; align-items: center; gap: .35rem; }
 .mobile-panel-actions .icon-button { position: relative; }
@@ -901,22 +910,30 @@ body.search-open { overflow: hidden; }
 .mobile-search input { min-width: 0; border: 1px solid var(--line); border-right: 0; border-radius: var(--radius-sm) 0 0 var(--radius-sm); padding: .75rem .85rem; background: var(--surface-low); color: var(--text); }
 .mobile-search button { min-width: 44px; display: grid; place-items: center; border: 1px solid var(--gold); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; background: var(--gold); color: var(--ink); }
 .mobile-panel nav { display: grid; }
-.mobile-panel nav a { padding: .92rem 0; border-bottom: 1px solid var(--line); color: var(--text); font: 700 .72rem/1.25 Montserrat, Arial, sans-serif; letter-spacing: .06em; text-decoration: none; text-transform: uppercase; }
+.mobile-panel nav a { padding: .92rem 0; border-bottom: 1px solid var(--line); color: var(--text); font: 700 .72rem/1.25 Montserrat, Arial, sans-serif; letter-spacing: .06em; text-decoration: none; text-transform: uppercase; opacity: 0; transform: translateX(12px); transition: opacity .22s ease, transform .3s cubic-bezier(.22, .8, .25, 1), color .18s ease; }
+.mobile-panel.open nav a { opacity: 1; transform: translateX(0); }
+.mobile-panel.open nav a:nth-child(1) { transition-delay: .08s; }
+.mobile-panel.open nav a:nth-child(2) { transition-delay: .13s; }
+.mobile-panel.open nav a:nth-child(3) { transition-delay: .18s; }
 .mobile-panel nav a:hover { color: var(--gold); }
 .mobile-shop-menu { border-bottom: 1px solid var(--line); }
-.mobile-shop-menu summary { min-height: 44px; display: flex; align-items: center; justify-content: space-between; gap: .5rem; color: var(--text); cursor: pointer; list-style: none; font: 800 .875rem/1.25 Montserrat, Arial, sans-serif; letter-spacing: .06em; text-transform: uppercase; }
+.mobile-shop-menu summary { min-height: 44px; display: flex; align-items: center; justify-content: space-between; gap: .5rem; color: var(--text); cursor: pointer; list-style: none; font: 800 .875rem/1.25 Montserrat, Arial, sans-serif; letter-spacing: .06em; text-transform: uppercase; opacity: 0; transform: translateX(12px); transition: opacity .22s ease, transform .3s cubic-bezier(.22, .8, .25, 1), color .18s ease; }
+.mobile-panel.open .mobile-shop-menu summary { opacity: 1; transform: translateX(0); transition-delay: .13s; }
 .mobile-shop-menu summary::-webkit-details-marker { display: none; }
 .mobile-shop-menu summary .icon { width: 1rem; transition: transform .18s ease; }
 .mobile-shop-menu[open] summary .icon { transform: rotate(180deg); }
 .mobile-shop-menu > div { display: grid; padding: 0 0 .75rem 1rem; }
 .mobile-shop-menu strong { padding: .75rem 0 .25rem; color: var(--gold); font: 800 .68rem/1.3 Montserrat, Arial, sans-serif; letter-spacing: .07em; text-transform: uppercase; }
-.mobile-panel .mobile-shop-menu a { padding: .65rem 0; border: 0; text-transform: none; }
+.mobile-panel .mobile-shop-menu a { padding: .65rem 0; border: 0; text-transform: none; opacity: 0; transform: translateX(10px); transition: opacity .2s ease, transform .28s cubic-bezier(.22, .8, .25, 1), color .18s ease; }
+.mobile-panel.open .mobile-shop-menu a { opacity: 1; transform: translateX(0); }
+.mobile-panel.open .mobile-shop-menu a:nth-child(2) { transition-delay: .24s; }
+.mobile-panel.open .mobile-shop-menu a:nth-child(3) { transition-delay: .29s; }
 .mobile-theme { display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 1rem; color: var(--soft); font: 700 .62rem/1 Montserrat, Arial, sans-serif; letter-spacing: .08em; text-transform: uppercase; }
 .mobile-theme .text-button { display: inline-grid; place-items: center; gap: .35rem; grid-auto-flow: column; min-height: 40px; padding: 0 .9rem; border: 1px solid var(--gold); border-radius: 999px; background: var(--gold); color: var(--ink); font: 800 .62rem/1 Montserrat, Arial, sans-serif; letter-spacing: .08em; text-transform: uppercase; }
 .mobile-theme .text-button:hover { background: var(--surface); color: var(--gold); }
 .text-button { border: 0; background: transparent; color: var(--gold); font: inherit; }
-.overlay { position: fixed; inset: 0; z-index: 55; display: none; background: rgba(0,0,0,.72); backdrop-filter: blur(4px); }
-.overlay.open { display: block; }
+.overlay { position: fixed; inset: 0; z-index: 55; display: block; pointer-events: none; opacity: 0; background: rgba(0,0,0,.72); backdrop-filter: blur(4px); transition: opacity .28s ease; }
+.overlay.open { pointer-events: auto; opacity: 1; }
 
 /* Slide-in cart drawer. Mirrors the .mobile-panel slide but sits above it and the overlay.
    Holds the real cart view, so the cart grid is forced to a single column inside it. */
@@ -1040,12 +1057,18 @@ body.cart-open { overflow: hidden; }
 
 @media (max-width: 1150px) { .desktop-nav { display: none; }.menu-button { display: grid; } }
 @media (max-width: 860px) {
-  .sachet-hero { min-height: 0; grid-template-columns: 1fr; padding-top: 3rem; text-align: center; }
+  .sachet-hero { min-height: 0; grid-template-columns: minmax(0, 1fr); gap: 2rem; padding: 3rem max(1rem, 5vw); text-align: center; }
   .sachet-hero h1, .sachet-hero p { margin-inline: auto; }
-  .sachet-hero-visual { min-height: 20rem; }
-  .sachet-hero-image { width: 100%; max-height: 20rem; }
+  .sachet-hero-visual { min-height: 0; }
+  .sachet-hero-image { width: min(100%, 36rem); max-height: none; }
   .sachet-grid { grid-template-columns: 1fr; max-width: 34rem; margin-inline: auto; }
-  .sachet-facts .section-inner { grid-template-columns: repeat(2, 1fr); }
+  .sachet-facts .section-inner { position: relative; grid-template-columns: repeat(2, 1fr); padding-top: 8rem; }
+  .sachet-facts .section-inner::before { content: "Know what goes into your routine."; position: absolute; top: 1.5rem; left: 1rem; right: 1rem; display: block; color: var(--text); font: 800 clamp(1.35rem, 5vw, 2rem)/1.08 Montserrat, Arial, sans-serif; letter-spacing: .018em; text-align: left; }
+  .sachet-facts .section-inner::after { content: "Nutrition at a glance. Quality information within reach."; position: absolute; top: 5.3rem; left: 1rem; right: 1rem; display: block; color: var(--muted); font-size: .88rem; line-height: 1.4; text-align: left; }
+  .sachet-facts .section-inner > div:last-child strong { font-size: 0; }
+  .sachet-facts .section-inner > div:last-child strong::after { content: "2 Flavours"; display: inline-block; white-space: nowrap; font: 900 clamp(1.1rem, 5vw, 1.65rem)/1 Montserrat, Arial, sans-serif; }
+  .sachet-facts .section-inner > div:last-child span { font-size: 0; }
+  .sachet-facts .section-inner > div:last-child span::after { content: "Mawa Kulfi and Rich Chocolate"; font-size: .68rem; line-height: 1.35; }
   .shop-invitation .section-inner { min-height: 0; grid-template-columns: minmax(0, 1fr) 9rem; }
   .shop-invitation-media { min-height: 10rem; }
   .shop-invitation-actions { grid-column: 1 / -1; grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -1082,6 +1105,60 @@ body.cart-open { overflow: hidden; }
   }
   .section-head { display: block; margin-bottom: 1.5rem; }.section-head p { margin-top: .75rem; }.grid-2, .grid-3, .grid-4, .trust-grid, .policy-grid { grid-template-columns: 1fr; }.stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }.stats div:nth-child(2) { border-right: 0; }.stats div:nth-child(-n+2) { border-bottom: 1px solid var(--line); }.stats div { min-height: 6.4rem; }
   .product-layout { margin-top: 1rem; }.product-actions { position: static; }.cart-item { grid-template-columns: 5.5rem minmax(0, 1fr); }.cart-item > .button { grid-column: 1 / -1; width: 100%; }.cart-image { height: 5.5rem; }.search-form { flex-wrap: wrap; }.search-form input { border-radius: var(--radius-sm); }.search-form .button { width: 100%; margin-top: .5rem; border-radius: var(--radius-sm); }.footer-grid { grid-template-columns: 1fr; gap: 1.5rem; }.footer-bottom { align-items: flex-start; flex-direction: column; }.document-sheet { min-height: 22rem; }.article { padding-top: 2.5rem; }
+  .sachet-hero { gap: 1.5rem; padding: 2.25rem 1rem 2rem; }
+  .sachet-hero h1 { max-width: 11ch; margin-top: .45rem; font-size: clamp(2rem, 10vw, 2.75rem); line-height: 1; text-wrap: balance; }
+  .sachet-hero p:not(.hero-overline) { max-width: 34ch; font-size: .98rem; line-height: 1.6; }
+  .sachet-delivery { justify-content: center; max-width: 100%; margin-top: .4rem; padding: .65rem .75rem; font-size: .64rem; line-height: 1.3; text-align: center; }
+  .sachet-hero-visual { width: 100%; }
+  .sachet-hero-image { width: 100%; border-radius: 8px; filter: drop-shadow(0 16px 20px #0008); }
+  .sachet-products.section { padding-block: 2.75rem; }
+  .sachet-products .section-head h2 { max-width: 13ch; font-size: 1.75rem; line-height: 1.08; text-wrap: balance; white-space: normal; }
+  .sachet-grid { width: 100%; gap: 1.25rem; }
+  .sachet-card { border-radius: 8px; }
+  .sachet-card:hover, .sachet-card.is-selected { transform: none; }
+  .sachet-card-image { aspect-ratio: 1 / 1; }
+  .sachet-card-image .sachet-card-primary, .sachet-card-image .sachet-card-back { width: 76%; height: 86%; max-width: 76%; }
+  .sachet-card-image .sachet-card-back { width: 70%; }
+  .sachet-slider-control { width: 2.75rem; height: 2.75rem; }
+  .sachet-slider-prev { left: .5rem; }
+  .sachet-slider-next { right: .5rem; }
+  .sachet-slider-dots { bottom: .65rem; gap: .5rem; }
+  .sachet-slider-dots button { width: .65rem; height: .65rem; }
+  .sachet-card-body { display: flex; flex-direction: column; align-items: stretch; padding: 1.25rem; }
+  .sachet-card-body h2 { margin: .15rem 0 .6rem; font-size: 1.45rem; line-height: 1.15; }
+  .sachet-card-body > p:not(.hero-overline):not(.sachet-combination):not(.sachet-stock) { margin-bottom: 1rem; }
+  .sachet-card-body > p:not(.hero-overline):not(.sachet-combination):not(.sachet-stock) { min-height: 0; }
+  .sachet-card-facts { margin: .25rem 0 .55rem; }
+  .sachet-card-facts span { font-size: .72rem; }
+  .sachet-flavours { grid-template-columns: minmax(0, 1fr); margin: .6rem 0; }
+  .sachet-combination { margin: .35rem 0; }
+  .sachet-price { flex-wrap: wrap; margin-top: .7rem; }
+  .sachet-stock { margin: .65rem 0; }
+  .sachet-card-body > .button { min-height: 52px; }
+  .sachet-facts.section { padding-block: 2.5rem; }
+  .sachet-facts .section-inner div { min-height: 7rem; align-content: center; }
+.sachet-facts span { padding-inline: .35rem; font-size: .68rem; line-height: 1.35; }
+}
+
+@media (min-width: 861px) {
+  .sachet-facts.section { padding-top: calc(var(--section-space) + .75rem); padding-right: max(1rem, calc((100% - var(--container) - 3rem) / 2)); padding-bottom: calc(var(--section-space) + 1rem); padding-left: max(1rem, calc((100% - var(--container) - 3rem) / 2)); border-bottom: 1px solid var(--line); }
+  .sachet-facts .section-inner { width: min(100%, calc(var(--container) + 3rem)); max-width: none; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; padding: 0; overflow: visible; border: 0; border-radius: 0; background: transparent; }
+  .sachet-facts .section-inner::before { content: "Know what goes into your routine."; grid-column: 1 / span 2; grid-row: 1; max-width: none; white-space: nowrap; padding-bottom: 3.5rem; background: linear-gradient(90deg, var(--gold), transparent) left 4rem / 4.5rem 2px no-repeat; color: var(--text); font: 800 clamp(1.8rem, 3vw, 3rem)/1.08 Montserrat, Arial, sans-serif; letter-spacing: .018em; text-transform: none; }
+  .sachet-facts .section-inner::after { content: "Nutrition at a glance. Quality information within reach."; grid-column: 3 / -1; grid-row: 1; align-self: end; justify-self: end; max-width: 29rem; padding-bottom: 2.5rem; color: var(--muted); font-size: .9rem; }
+  .sachet-facts .section-inner > div { grid-row: 2; min-width: 0; min-height: 7rem; padding: 0 1.5rem; border-top: 0; border-right: 0; background: transparent; text-align: left; }
+  .sachet-facts .section-inner > div strong { font-size: clamp(2rem, 4vw, 3.25rem); }
+  .sachet-facts .section-inner > div + div { border-left: 0; }
+  .sachet-facts .section-inner > div:nth-child(1), .sachet-facts .section-inner > div:nth-child(3), .sachet-facts .section-inner > div:nth-child(4) { border-left: 1px solid var(--line); }
+  .sachet-facts .section-inner > div span { font-size: 1rem; text-transform: none; }
+  .sachet-facts .section-inner > div:nth-child(2) span { font-size: 1rem; }
+  .sachet-facts .section-inner > div:last-child span { font-size: 0; }
+  .sachet-facts .section-inner > div:last-child strong { font-size: 0; }
+  .sachet-facts .section-inner > div:last-child strong::after { content: "2 Flavours"; display: inline-block; white-space: nowrap; font: 900 40px/1 Montserrat, Arial, sans-serif; }
+  .sachet-facts .section-inner > div:last-child span::after { content: "Mawa Kulfi and Rich Chocolate"; font-size: 1rem; }
+  .sachet-facts .section-inner > div:nth-child(1) { order: 3; }
+  .sachet-facts .section-inner > div:nth-child(2) { order: 1; }
+  .sachet-facts .section-inner > div:nth-child(3) { order: 2; }
+  .sachet-facts .section-inner > div:nth-child(4) { order: 4; }
 }
 .product-page {
   --bg: var(--flavour-bg);
@@ -1327,6 +1404,12 @@ html[data-theme="light"] .product-page .button.primary:hover, html[data-theme="l
 .pack-btn:hover:not(:disabled) { background: var(--flavour-hover); }
 .pack-btn:disabled { opacity: .5; cursor: default; }
 .pack-btn .icon { width: 1.2rem; height: 1.2rem; }
+.sachet-cart-actions { display: grid; gap: .55rem; }
+.sachet-cart-qty { position: relative; display: grid; grid-template-columns: 3rem minmax(0, 1fr) 3rem; min-height: 42px; overflow: visible; border: 1px solid color-mix(in srgb, var(--gold) 65%, transparent); border-radius: 8px; background: color-mix(in srgb, var(--surface) 88%, #000); }
+.sachet-cart-qty .pack-btn { min-width: 0; min-height: 42px; border-radius: 0; background: color-mix(in srgb, var(--gold) 28%, var(--surface)); color: var(--text); font-size: 1rem; }
+.sachet-cart-qty .pack-btn:hover:not(:disabled) { background: color-mix(in srgb, var(--gold) 42%, var(--surface)); }
+.sachet-cart-qty output { display: grid; place-items: center; color: var(--text); font: 800 .9rem/1 Montserrat, Arial, sans-serif; }
+.sachet-cart-actions > .button { width: 100%; min-height: 42px; }
 .floating-qty-group { display: flex; align-items: center; gap: .65rem; background: #fffdf8; color: var(--flavour-ink); border-radius: 10px; padding: .35rem; height: 100%; }
 .floating-qty-group .pack-btn { background: transparent; color: var(--flavour-ink); }
 .floating-qty-group .pack-btn:hover:not(:disabled) { background: color-mix(in srgb, var(--flavour-ink) 10%, transparent); }

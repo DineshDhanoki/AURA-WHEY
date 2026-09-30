@@ -35,15 +35,17 @@ test('Sachets use Shopify option mapping, live prices and supplied project image
   assert.ok(!markup.includes('Duo Pack / Chocolate'));
   assert.ok(!markup.includes('Duo Pack / Mawa Kulfi'));
   for (const file of ['sachet-front.png.png', 'sachet-back.png.png', 'sachet-front-back-lifestyle.png.png', 'sachet-travel-pack.png.png']) assert.ok(fs.existsSync(path.join(root, 'assets', 'Sachets', file)));
-  for (const source of ['sachet-front.png.png', 'sachet-front-back-lifestyle.png.png', 'sachet-travel-pack.png.png']) assert.ok(markup.includes(source), source);
-  assert.equal((markup.match(/sachet-front-back-lifestyle\.png\.png/g) || []).length, 1);
+  for (const source of ['sachet-front-720.webp', 'sachet-product-info-960.webp', 'sachet-travel-pack-720.webp']) assert.ok(markup.includes(source), source);
+  assert.equal((markup.match(/sachet-product-info-960\.webp/g) || []).length, 2);
+  assert.match(markup, /sachet-product-info-480\.webp 480w/);
+  assert.match(markup, /class="sachet-hero-image"[^>]*loading="eager"[^>]*fetchpriority="high"/);
   assert.equal((markup.match(/class="sachet-card-back"/g) || []).length, 3);
-  assert.equal((markup.match(/sachet-back\.png\.png/g) || []).length, 3);
+  assert.equal((markup.match(/sachet-back-720\.webp/g) || []).length, 6);
   assert.equal((markup.match(/class="sachet-card-track"/g) || []).length, 3);
   assert.equal((markup.match(/data-action="sachet-image-next"/g) || []).length, 3);
   assert.equal((markup.match(/data-action="sachet-image-prev"/g) || []).length, 3);
   assert.doesNotMatch(markup, /sachet-information-title|Complete front and back product information/);
-  assert.match(run('JSON.stringify(sachetAssets)'), /sachet-back\.png\.png/);
+  assert.match(run('JSON.stringify(sachetAssets)'), /sachet-back-720\.webp/);
   assert.match(markup, /Rich Chocolate/);
 });
 
@@ -67,8 +69,8 @@ test('mixed 1 KG and Sachet cart uses existing quantity, removal and checkout fl
   assert.equal(run('commerce.cart.cost.totalAmount.amount'), '5493.00');
   const markup = run('cart()');
   for (const label of ['Aura Whey Mawa Kulfi', 'Aura Whey Sachet \u2014 Chocolate', 'Single Sachet', 'Aura Whey Duo Pack', '1 Chocolate + 1 Mawa Kulfi', 'Aura Whey Travel Pack \u2014 Mawa Kulfi', '7 Sachets']) assert.ok(markup.includes(label), label);
-  assert.match(markup, /sachet-front\.png\.png/);
-  assert.match(markup, /sachet-travel-pack\.png\.png/);
+  assert.match(markup, /sachet-front-720\.webp/);
+  assert.match(markup, /sachet-travel-pack-720\.webp/);
   assert.ok(!markup.includes('Duo Pack / Chocolate'));
   const duoId = run("commerce.cart.lines.nodes.find(line => line.merchandise.id === 'variant-sachet-duo-chocolate').id");
   await run(`changeCartLine('line-up', '${duoId}')`);
@@ -103,7 +105,7 @@ test('homepage CTA promotes Sachets with the centralized front asset and both sh
   assert.match(markup, /Protein\. Anywhere/);
   assert.match(markup, /Fuel your Aura on the go/);
   assert.match(markup, /24g protein\. 5\.7g BCAAs/);
-  assert.match(markup, /sachet-front\.png\.png/);
+  assert.match(markup, /sachet-front-720\.webp/);
   assert.match(markup, /href="\/shop\/sachets"[^>]*>Shop Sachets/);
   assert.match(markup, /href="\/shop"[^>]*>Shop 1 KG Whey/);
   assert.doesNotMatch(markup, /Compare flavours|Rewards|Free Gift/i);
